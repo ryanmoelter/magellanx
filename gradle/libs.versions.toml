@@ -1,5 +1,5 @@
 [versions]
-gradle = "7.4.2"
+gradle = "8.1.0"
 kotlin = "1.7.20"
 coroutines = "1.7.3"
 # https://developer.android.com/jetpack/compose/setup#bom-version-mapping
