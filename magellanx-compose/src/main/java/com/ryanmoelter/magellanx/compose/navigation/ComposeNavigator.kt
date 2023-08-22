@@ -3,7 +3,6 @@
 package com.ryanmoelter.magellanx.compose.navigation
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -67,7 +66,6 @@ public open class ComposeNavigator :
     val currentTransitionSpec by transitionFlow.collectAsState()
     val currentDirection by directionFlow.collectAsState()
 
-    @OptIn(ExperimentalAnimationApi::class)
     AnimatedContent(
       targetState = currentNavigable,
       transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection)

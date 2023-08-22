@@ -8,7 +8,7 @@ buildscript {
   }
   dependencies {
     classpath(libs.kotlin.gradle)
-    classpath(libs.gradle)
+    classpath(libs.android.gradle)
     classpath("org.jmailen.gradle:kotlinter-gradle:${libs.versions.kotlinter.get()}")
     classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${libs.versions.detekt.get()}")
   }
@@ -56,5 +56,5 @@ allprojects {
 }
 
 tasks.register("clean", Delete::class) {
-  delete(rootProject.buildDir)
+  delete(rootProject.layout.buildDirectory)
 }

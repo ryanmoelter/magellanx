@@ -1,16 +1,16 @@
 package com.ryanmoelter.magellanx.compose.transitions
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedContentScope.SlideDirection.Companion.Up
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.with
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import com.ryanmoelter.magellanx.compose.navigation.Direction
 import com.ryanmoelter.magellanx.core.Navigable
@@ -19,24 +19,22 @@ import kotlin.math.roundToInt
 public interface MagellanComposeTransition {
 
   @Composable
-  @OptIn(ExperimentalAnimationApi::class)
+
   public fun getTransitionForDirection(
     direction: Direction
-  ): AnimatedContentScope<Navigable<@Composable () -> Unit>?>.() -> ContentTransform
+  ): AnimatedContentTransitionScope<Navigable<@Composable () -> Unit>?>.() -> ContentTransform
 }
 
 public class SimpleComposeTransition(
-  @OptIn(ExperimentalAnimationApi::class)
-  /* ktlint-disable max-line-length */
-  public val transitionSpec: AnimatedContentScope<Navigable<@Composable () -> Unit>?>.(Direction) -> ContentTransform
-  /* ktlint-enable max-line-length */
+  public val transitionSpec: AnimatedContentTransitionScope<Navigable<@Composable () -> Unit>?>.(
+    Direction
+  ) -> ContentTransform
 ) : MagellanComposeTransition {
 
   @Composable
-  @OptIn(ExperimentalAnimationApi::class)
   public override fun getTransitionForDirection(
     direction: Direction
-  ): AnimatedContentScope<Navigable<@Composable () -> Unit>?>.() -> ContentTransform {
+  ): AnimatedContentTransitionScope<Navigable<@Composable () -> Unit>?>.() -> ContentTransform {
     return { transitionSpec(direction) }
   }
 }
@@ -44,15 +42,15 @@ public class SimpleComposeTransition(
 private const val SCALE_DOWN_FACTOR = 0.85f
 private const val SCALE_UP_FACTOR = 1.15f
 
-@OptIn(ExperimentalAnimationApi::class)
 public val defaultTransition: MagellanComposeTransition = SimpleComposeTransition {
   when (it) {
     Direction.FORWARD -> {
-      fadeIn() + scaleIn(initialScale = SCALE_DOWN_FACTOR) with
+      fadeIn() + scaleIn(initialScale = SCALE_DOWN_FACTOR) togetherWith
         fadeOut() + scaleOut(targetScale = SCALE_UP_FACTOR)
     }
+
     Direction.BACKWARD -> {
-      fadeIn() + scaleIn(initialScale = SCALE_UP_FACTOR) with
+      fadeIn() + scaleIn(initialScale = SCALE_UP_FACTOR) togetherWith
         fadeOut() + scaleOut(targetScale = SCALE_DOWN_FACTOR)
     }
   }
@@ -60,28 +58,25 @@ public val defaultTransition: MagellanComposeTransition = SimpleComposeTransitio
 
 private const val HEIGHT_OFFSET_FACTOR = 0.8f
 
-@OptIn(ExperimentalAnimationApi::class)
 public val showTransition: MagellanComposeTransition = SimpleComposeTransition { direction ->
   when (direction) {
     Direction.FORWARD -> {
       fadeIn() +
-        slideIntoContainer(
-          Up,
-          initialOffset = { height -> (height * HEIGHT_OFFSET_FACTOR).roundToInt() }
-        ) with
+        slideInVertically(
+          initialOffsetY = { fullHeight -> (fullHeight * HEIGHT_OFFSET_FACTOR).roundToInt() }
+        ) togetherWith
         fadeOut() + scaleOut(targetScale = SCALE_UP_FACTOR)
     }
+
     Direction.BACKWARD -> {
-      fadeIn() + scaleIn(initialScale = SCALE_UP_FACTOR) with
-        fadeOut() + slideOutOfContainer(
-          Up,
-          targetOffset = { height -> (height * HEIGHT_OFFSET_FACTOR).roundToInt() }
+      fadeIn() + scaleIn(initialScale = SCALE_UP_FACTOR) togetherWith
+        fadeOut() + slideOutVertically(
+          targetOffsetY = { fullHeight -> (fullHeight * HEIGHT_OFFSET_FACTOR).roundToInt() }
         )
     }
   }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 public val noTransition: MagellanComposeTransition = SimpleComposeTransition {
-  EnterTransition.None with ExitTransition.None
+  EnterTransition.None togetherWith ExitTransition.None
 }

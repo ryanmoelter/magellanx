@@ -6,16 +6,15 @@ plugins {
 
 android {
   namespace = "com.ryanmoelter.magellanx.core"
-  compileSdk = 33
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = 23
-    targetSdk = 33
+    minSdk = libs.versions.minSdk.get().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
     aarMetadata {
-      minCompileSdk = 33
+      minCompileSdk = libs.versions.compileSdk.get().toInt()
     }
   }
 

@@ -1,6 +1,5 @@
 package com.ryanmoelter.magellanx.test
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigationEvent
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigator
@@ -13,7 +12,6 @@ import com.ryanmoelter.magellanx.core.navigation.LinearNavigator
  * the lifecycle, avoiding the need to satisfy their dependencies. Holds state; should be
  * re-instantiated, [destroy]ed, or [clear]ed between tests.
  */
-@OptIn(ExperimentalAnimationApi::class)
 public class FakeComposeNavigator : ComposeNavigator() {
 
   public override var backStack: List<ComposeNavigationEvent> = emptyList()
