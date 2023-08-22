@@ -49,6 +49,12 @@ android {
 dependencies {
   project(":magellanx-compose")
 
+  implementation(libs.bundles.android.app)
+
+  implementation(libs.coroutines.core)
+  implementation(libs.coroutines.android)
+  testImplementation(libs.coroutines.test)
+
   implementation(libs.ktx.core)
   implementation(libs.lifecycle.runtime.ktx)
 

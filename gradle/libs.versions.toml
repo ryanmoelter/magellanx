@@ -31,6 +31,11 @@ junit-old = "1.1.5"
 espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.1"
 
+coil = "2.4.0"
+retrofit = "2.9.0"
+retrofit-moshi = "2.9.0"
+moshi = "1.15.0"
+
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
@@ -102,6 +107,8 @@ ktx-core = { module = "androidx.core:core-ktx", version = "1.10.1" }
 
 # Sentry
 sentry-android = { module = "io.sentry:sentry-android", version = "6.28.0" }
+
+# Generated
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-old" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
@@ -109,3 +116,16 @@ ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
+#Sample app
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit-moshi" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi"}
+
+[bundles]
+android-app = [
+  "coil",
+  "retrofit",
+  "retrofit-moshi",
+  "moshi-kotlin"
+]
