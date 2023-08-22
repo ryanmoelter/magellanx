@@ -6,10 +6,8 @@ pluginManagement {
   }
 }
 
-enableFeaturePreview("VERSION_CATALOGS")
 rootProject.name = "Magellan X"
 include ':magellanx-core'
 include ':magellanx-compose'
 include ':magellanx-lint'
 include ':magellanx-test'
-
