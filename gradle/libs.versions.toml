@@ -27,11 +27,17 @@ lint = "31.1.1"
 detekt = "1.18.0"
 kotlinter = "3.12.0"
 
+junit-old = "1.1.5"
+espresso-core = "3.5.1"
+lifecycle-runtime-ktx = "2.6.1"
+
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+android-application = { id = "com.android.application", version.ref = "android-gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [libraries]
 # Kotlin
@@ -96,4 +102,10 @@ ktx-core = { module = "androidx.core:core-ktx", version = "1.10.1" }
 
 # Sentry
 sentry-android = { module = "io.sentry:sentry-android", version = "6.28.0" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-old" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
