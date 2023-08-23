@@ -1,7 +1,7 @@
 package com.ryanmoelter.magellanx.core.lifecycle
 
 public class CreateAndAttachFieldToLifecycleWhenShownDelegate<Field>(
-  public val fieldSupplier: () -> Field
+  public val fieldSupplier: () -> Field,
 ) : LifecycleAware {
 
   public var field: Field? = null
@@ -17,9 +17,9 @@ public class CreateAndAttachFieldToLifecycleWhenShownDelegate<Field>(
 }
 
 public fun <Field> LifecycleOwner.createAndAttachFieldToLifecycleWhenShown(
-  fieldSupplier: () -> Field
+  fieldSupplier: () -> Field,
 ): AttachFieldToLifecycleDelegate<CreateAndAttachFieldToLifecycleWhenShownDelegate<Field>, Field?> =
   attachFieldToLifecycle(
     CreateAndAttachFieldToLifecycleWhenShownDelegate(fieldSupplier),
-    { it.field }
+    { it.field },
   )

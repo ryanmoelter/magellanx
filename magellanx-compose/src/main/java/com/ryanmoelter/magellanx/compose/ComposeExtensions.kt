@@ -24,7 +24,7 @@ public fun Displayable<@Composable () -> Unit>.Content(modifier: Modifier = Modi
 @Composable
 public fun Displayable(
   displayable: Displayable<@Composable () -> Unit>,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
 ): Unit = displayable.Content(modifier)
 
 @Composable

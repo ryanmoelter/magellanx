@@ -68,7 +68,7 @@ public open class ComposeNavigator :
 
     AnimatedContent(
       targetState = currentNavigable,
-      transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection)
+      transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection),
     ) { navigable ->
       DisposableEffect(
         key1 = navigable,
@@ -87,7 +87,7 @@ public open class ComposeNavigator :
           } else {
             onDispose { }
           }
-        }
+        },
       )
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         navigable?.Content()
@@ -104,24 +104,24 @@ public open class ComposeNavigator :
 
   public open fun goTo(
     navigable: Navigable<@Composable () -> Unit>,
-    overrideTransitionSpec: MagellanComposeTransition? = null
+    overrideTransitionSpec: MagellanComposeTransition? = null,
   ) {
     navigate(FORWARD) { backStack ->
       backStack + ComposeNavigationEvent(
         navigable = navigable,
-        transitionSpec = overrideTransitionSpec ?: defaultTransition
+        transitionSpec = overrideTransitionSpec ?: defaultTransition,
       )
     }
   }
 
   public open fun replace(
     navigable: Navigable<@Composable () -> Unit>,
-    overrideTransitionSpec: MagellanComposeTransition? = null
+    overrideTransitionSpec: MagellanComposeTransition? = null,
   ) {
     navigate(FORWARD) { backStack ->
       backStack - backStack.last() + ComposeNavigationEvent(
         navigable = navigable,
-        transitionSpec = overrideTransitionSpec ?: defaultTransition
+        transitionSpec = overrideTransitionSpec ?: defaultTransition,
       )
     }
   }
@@ -155,7 +155,7 @@ public open class ComposeNavigator :
 
   public open fun navigate(
     direction: Direction,
-    backStackOperation: (backStack: List<ComposeNavigationEvent>) -> List<ComposeNavigationEvent>
+    backStackOperation: (backStack: List<ComposeNavigationEvent>) -> List<ComposeNavigationEvent>,
   ) {
     // TODO: Intercept touch events, if necessary
     NavigationPropagator._beforeNavigation.tryEmit(Unit)
@@ -171,7 +171,7 @@ public open class ComposeNavigator :
     findBackstackChangesAndUpdateStates(
       oldBackStack = oldBackStack.map { it.navigable },
       newBackStack = newBackStack.map { it.navigable },
-      from = fromNavigable
+      from = fromNavigable,
     )
     /* Optimistically update toNavigable's limit to smooth out transitions. This will also get set
      * by the DisposedEffect in #Content(), but redundancy is fine. fromNavigable's limit will be
@@ -186,7 +186,7 @@ public open class ComposeNavigator :
   private fun findBackstackChangesAndUpdateStates(
     oldBackStack: List<Navigable<*>>,
     newBackStack: List<Navigable<*>>,
-    from: Navigable<*>?
+    from: Navigable<*>?,
   ) {
     val oldNavigables = oldBackStack.toSet()
     // Don't remove the last Navigable (from) until it's removed from composition in DisposedEffect
@@ -208,5 +208,5 @@ public open class ComposeNavigator :
 
 public data class ComposeNavigationEvent(
   val navigable: Navigable<@Composable () -> Unit>,
-  val transitionSpec: MagellanComposeTransition
+  val transitionSpec: MagellanComposeTransition,
 )

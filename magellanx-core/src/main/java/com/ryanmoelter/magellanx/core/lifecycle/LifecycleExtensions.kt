@@ -4,29 +4,29 @@ import kotlin.reflect.KProperty
 
 public fun <ChildType : LifecycleAware, PropertyType> LifecycleOwner.attachFieldToLifecycle(
   lifecycleAware: ChildType,
-  getPropertyType: (ChildType) -> PropertyType
+  getPropertyType: (ChildType) -> PropertyType,
 ): AttachFieldToLifecycleDelegate<ChildType, PropertyType> {
   return AttachFieldToLifecycleDelegate(
     parent = this,
     lifecycleAware = lifecycleAware,
-    getPropertyType = getPropertyType
+    getPropertyType = getPropertyType,
   )
 }
 
 public fun <ChildType : LifecycleAware> LifecycleOwner.attachFieldToLifecycle(
-  lifecycleAware: ChildType
+  lifecycleAware: ChildType,
 ): AttachFieldToLifecycleDelegate<ChildType, ChildType> {
   return AttachFieldToLifecycleDelegate(
     parent = this,
     lifecycleAware = lifecycleAware,
-    getPropertyType = { lifecycleAware }
+    getPropertyType = { lifecycleAware },
   )
 }
 
 public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, PropertyType>(
   private val parent: LifecycleOwner,
   private val lifecycleAware: ChildType,
-  private val getPropertyType: (ChildType) -> PropertyType
+  private val getPropertyType: (ChildType) -> PropertyType,
 ) {
 
   private var hasOverrideValue = false
@@ -68,14 +68,14 @@ public fun <ChildType : LifecycleAware> LifecycleOwner.attachLateinitFieldToLife
 }
 
 public class AttachLateinitFieldToLifecycleDelegate<ChildType : LifecycleAware>(
-  private val parent: LifecycleOwner
+  private val parent: LifecycleOwner,
 ) {
 
   private var lifecycleAware: ChildType? = null
 
   public operator fun getValue(thisRef: Any?, property: KProperty<*>): ChildType {
     return lifecycleAware ?: error(
-      "This lateinit LifecycleAware has not been set yet. (Has your dependency injection run yet?)"
+      "This lateinit LifecycleAware has not been set yet. (Has your dependency injection run yet?)",
     )
   }
 

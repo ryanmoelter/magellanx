@@ -16,7 +16,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Destroyed) {
       throw IllegalStateException(
         "Cannot create() from a state that is not Destroyed: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}"
+          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
       )
     }
     lifecycleRegistry.create()
@@ -27,7 +27,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Created) {
       throw IllegalStateException(
         "Cannot show() from a state that is not Created: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}"
+          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
       )
     }
     lifecycleRegistry.show()
@@ -38,7 +38,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Shown) {
       throw IllegalStateException(
         "Cannot resume() from a state that is not Shown: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}"
+          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
       )
     }
     lifecycleRegistry.resume()
@@ -49,7 +49,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Resumed) {
       throw IllegalStateException(
         "Cannot pause() from a state that is not Resumed: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}"
+          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
       )
     }
     onPause()
@@ -60,7 +60,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Shown) {
       throw IllegalStateException(
         "Cannot hide() from a state that is not Shown: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}"
+          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
       )
     }
     onHide()
@@ -71,7 +71,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Created) {
       throw IllegalStateException(
         "Cannot destroy() from a state that is not Created: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}"
+          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
       )
     }
     onDestroy()

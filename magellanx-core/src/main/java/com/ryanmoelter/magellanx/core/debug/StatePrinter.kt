@@ -17,7 +17,7 @@ public fun LifecycleOwner.getLifecycleStateSnapshot(): String {
       lifecycleAware.getLifecycleStateSnapshotRecursive(
         "",
         index == children.lastIndex,
-        currentState
+        currentState,
       )
     }
     .forEach { stringBuilder.append(it) }
@@ -28,7 +28,7 @@ public fun LifecycleOwner.getLifecycleStateSnapshot(): String {
 private fun LifecycleAware.getLifecycleStateSnapshotRecursive(
   indent: String,
   isLastChild: Boolean,
-  parentLifecycleState: LifecycleState
+  parentLifecycleState: LifecycleState,
 ): String {
   val stringBuilder = StringBuilder()
   val lineChar = if (isLastChild) CONNECTOR_L else VERTICAL_T
@@ -44,7 +44,7 @@ private fun LifecycleAware.getLifecycleStateSnapshotRecursive(
         lifecycleAware.getLifecycleStateSnapshotRecursive(
           childIndent,
           index == children.lastIndex,
-          currentState
+          currentState,
         )
       }
       .forEach { stringBuilder.append(it) }
@@ -60,6 +60,6 @@ private fun LifecycleOwner.describeSelf(indent: String): String =
 
 private fun LifecycleAware.describeSelf(
   indent: String,
-  parentLifecycleState: LifecycleState
+  parentLifecycleState: LifecycleState,
 ): String =
   "$indent${this::class.java.simpleName} (${parentLifecycleState.name}?)\n"
