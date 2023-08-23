@@ -7,7 +7,7 @@ class DoggoApp : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    injector = DoggoComponent::class.create()
+    injector = DoggoComponent::class.create(this)
   }
 }
 

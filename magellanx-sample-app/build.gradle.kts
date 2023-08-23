@@ -53,7 +53,7 @@ kotlin {
 }
 
 dependencies {
-  project(":magellanx-compose")
+  implementation(project(":magellanx-compose"))
 
   implementation(libs.bundles.android.app)
   ksp(libs.kotlin.inject.ksp)
