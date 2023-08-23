@@ -1,6 +1,8 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlinx.serialization)
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -46,10 +48,15 @@ android {
   }
 }
 
+kotlin {
+  jvmToolchain(8)
+}
+
 dependencies {
   project(":magellanx-compose")
 
   implementation(libs.bundles.android.app)
+  ksp(libs.kotlin.inject.ksp)
 
   implementation(libs.coroutines.core)
   implementation(libs.coroutines.android)
