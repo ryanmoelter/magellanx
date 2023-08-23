@@ -24,6 +24,7 @@ abstract class DoggoComponent(
 ) {
 
   abstract val rootJourney: RootJourney
+  abstract val doggoApi: DoggoApi
 
   val retrofit: Retrofit
     @Provides @ApplicationScope get() = Retrofit.Builder()
