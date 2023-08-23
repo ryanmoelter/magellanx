@@ -1,14 +1,21 @@
 package com.ryanmoelter.magellanx.doggos.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.compose.LocalImageLoader
@@ -39,21 +46,33 @@ class DoggoImageStep : ComposeStep() {
         is Failure -> Text(text = loadable.throwable.toString())
         is Loading -> CircularProgressIndicator()
         is Success -> {
-          AsyncImage(
-            model =
-            ImageRequest.Builder(LocalContext.current)
-              .data(loadable.value)
-              .crossfade(true)
-              .build(),
-            contentDescription = "A good doggo",
-            modifier = Modifier.fillMaxSize()
-          )
+          Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            AsyncImage(
+              model =
+              ImageRequest.Builder(LocalContext.current)
+                .data(loadable.value)
+                .crossfade(true)
+                .build(),
+              contentDescription = "A good doggo",
+              modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { refresh() }) {
+              Text("Another!")
+            }
+          }
         }
       }
     }
   }
 
   override fun onShow() {
+    refresh()
+  }
+
+  private fun refresh() {
     shownScope.launch {
       wrapInLoadableFlow { doggoApi.getRandomDoggoImage() }
         .map { loadable ->
