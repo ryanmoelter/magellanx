@@ -1,4 +1,4 @@
-package com.ryanmoelter.magellanx.doggos.home
+package com.ryanmoelter.magellanx.doggos.randomimages
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.ryanmoelter.magellanx.compose.ComposeStep
+import com.ryanmoelter.magellanx.doggos.home.ListItem
 import com.ryanmoelter.magellanx.doggos.injector
 import com.ryanmoelter.magellanx.doggos.utils.Loadable
 import com.ryanmoelter.magellanx.doggos.utils.ShowLoadingAround

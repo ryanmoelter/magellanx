@@ -1,4 +1,4 @@
-package com.ryanmoelter.magellanx.doggos.home
+package com.ryanmoelter.magellanx.doggos.randomimages
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

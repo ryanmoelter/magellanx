@@ -2,6 +2,8 @@ package com.ryanmoelter.magellanx.doggos.home
 
 import com.ryanmoelter.magellanx.compose.ComposeJourney
 import com.ryanmoelter.magellanx.doggos.ApplicationScope
+import com.ryanmoelter.magellanx.doggos.randomimages.BreedImagesJourney
+import com.ryanmoelter.magellanx.doggos.randomimages.DoggoImageStep
 import me.tatarka.inject.annotations.Inject
 
 @Inject

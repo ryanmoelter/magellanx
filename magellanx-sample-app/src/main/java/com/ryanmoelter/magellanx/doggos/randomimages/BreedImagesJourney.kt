@@ -1,4 +1,4 @@
-package com.ryanmoelter.magellanx.doggos.home
+package com.ryanmoelter.magellanx.doggos.randomimages
 
 import com.ryanmoelter.magellanx.compose.ComposeJourney
 
