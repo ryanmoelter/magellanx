@@ -11,6 +11,7 @@ import com.ryanmoelter.magellanx.core.lifecycle.createAndAttachFieldToLifecycleW
 public class TestNavigable : Navigable<@Composable () -> Unit>, LifecycleAwareComponent() {
 
   public override val view: (@Composable () -> Unit)? by createAndAttachFieldToLifecycleWhenShown {
-    { }
+    {
+    }
   }
 }

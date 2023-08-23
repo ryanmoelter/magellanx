@@ -32,7 +32,7 @@ public class FakeComposeNavigator : ComposeNavigator() {
 
   public override fun navigate(
     direction: Direction,
-    backStackOperation: (List<ComposeNavigationEvent>) -> List<ComposeNavigationEvent>
+    backStackOperation: (List<ComposeNavigationEvent>) -> List<ComposeNavigationEvent>,
   ) {
     backStack = backStackOperation(backStack)
   }

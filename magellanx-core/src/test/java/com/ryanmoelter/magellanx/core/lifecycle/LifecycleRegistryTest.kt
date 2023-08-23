@@ -64,7 +64,7 @@ internal class LifecycleRegistryTest {
         lifecycleAware2,
         lifecycleAware3,
         lifecycleAware5,
-        lifecycleAware4
+        lifecycleAware4,
       )
   }
 
@@ -77,7 +77,7 @@ internal class LifecycleRegistryTest {
     lifecycleRegistry.attachToLifecycle(dummyLifecycleComponent1)
     lifecycleRegistry.attachToLifecycleWithMaxState(
       dummyLifecycleComponent2,
-      LifecycleLimit.CREATED
+      LifecycleLimit.CREATED,
     )
 
     dummyLifecycleComponent1.currentState shouldBe Resumed
@@ -101,7 +101,7 @@ internal class LifecycleRegistryTest {
 
     lifecycleRegistry.attachToLifecycleWithMaxState(
       dummyLifecycleComponent1,
-      LifecycleLimit.CREATED
+      LifecycleLimit.CREATED,
     )
 
     dummyLifecycleComponent1.currentState shouldBe Created
@@ -124,7 +124,7 @@ internal class LifecycleRegistryTest {
 
     lifecycleRegistry.attachToLifecycleWithMaxState(
       dummyLifecycleComponent1,
-      LifecycleLimit.CREATED
+      LifecycleLimit.CREATED,
     )
 
     dummyLifecycleComponent1.currentState shouldBe Created
@@ -152,14 +152,14 @@ internal class LifecycleRegistryTest {
         unwantedBackPressed = true
         true
       },
-      LifecycleLimit.CREATED
+      LifecycleLimit.CREATED,
     )
     lifecycleRegistry.attachToLifecycleWithMaxState(
       DummyLifecycleComponent {
         wantedBackPressed = true
         true
       },
-      LifecycleLimit.NO_LIMIT
+      LifecycleLimit.NO_LIMIT,
     )
 
     val backPressedHandled = lifecycleRegistry.backPressed()
@@ -183,14 +183,14 @@ internal class LifecycleRegistryTest {
         wantedBackPressed = true
         true
       },
-      LifecycleLimit.NO_LIMIT
+      LifecycleLimit.NO_LIMIT,
     )
     lifecycleRegistry.attachToLifecycleWithMaxState(
       DummyLifecycleComponent {
         unwantedBackPressed = true
         true
       },
-      LifecycleLimit.NO_LIMIT
+      LifecycleLimit.NO_LIMIT,
     )
 
     val backPressedHandled = lifecycleRegistry.backPressed()
@@ -202,7 +202,7 @@ internal class LifecycleRegistryTest {
 }
 
 private class DummyLifecycleComponent(
-  val backPressedAction: () -> Boolean = { true }
+  val backPressedAction: () -> Boolean = { true },
 ) : LifecycleAwareComponent() {
 
   override fun onBackPressed(): Boolean = backPressedAction()
