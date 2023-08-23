@@ -13,7 +13,7 @@ class RootJourney : ComposeJourney() {
     navigator.goTo(
       HomeStep(
         goToRandomDog = { navigator.goTo(DoggoImageStep()) },
-        goToBreedList = { TODO() },
+        goToBreedList = { navigator.goTo(BreedImagesJourney()) },
       )
     )
   }

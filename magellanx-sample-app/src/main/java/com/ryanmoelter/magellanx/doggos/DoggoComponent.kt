@@ -33,7 +33,9 @@ abstract class DoggoComponent(
       .build()
 
   @Provides
-  fun provideDoggoApi(retrofit: Retrofit): DoggoApi = retrofit.create(DoggoApi::class.java)
+  fun provideDoggoApi(retrofit: Retrofit): DoggoApi =
+    // retrofit.create(DoggoApi::class.java)
+    FakeDoggoApi()
 
   @Provides
   fun provideApplicationContext(): Context = applicationContext
