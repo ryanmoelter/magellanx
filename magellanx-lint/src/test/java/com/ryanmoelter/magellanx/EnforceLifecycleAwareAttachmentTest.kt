@@ -16,7 +16,7 @@ class EnforceLifecycleAwareAttachmentTest {
       fun create() {}
     }
 
-  """
+  """,
   ).indented()
 
   private val LINEAR_NAVIGATOR = kt(
@@ -29,7 +29,7 @@ class EnforceLifecycleAwareAttachmentTest {
 
       val backStack: List<NavigationEvent> = listOf()
     }
-  """
+  """,
   ).indented()
 
   private val LIFECYCLE_OWNER = kt(
@@ -43,7 +43,7 @@ class EnforceLifecycleAwareAttachmentTest {
         fun removeFromLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState = LifecycleState.Destroyed)
       }
 
-  """
+  """,
   ).indented()
 
   private val LIFECYCLE_FILES = arrayOf(LIFECYCLE_AWARE, LIFECYCLE_OWNER, LINEAR_NAVIGATOR)
@@ -66,8 +66,8 @@ class EnforceLifecycleAwareAttachmentTest {
 
             val navigator = LinearNavigator()
           }
-        """
-        ).indented()
+        """,
+        ).indented(),
       )
       .issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
       .run()
@@ -79,7 +79,7 @@ class EnforceLifecycleAwareAttachmentTest {
           "by lateinitLifecycle() [EnforceLifecycleAwareAttachment]\n" +
           "  val navigator = LinearNavigator()\n" +
           "  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-          "1 errors, 0 warnings"
+          "1 errors, 0 warnings",
       )
       .expectFixDiffs("")
   }
@@ -101,8 +101,8 @@ class EnforceLifecycleAwareAttachmentTest {
 
             val navigator by lifecycle(LinearNavigator())
           }
-        """
-        ).indented()
+        """,
+        ).indented(),
       )
       .issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
       .run()

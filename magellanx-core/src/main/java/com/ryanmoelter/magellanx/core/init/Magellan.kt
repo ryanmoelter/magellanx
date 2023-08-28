@@ -12,7 +12,7 @@ public object Magellan {
   @JvmOverloads
   public fun init(
     disableAnimations: Boolean = false,
-    logDebugInfo: Boolean = false
+    logDebugInfo: Boolean = false,
   ) {
     this.logDebugInfo = logDebugInfo
     this.disableAnimations = disableAnimations

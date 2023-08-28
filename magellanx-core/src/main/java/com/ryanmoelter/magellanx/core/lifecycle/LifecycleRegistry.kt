@@ -29,7 +29,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
         if (oldState.limitBy(maxState).order != newState.limitBy(maxState).order) {
           lifecycleAware.transition(
             oldState.limitBy(maxState),
-            newState.limitBy(maxState)
+            newState.limitBy(maxState),
           )
         }
       }
@@ -43,12 +43,12 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
   public fun attachToLifecycleWithMaxState(
     lifecycleAware: LifecycleAware,
     maxState: LifecycleLimit = NO_LIMIT,
-    detachedState: LifecycleState = LifecycleState.Destroyed
+    detachedState: LifecycleState = LifecycleState.Destroyed,
   ) {
     if (listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalStateException(
         "Cannot attach a lifecycleAware that is already a child: " +
-          lifecycleAware::class.java.simpleName
+          lifecycleAware::class.java.simpleName,
       )
     }
     lifecycleAware.transition(detachedState, currentState.limitBy(maxState))
@@ -57,12 +57,12 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
 
   override fun removeFromLifecycle(
     lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState
+    detachedState: LifecycleState,
   ) {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalStateException(
         "Cannot remove a lifecycleAware that is not a child: " +
-          lifecycleAware::class.java.simpleName
+          lifecycleAware::class.java.simpleName,
       )
     }
     val maxState = listenersToMaxStates[lifecycleAware]!!
@@ -74,7 +74,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalArgumentException(
         "Cannot update the state of a lifecycleAware that is not a child: " +
-          lifecycleAware::class.java.simpleName
+          lifecycleAware::class.java.simpleName,
       )
     }
     val oldMaxState = listenersToMaxStates[lifecycleAware]!!
@@ -83,7 +83,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
       if (needsToTransition) {
         lifecycleAware.transition(
           currentState.limitBy(oldMaxState),
-          currentState.limitBy(maxState)
+          currentState.limitBy(maxState),
         )
       }
       listenersToMaxStates = listenersToMaxStates + (lifecycleAware to maxState)

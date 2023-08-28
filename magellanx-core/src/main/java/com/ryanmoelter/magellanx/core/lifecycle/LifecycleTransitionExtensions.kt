@@ -9,7 +9,7 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.FORWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.NO_MOVEMENT
 
 public fun <T> T.transitionToState(
-  newState: LifecycleState
+  newState: LifecycleState,
 ) where T : LifecycleAware, T : LifecycleOwner {
   transition(this.currentState, newState)
 }
@@ -25,7 +25,7 @@ public fun Iterable<LifecycleAware>.transition(oldState: LifecycleState, newStat
       FORWARD -> next(this, currentState)
       BACKWARDS -> previous(this, currentState)
       NO_MOVEMENT -> throw IllegalStateException(
-        "Attempting to transition from $currentState to $newState"
+        "Attempting to transition from $currentState to $newState",
       )
     }
   }
@@ -33,7 +33,7 @@ public fun Iterable<LifecycleAware>.transition(oldState: LifecycleState, newStat
 
 private fun next(
   subjects: Iterable<LifecycleAware>,
-  currentState: LifecycleState
+  currentState: LifecycleState,
 ): LifecycleState {
   return when (currentState) {
     Destroyed -> {
@@ -56,7 +56,7 @@ private fun next(
 
 private fun previous(
   subjects: Iterable<LifecycleAware>,
-  currentState: LifecycleState
+  currentState: LifecycleState,
 ): LifecycleState {
   return when (currentState) {
     Destroyed -> {

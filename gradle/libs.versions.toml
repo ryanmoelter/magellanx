@@ -1,5 +1,5 @@
 [versions]
-android-gradle = "8.1.0"
+android-gradle = "8.1.1"
 kotlin = "1.8.22"
 coroutines = "1.7.3"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -11,7 +11,7 @@ minSdk = "23"
 
 dagger = "2.47"
 activity = "1.7.2"
-accompanist = "0.30.1"
+accompanist = "0.32.0"
 material = "1.9.0"
 material3 = "1.0.1"
 appcompat = "1.6.1"
@@ -25,7 +25,7 @@ testCore = "1.5.0"
 lint = "31.1.1"
 
 detekt = "1.18.0"
-kotlinter = "3.12.0"
+kotlinter = "3.16.0"
 
 # Sample app
 kotlin-inject = "0.6.1"
@@ -67,7 +67,7 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 sqldelight-driver-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-driver-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
-uuid = { module = "com.benasher44:uuid", version = "0.8.0" }
+uuid = { module = "com.benasher44:uuid", version = "0.8.1" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
 # Testing

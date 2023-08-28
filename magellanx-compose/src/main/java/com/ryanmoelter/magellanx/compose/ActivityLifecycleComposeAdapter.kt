@@ -19,7 +19,7 @@ private var adapterMap = emptyMap<Navigable<@Composable () -> Unit>, AdapterLife
 
 public class ActivityLifecycleComposeAdapter(
   private val navigable: Navigable<@Composable () -> Unit>,
-  private val context: Activity
+  private val context: Activity,
 ) : DefaultLifecycleObserver {
 
   override fun onStart(owner: ActivityLifecycleOwner) {
@@ -59,7 +59,7 @@ public fun ComponentActivity.setContentNavigable(navigable: Navigable<@Composabl
 
 private fun Navigable<@Composable () -> Unit>.attachAndAddToStaticMap(
   lifecycleAdapter: ActivityLifecycleComposeAdapter,
-  lifecycle: ActivityLifecycle
+  lifecycle: ActivityLifecycle,
 ) {
   lifecycle.addObserver(lifecycleAdapter)
   adapterMap = adapterMap + (this to (lifecycleAdapter to lifecycle))

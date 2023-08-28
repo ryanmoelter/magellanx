@@ -13,11 +13,11 @@ public interface LifecycleOwner {
 
   public fun attachToLifecycle(
     lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState = LifecycleState.Destroyed
+    detachedState: LifecycleState = LifecycleState.Destroyed,
   )
 
   public fun removeFromLifecycle(
     lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState = LifecycleState.Destroyed
+    detachedState: LifecycleState = LifecycleState.Destroyed,
   )
 }
