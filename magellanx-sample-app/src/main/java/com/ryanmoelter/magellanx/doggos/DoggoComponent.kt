@@ -3,6 +3,7 @@ package com.ryanmoelter.magellanx.doggos
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.ryanmoelter.magellanx.doggos.home.RootJourney
+import com.ryanmoelter.magellanx.doggos.randomimages.RandomDoggoImageUrlGetter
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.annotation.AnnotationTarget.FUNCTION
 import kotlin.annotation.AnnotationTarget.PROPERTY_GETTER
@@ -25,6 +26,7 @@ abstract class DoggoComponent(
 
   abstract val rootJourney: RootJourney
   abstract val doggoApi: DoggoApi
+  abstract val randomDoggoImageUrlGetter: RandomDoggoImageUrlGetter
 
   val retrofit: Retrofit
     @Provides @ApplicationScope get() = Retrofit.Builder()
@@ -34,8 +36,7 @@ abstract class DoggoComponent(
 
   @Provides
   fun provideDoggoApi(retrofit: Retrofit): DoggoApi =
-    // retrofit.create(DoggoApi::class.java)
-    FakeDoggoApi()
+    retrofit.create(DoggoApi::class.java)
 
   @Provides
   fun provideApplicationContext(): Context = applicationContext
