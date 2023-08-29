@@ -1,13 +1,16 @@
 package com.ryanmoelter.magellanx.doggos.utils
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,6 +52,7 @@ fun <StartingType, TargetType> Loadable<StartingType>.map(
   } else {
     Loading(null)
   }
+
   is Failure -> Failure(throwable)
 }
 
@@ -62,10 +66,13 @@ fun <T : Any> ShowLoadingAround(
     is Loading -> true
   }
   Box(Modifier.gesturesDisabled(blockTouches)) {
-    AnimatedContent(targetState = loadable, label = "", transitionSpec = {
-      fadeIn(animationSpec = tween(220, delayMillis = 90))
-        .togetherWith(fadeOut(animationSpec = tween(90)))
-    }
+    AnimatedContent(
+      targetState = loadable,
+      label = "",
+      transitionSpec = {
+        fadeIn(animationSpec = tween(220, delayMillis = 90))
+          .togetherWith(fadeOut(animationSpec = tween(90)))
+      }
     ) { loadable ->
       when (loadable) {
         is Success -> content(loadable.value)
@@ -84,6 +91,34 @@ fun <T : Any> ShowLoadingAround(
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(loadable.throwable.toString()) // TODO: Show an error state, log to sentry, offer retry?
           }
+        }
+      }
+    }
+  }
+}
+
+@Composable
+fun ShowLoadingAround(
+  isLoading: Boolean,
+  showSpinner: Boolean = true,
+  content: @Composable () -> Unit
+) {
+  Box(Modifier.gesturesDisabled(isLoading), contentAlignment = Alignment.Center) {
+    content()
+
+    AnimatedVisibility(
+      visible = isLoading,
+      enter = fadeIn(animationSpec = tween(300)),
+      exit = fadeOut(animationSpec = tween(200))
+    ) {
+      Box(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)),
+        contentAlignment = Alignment.Center
+      ) {
+        if (showSpinner) {
+          CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
       }
     }

@@ -25,7 +25,6 @@ class DoggoImageStep(
   val breed: String? = null
 ) : ComposeStep() {
 
-  private val doggoApi = injector.doggoApi
   private val randomDoggoImageUrlGetter = injector.randomDoggoImageUrlGetter
   private val loadableImageUrlFlow: MutableStateFlow<Loadable<String>> =
     MutableStateFlow(Loading())
@@ -50,12 +49,12 @@ class DoggoImageStep(
     }
   }
 
-  override fun onShow() {
+  override fun onCreate() {
     refresh()
   }
 
   private fun refresh() {
-    shownScope.launch {
+    createdScope.launch {
       randomDoggoImageUrlGetter.fetchDoggoImageUrl(breed)
         .collect { loadableImageUrl ->
           loadableImageUrlFlow.value = loadableImageUrl
