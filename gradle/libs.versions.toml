@@ -3,7 +3,7 @@ android-gradle = "8.1.1"
 kotlin = "1.8.22"
 coroutines = "1.7.3"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.09.01"
+compose-bom = "2023.09.02"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
 compose-compiler = "1.4.8"
 compileSdk = "34"
