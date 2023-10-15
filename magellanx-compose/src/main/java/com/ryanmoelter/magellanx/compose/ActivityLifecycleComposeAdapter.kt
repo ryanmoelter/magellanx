@@ -2,6 +2,7 @@ package com.ryanmoelter.magellanx.compose
 
 import android.app.Activity
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -55,6 +56,16 @@ public fun ComponentActivity.setContentNavigable(navigable: Navigable<@Composabl
   val lifecycleAdapter = ActivityLifecycleComposeAdapter(navigable, this)
   navigable.attachAndAddToStaticMap(lifecycleAdapter, lifecycle)
   setContent { navigable.Content() }
+
+  onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(false) {
+    init {
+      isEnabled = navigable.willHandleBack { willHandleBack -> isEnabled = willHandleBack }
+    }
+
+    override fun handleOnBackPressed() {
+      navigable.backPressed()
+    }
+  })
 }
 
 private fun Navigable<@Composable () -> Unit>.attachAndAddToStaticMap(

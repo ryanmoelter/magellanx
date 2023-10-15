@@ -8,4 +8,5 @@ public interface LifecycleAware {
   public fun hide() {}
   public fun destroy() {}
   public fun backPressed(): Boolean = false
+  public fun willHandleBack(changeWillHandleBack: (Boolean) -> Unit): Boolean = false
 }

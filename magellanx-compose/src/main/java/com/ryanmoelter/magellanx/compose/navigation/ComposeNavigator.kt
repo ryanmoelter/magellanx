@@ -68,6 +68,7 @@ public open class ComposeNavigator :
 
     AnimatedContent(
       targetState = currentNavigable,
+      label = "ComposeNavigator container",
       transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection),
     ) { navigable ->
       DisposableEffect(
@@ -202,6 +203,10 @@ public open class ComposeNavigator :
   }
 
   override fun onBackPressed(): Boolean = currentNavigable?.backPressed() ?: false || goBack()
+
+  override fun willHandleBack(changeWillHandleBack: (Boolean) -> Unit): Boolean {
+    return super.willHandleBack(changeWillHandleBack)
+  }
 
   public open fun atRoot(): Boolean = backStack.size <= 1
 }
