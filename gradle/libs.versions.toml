@@ -1,5 +1,5 @@
 [versions]
-android-gradle = "8.1.1"
+android-gradle = "8.2.0"
 kotlin = "1.8.22"
 coroutines = "1.7.3"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
