@@ -9,7 +9,7 @@ compose-compiler = "1.4.8"
 compileSdk = "34"
 minSdk = "23"
 
-dagger = "2.49"
+dagger = "2.50"
 activity = "1.8.2"
 accompanist = "0.32.0"
 material = "1.11.0"
