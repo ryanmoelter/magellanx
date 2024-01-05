@@ -11,7 +11,6 @@ import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 internal class LifecycleStateTest {
-
   @Test
   fun getTheDirectionIShouldGoToGetTo() {
     Destroyed.getDirectionForMovement(Destroyed) shouldBe NO_MOVEMENT

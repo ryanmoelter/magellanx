@@ -15,7 +15,6 @@ import org.junit.Before
 import org.junit.Test
 
 internal class LifecycleTransitionExtensionsTest {
-
   private lateinit var lifecycleAware: VerifyingLifecycleAware
 
   @Before
@@ -137,7 +136,6 @@ internal class LifecycleTransitionExtensionsTest {
 }
 
 private class VerifyingLifecycleAware : LifecycleAware {
-
   var events: List<LifecycleEvent> = emptyList()
 
   override fun create() {
@@ -165,6 +163,11 @@ private class VerifyingLifecycleAware : LifecycleAware {
   }
 
   enum class LifecycleEvent {
-    CREATE, SHOW, RESUME, PAUSE, HIDE, DESTROY
+    CREATE,
+    SHOW,
+    RESUME,
+    PAUSE,
+    HIDE,
+    DESTROY,
   }
 }

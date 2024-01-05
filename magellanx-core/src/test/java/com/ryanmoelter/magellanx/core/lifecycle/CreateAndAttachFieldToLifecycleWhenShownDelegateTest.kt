@@ -2,12 +2,10 @@ package com.ryanmoelter.magellanx.core.lifecycle
 
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
-
   private lateinit var lifecycleView: CreateAndAttachFieldToLifecycleWhenShownDelegate<Int>
 
   @Before
