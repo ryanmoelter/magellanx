@@ -14,17 +14,6 @@ import org.junit.Test
 import org.mockito.MockitoAnnotations
 
 internal class LifecycleStateTest {
-  private lateinit var mockSession: AutoCloseable
-
-  @Before
-  fun setUp() {
-    mockSession = MockitoAnnotations.openMocks(this)
-  }
-
-  @After
-  fun tearDown() {
-    mockSession.close()
-  }
 
   @Test
   fun getTheDirectionIShouldGoToGetTo() {

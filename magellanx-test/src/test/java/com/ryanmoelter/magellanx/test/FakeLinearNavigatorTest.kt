@@ -14,14 +14,12 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations.initMocks
 
 public class FakeLinearNavigatorTest {
   private lateinit var navigator: FakeComposeNavigator
 
   @Before
   public fun setUp() {
-    initMocks(this)
     navigator = FakeComposeNavigator()
   }
 
