@@ -60,6 +60,7 @@ public open class ComposeNavigator :
     }
 
   @Composable
+  @Suppress("ktlint:standard:function-naming")
   private fun Content() {
     val currentNavigable by currentNavigableFlow.collectAsState(null)
     val currentTransitionSpec by transitionFlow.collectAsState()

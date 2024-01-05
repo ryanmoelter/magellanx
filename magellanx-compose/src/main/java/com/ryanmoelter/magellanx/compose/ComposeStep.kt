@@ -28,6 +28,6 @@ public abstract class ComposeSection :
     @VisibleForTesting set
 
   @Composable
-  @Suppress("function-naming")
+  @Suppress("ktlint:standard:function-naming")
   protected abstract fun Content()
 }

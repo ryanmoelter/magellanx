@@ -29,16 +29,18 @@ public class StatePrinterTest {
   }
 
   @Test
+  @Suppress("ktlint:standard:string-template-indent")
   public fun singleChild() {
     root.attachToLifecycle(MyStep())
 
     root.getLifecycleStateSnapshot() shouldBe """
       DummyLifecycleOwner (Destroyed)
       └ MyStep (Destroyed)
-      """.trimIndent() + '\n'
+    """.trimIndent() + '\n'
   }
 
   @Test
+  @Suppress("ktlint:standard:string-template-indent")
   public fun multipleChildren() {
     root.attachToLifecycle(MyStep())
     root.attachToLifecycle(MyStep())
@@ -53,6 +55,7 @@ public class StatePrinterTest {
   }
 
   @Test
+  @Suppress("ktlint:standard:string-template-indent")
   public fun complexTree() {
     root.attachToLifecycle(MyStep())
     val step = MyStep()
