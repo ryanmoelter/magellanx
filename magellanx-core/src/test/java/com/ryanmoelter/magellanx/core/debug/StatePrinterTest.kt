@@ -3,24 +3,15 @@ package com.ryanmoelter.magellanx.core.debug
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAware
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import io.kotest.matchers.shouldBe
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations.openMocks
 
 public class StatePrinterTest {
   private lateinit var root: LifecycleAwareComponent
-  private lateinit var mockSession: AutoCloseable
 
   @Before
   public fun setUp() {
-    mockSession = openMocks(this)
     root = DummyLifecycleOwner()
-  }
-
-  @After
-  public fun tearDown() {
-    mockSession.close()
   }
 
   @Test

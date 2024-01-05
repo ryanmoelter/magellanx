@@ -8,24 +8,9 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.BACKWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.FORWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.NO_MOVEMENT
 import io.kotest.matchers.shouldBe
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 
 internal class LifecycleStateTest {
-  private lateinit var mockSession: AutoCloseable
-
-  @Before
-  fun setUp() {
-    mockSession = MockitoAnnotations.openMocks(this)
-  }
-
-  @After
-  fun tearDown() {
-    mockSession.close()
-  }
-
   @Test
   fun getTheDirectionIShouldGoToGetTo() {
     Destroyed.getDirectionForMovement(Destroyed) shouldBe NO_MOVEMENT

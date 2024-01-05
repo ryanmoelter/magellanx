@@ -1,31 +1,16 @@
 package com.ryanmoelter.magellanx.core.lifecycle
 
-import android.widget.FrameLayout
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
 public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
-  private lateinit var lifecycleView: CreateAndAttachFieldToLifecycleWhenShownDelegate<FrameLayout>
-
-  @Mock
-  private lateinit var frameLayout: FrameLayout
-
-  private lateinit var mockSession: AutoCloseable
+  private lateinit var lifecycleView: CreateAndAttachFieldToLifecycleWhenShownDelegate<Int>
 
   @Before
   public fun setUp() {
-    mockSession = MockitoAnnotations.openMocks(this)
-    lifecycleView = CreateAndAttachFieldToLifecycleWhenShownDelegate { frameLayout }
-  }
-
-  @After
-  public fun tearDown() {
-    mockSession.close()
+    lifecycleView = CreateAndAttachFieldToLifecycleWhenShownDelegate { 1 }
   }
 
   @Test
@@ -34,13 +19,13 @@ public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
     lifecycleView.field.shouldBeNull()
 
     lifecycleView.show()
-    lifecycleView.field shouldBe frameLayout
+    lifecycleView.field shouldBe 1
 
     lifecycleView.resume()
-    lifecycleView.field shouldBe frameLayout
+    lifecycleView.field shouldBe 1
 
     lifecycleView.pause()
-    lifecycleView.field shouldBe frameLayout
+    lifecycleView.field shouldBe 1
 
     lifecycleView.hide()
     lifecycleView.field.shouldBeNull()
@@ -52,7 +37,7 @@ public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
   @Test
   public fun onCreateView() {
     lifecycleView.show()
-    lifecycleView.field shouldBe frameLayout
+    lifecycleView.field shouldBe 1
   }
 
   @Test
