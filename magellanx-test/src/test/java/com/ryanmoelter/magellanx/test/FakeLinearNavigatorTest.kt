@@ -17,7 +17,6 @@ import org.junit.Test
 import org.mockito.MockitoAnnotations.initMocks
 
 public class FakeLinearNavigatorTest {
-
   private lateinit var navigator: FakeComposeNavigator
 
   @Before
@@ -61,10 +60,11 @@ public class FakeLinearNavigatorTest {
     val originalBottomNavigable = TestNavigable()
     val newBottomNavigable = TestNavigable()
     val newTopNavigable = TestNavigable()
-    navigator.backStack = listOf(
-      ComposeNavigationEvent(originalBottomNavigable, defaultTransition),
-      ComposeNavigationEvent(TestNavigable(), defaultTransition),
-    )
+    navigator.backStack =
+      listOf(
+        ComposeNavigationEvent(originalBottomNavigable, defaultTransition),
+        ComposeNavigationEvent(TestNavigable(), defaultTransition),
+      )
 
     navigator.navigate(Direction.FORWARD) {
       listOf(
@@ -73,11 +73,12 @@ public class FakeLinearNavigatorTest {
         ComposeNavigationEvent(newTopNavigable, defaultTransition),
       )
     }
-    navigator.backStack.map { it.navigable } shouldContainExactly listOf(
-      newBottomNavigable,
-      originalBottomNavigable,
-      newTopNavigable,
-    )
+    navigator.backStack.map { it.navigable } shouldContainExactly
+      listOf(
+        newBottomNavigable,
+        originalBottomNavigable,
+        newTopNavigable,
+      )
     navigator.currentNavigable shouldBeSameInstanceAs newTopNavigable
   }
 
@@ -92,10 +93,11 @@ public class FakeLinearNavigatorTest {
   @Test
   public fun goBack_success() {
     val bottomNavigable = TestNavigable()
-    navigator.backStack = listOf(
-      ComposeNavigationEvent(bottomNavigable, defaultTransition),
-      ComposeNavigationEvent(TestNavigable(), defaultTransition),
-    )
+    navigator.backStack =
+      listOf(
+        ComposeNavigationEvent(bottomNavigable, defaultTransition),
+        ComposeNavigationEvent(TestNavigable(), defaultTransition),
+      )
     navigator.goBack().shouldBeTrue()
     navigator.backStack shouldHaveSize 1
     navigator.currentNavigable shouldBeSameInstanceAs bottomNavigable

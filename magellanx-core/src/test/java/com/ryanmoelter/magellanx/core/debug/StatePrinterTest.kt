@@ -9,7 +9,6 @@ import org.junit.Test
 import org.mockito.MockitoAnnotations.openMocks
 
 public class StatePrinterTest {
-
   private lateinit var root: LifecycleAwareComponent
   private lateinit var mockSession: AutoCloseable
 
@@ -30,6 +29,7 @@ public class StatePrinterTest {
   }
 
   @Test
+  @Suppress("ktlint:standard:string-template-indent")
   public fun singleChild() {
     root.attachToLifecycle(MyStep())
 
@@ -40,6 +40,7 @@ public class StatePrinterTest {
   }
 
   @Test
+  @Suppress("ktlint:standard:string-template-indent")
   public fun multipleChildren() {
     root.attachToLifecycle(MyStep())
     root.attachToLifecycle(MyStep())
@@ -54,6 +55,7 @@ public class StatePrinterTest {
   }
 
   @Test
+  @Suppress("ktlint:standard:string-template-indent")
   public fun complexTree() {
     root.attachToLifecycle(MyStep())
     val step = MyStep()
@@ -75,7 +77,11 @@ public class StatePrinterTest {
 }
 
 private class DummyLifecycleOwner : LifecycleAwareComponent()
+
 private class MyJourney : LifecycleAwareComponent()
+
 private class MyStep : LifecycleAwareComponent()
+
 private class MySection : LifecycleAwareComponent()
+
 private class MyLifecycleAwareThing : LifecycleAware

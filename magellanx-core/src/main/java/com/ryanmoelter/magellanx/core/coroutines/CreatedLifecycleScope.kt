@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
 public class CreatedLifecycleScope : LifecycleAware, CoroutineScope {
-
   private var job = SupervisorJob().apply { cancel(CancellationException("Not created yet")) }
     set(value) {
       field = value

@@ -28,7 +28,6 @@ public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, Property
   private val lifecycleAware: ChildType,
   private val getPropertyType: (ChildType) -> PropertyType,
 ) {
-
   private var hasOverrideValue = false
   private var overrideValue: PropertyType? = null
 
@@ -37,7 +36,10 @@ public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, Property
   }
 
   @Suppress("UNCHECKED_CAST")
-  public operator fun getValue(thisRef: Any?, property: KProperty<*>): PropertyType {
+  public operator fun getValue(
+    thisRef: Any?,
+    property: KProperty<*>,
+  ): PropertyType {
     return if (hasOverrideValue) {
       overrideValue as PropertyType
     } else {
@@ -45,7 +47,11 @@ public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, Property
     }
   }
 
-  public operator fun setValue(thisRef: Any?, property: KProperty<*>, value: PropertyType) {
+  public operator fun setValue(
+    thisRef: Any?,
+    property: KProperty<*>,
+    value: PropertyType,
+  ) {
     if (!hasOverrideValue) {
       parent.removeFromLifecycle(lifecycleAware)
     }
@@ -70,16 +76,22 @@ public fun <ChildType : LifecycleAware> LifecycleOwner.attachLateinitFieldToLife
 public class AttachLateinitFieldToLifecycleDelegate<ChildType : LifecycleAware>(
   private val parent: LifecycleOwner,
 ) {
-
   private var lifecycleAware: ChildType? = null
 
-  public operator fun getValue(thisRef: Any?, property: KProperty<*>): ChildType {
+  public operator fun getValue(
+    thisRef: Any?,
+    property: KProperty<*>,
+  ): ChildType {
     return lifecycleAware ?: error(
       "This lateinit LifecycleAware has not been set yet. (Has your dependency injection run yet?)",
     )
   }
 
-  public operator fun setValue(thisRef: Any?, property: KProperty<*>, value: ChildType) {
+  public operator fun setValue(
+    thisRef: Any?,
+    property: KProperty<*>,
+    value: ChildType,
+  ) {
     if (value != lifecycleAware) {
       if (lifecycleAware != null) {
         parent.removeFromLifecycle(lifecycleAware!!)

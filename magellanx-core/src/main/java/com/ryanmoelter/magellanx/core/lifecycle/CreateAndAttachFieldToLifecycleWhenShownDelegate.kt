@@ -3,7 +3,6 @@ package com.ryanmoelter.magellanx.core.lifecycle
 public class CreateAndAttachFieldToLifecycleWhenShownDelegate<Field>(
   public val fieldSupplier: () -> Field,
 ) : LifecycleAware {
-
   public var field: Field? = null
     protected set
 

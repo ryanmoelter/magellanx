@@ -9,7 +9,6 @@ import org.junit.Before
 import org.junit.Test
 
 internal class AttachFieldToLifecycleDelegateTest {
-
   private lateinit var parent: DummyLifecycleAwareComponent
   private lateinit var child: DummyLifecycleAwareComponent
   private lateinit var otherChild: DummyLifecycleAwareComponent

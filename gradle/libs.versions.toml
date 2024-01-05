@@ -1,11 +1,11 @@
 [versions]
-android-gradle = "8.2.0"
-kotlin = "1.8.22"
+android-gradle = "8.2.1"
+kotlin = "1.9.21"
 coroutines = "1.7.3"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2023.10.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-compose-compiler = "1.4.8"
+compose-compiler = "1.5.7"
 compileSdk = "34"
 minSdk = "23"
 
@@ -24,14 +24,12 @@ kotest = "5.8.0"
 testCore = "1.5.0"
 lint = "31.2.0"
 
-detekt = "1.18.0"
-kotlinter = "3.16.0"
+kotlinter = "4.1.1"
 
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [libraries]
 # Kotlin
@@ -93,7 +91,4 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 ktx-core = { module = "androidx.core:core-ktx", version = "1.12.0" }
-
-# Sentry
-sentry-android = { module = "io.sentry:sentry-android", version = "7.1.0" }
 
