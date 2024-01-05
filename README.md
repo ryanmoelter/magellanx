@@ -27,12 +27,60 @@ allprojects {
 }
 ```
 
-Add the dependencies you need in your `dependencies` block:
+<details>
+  <summary>Version catalogs</summary>
+
+### Version catalogs
+
+To use in [gradle's version catalogs](https://docs.gradle.org/current/userguide/platforms.html),
+add the following to your `libs.versions.toml`:
+
+[![Latest release on Jitpack](https://jitpack.io/v/com.ryanmoelter/magellanx.svg)](https://jitpack.io/#com.ryanmoelter/magellanx)
+
+```toml
+[versions]
+magellanx = "0.3.0"
+# ...
+
+[libraries]
+magellanx-compose = { module = "com.ryanmoelter.magellanx:magellanx-compose", version.ref = "magellanx" }
+magellanx-test = { module = "com.ryanmoelter.magellanx:magellanx-test", version.ref = "magellanx" }
+```
+
+Alternatively, if you only want the core library without the Compose implementation, you can use:
+
+```toml
+magellanx-core = { module = "com.ryanmoelter.magellanx:magellanx-core", version.ref = "magellanx" }
+```
+
+> Note: `magellanx-core` is included in and exposed by `magellanx-compose`, and `magellan-test` only
+> applies to `magellanx-compose`.
+
+And don't forget to use them in your `dependencies` block:
+
+```kotlin
+dependencies {
+  implementation(libs.magellan.compose)
+  testImplementation(libs.magellan.test)
+  // Alternatively:
+  // implementation(libs.magellan.core)
+
+  // ...
+}
+```
+
+</details>
+
+<details>
+  <summary>dependencies block</summary>
+
+If you don't want to use version catalogs, you can add the dependencies you need in your
+`dependencies` block:
 
 [![Latest release on Jitpack](https://jitpack.io/v/com.ryanmoelter/magellanx.svg)](https://jitpack.io/#com.ryanmoelter/magellanx)
 
 ```kotlin
-val magellanxVersion = "0.2.0"
+val magellanxVersion = "0.3.0"
 implementation("com.ryanmoelter.magellanx:magellanx-compose:${magellanxVersion}")
 testImplementation("com.ryanmoelter.magellanx:magellanx-test:${magellanxVersion}")
 ```
@@ -40,46 +88,28 @@ testImplementation("com.ryanmoelter.magellanx:magellanx-test:${magellanxVersion}
 Alternatively, if you only want the core library without the Compose implementation, you can use:
 
 ```kotlin
-implementation("com.github.ryanmoelter.magellanx:magellanx-core:0.2.0")
+implementation("com.github.ryanmoelter.magellanx:magellanx-core:0.3.0")
 ```
 
 > Note: `magellanx-core` is included in and exposed by `magellanx-compose`, and `magellan-test` only
 > applies to `magellanx-compose`.
 
-<details>
-  <summary>Dependency versions</summary>
-
-  ### Dependency versions
-
-  Magellan X uses the following dependencies, and since `0.2.0` is using
-  [the compose bill of materials (BOM)](https://developer.android.com/jetpack/compose/setup#using-the-bom).
-
-  | Magellan X version | Kotlin version | Compose compiler version | Compose BOM | Compatible compose versions |
-|--------------------|----------------|--------------------------|-------------|-----------------------------|
-| 0.2.0              | 1.7.20         | 1.3.2                    | 2022.11.00  | 1.3.*                       |
-| 0.1.2              | 1.6.10         | -                        | -           | 1.2.0-alpha05               |
-
 </details>
 
 <details>
-  <summary>Version catalogs</summary>
+  <summary>Dependency versions</summary>
 
-  ### Version catalogs
+### Dependency versions
 
-  To use in [gradle's version catalogs](https://docs.gradle.org/current/userguide/platforms.html),
-  add the following to your `libs.versions.toml`:
+Magellan X uses the following dependencies, and since `0.3.0` is using
+[the compose bill of materials (BOM)](https://developer.android.com/jetpack/compose/setup#using-the-bom).
 
-  ```toml
-  [versions]
-  magellanx = "0.2.0"
-  # ...
+| Magellan X version | Kotlin version | Compose compiler version | Compose BOM | Compatible compose versions |
+|--------------------|----------------|--------------------------|-------------|-----------------------------|
+| 0.3.0              | 1.9.21         | 1.5.7                    | 2023.10.01  | 1.5.4                       |
+| 0.2.0              | 1.7.20         | 1.3.2                    | 2022.11.00  | 1.3.*                       |
+| 0.1.2              | 1.6.10         | -                        | -           | 1.2.0-alpha05               |
 
-  [libraries]
-  magellanx-compose = { module = "com.ryanmoelter.magellanx:magellanx-compose", version.ref = "magellanx" }
-  magellanx-test = { module = "com.ryanmoelter.magellanx:magellanx-test", version.ref = "magellanx" }
-  # Alternatively:
-  # magellanx-core = { module = "com.ryanmoelter.magellanx:magellanx-core", version.ref = "magellanx" }
-  ```
 </details>
 
 ## Learning
