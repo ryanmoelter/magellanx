@@ -14,7 +14,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations.openMocks
 
 internal class LifecycleRegistryTest {
-
   private val lifecycleRegistry = LifecycleRegistry()
 
   private lateinit var dummyLifecycleComponent1: DummyLifecycleComponent
@@ -204,6 +203,5 @@ internal class LifecycleRegistryTest {
 private class DummyLifecycleComponent(
   val backPressedAction: () -> Boolean = { true },
 ) : LifecycleAwareComponent() {
-
   override fun onBackPressed(): Boolean = backPressedAction()
 }

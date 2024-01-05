@@ -11,26 +11,27 @@ import com.android.tools.lint.detector.api.Severity.ERROR
 import org.jetbrains.uast.UField
 import org.jetbrains.uast.util.isConstructorCall
 
-internal val ENFORCE_LIFECYCLE_AWARE_ATTACHMENT = Issue.create(
-  id = EnforceLifecycleAwareAttachment::class.simpleName!!,
-  briefDescription = "Lifecycle aware objects should be instantiated inside a lifecycle " +
-    "delegate. Eg. val someObject by lifecycle(SomeObject())",
-  explanation = "All lifecycle aware objects need to be attached to a parent for listening to " +
-    "lifecycle.",
-  category = Category.CORRECTNESS,
-  priority = PRIORITY_HIGH,
-  severity = ERROR,
-  implementation = Implementation(EnforceLifecycleAwareAttachment::class.java, JAVA_FILE_SCOPE),
-)
+internal val ENFORCE_LIFECYCLE_AWARE_ATTACHMENT =
+  Issue.create(
+    id = EnforceLifecycleAwareAttachment::class.simpleName!!,
+    briefDescription =
+      "Lifecycle aware objects should be instantiated inside a lifecycle " +
+        "delegate. Eg. val someObject by lifecycle(SomeObject())",
+    explanation =
+      "All lifecycle aware objects need to be attached to a parent for listening to " +
+        "lifecycle.",
+    category = Category.CORRECTNESS,
+    priority = PRIORITY_HIGH,
+    severity = ERROR,
+    implementation = Implementation(EnforceLifecycleAwareAttachment::class.java, JAVA_FILE_SCOPE),
+  )
 
 internal class EnforceLifecycleAwareAttachment : Detector(), Detector.UastScanner {
-
   override fun getApplicableUastTypes() = listOf(UField::class.java)
 
   override fun createUastHandler(context: JavaContext) = LifecycleAwareChecker(context)
 
   class LifecycleAwareChecker(private val context: JavaContext) : UElementHandler() {
-
     override fun visitField(node: UField) {
       if (context.isKotlin() && node.isLifecycleAware() && node.isConstructor()) {
         context.report(

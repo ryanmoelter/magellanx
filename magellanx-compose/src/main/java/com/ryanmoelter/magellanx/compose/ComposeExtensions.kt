@@ -29,15 +29,16 @@ public fun Displayable(
 
 @Composable
 public fun LifecycleOwner.WhenShown(Content: @Composable () -> Unit) {
-  val isShownFlow = remember {
-    currentStateFlow
-      .map { lifecycleState ->
-        when (lifecycleState) {
-          Destroyed, Created -> false
-          Shown, Resumed -> true
+  val isShownFlow =
+    remember {
+      currentStateFlow
+        .map { lifecycleState ->
+          when (lifecycleState) {
+            Destroyed, Created -> false
+            Shown, Resumed -> true
+          }
         }
-      }
-  }
+    }
   val isShown by isShownFlow.collectAsState(false)
   if (isShown) {
     Content()

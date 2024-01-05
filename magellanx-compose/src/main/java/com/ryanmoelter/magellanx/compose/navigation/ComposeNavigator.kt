@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.map
 
 public open class ComposeNavigator :
   LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
-
   /**
    * The backstack. The last item in each list is the top of the stack.
    */
@@ -107,10 +106,11 @@ public open class ComposeNavigator :
     overrideTransitionSpec: MagellanComposeTransition? = null,
   ) {
     navigate(FORWARD) { backStack ->
-      backStack + ComposeNavigationEvent(
-        navigable = navigable,
-        transitionSpec = overrideTransitionSpec ?: defaultTransition,
-      )
+      backStack +
+        ComposeNavigationEvent(
+          navigable = navigable,
+          transitionSpec = overrideTransitionSpec ?: defaultTransition,
+        )
     }
   }
 
@@ -119,10 +119,11 @@ public open class ComposeNavigator :
     overrideTransitionSpec: MagellanComposeTransition? = null,
   ) {
     navigate(FORWARD) { backStack ->
-      backStack - backStack.last() + ComposeNavigationEvent(
-        navigable = navigable,
-        transitionSpec = overrideTransitionSpec ?: defaultTransition,
-      )
+      backStack - backStack.last() +
+        ComposeNavigationEvent(
+          navigable = navigable,
+          transitionSpec = overrideTransitionSpec ?: defaultTransition,
+        )
     }
   }
 
@@ -164,10 +165,11 @@ public open class ComposeNavigator :
     val newBackStack = backStackOperation(backStack)
     val toNavigable = newBackStack.last().navigable
     directionFlow.value = direction
-    transitionFlow.value = when (direction) {
-      FORWARD -> newBackStack.last().transitionSpec
-      BACKWARD -> oldBackStack.last().transitionSpec
-    }
+    transitionFlow.value =
+      when (direction) {
+        FORWARD -> newBackStack.last().transitionSpec
+        BACKWARD -> oldBackStack.last().transitionSpec
+      }
     findBackstackChangesAndUpdateStates(
       oldBackStack = oldBackStack.map { it.navigable },
       newBackStack = newBackStack.map { it.navigable },

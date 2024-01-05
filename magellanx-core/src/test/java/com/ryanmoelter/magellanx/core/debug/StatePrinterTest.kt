@@ -9,7 +9,6 @@ import org.junit.Test
 import org.mockito.MockitoAnnotations.openMocks
 
 public class StatePrinterTest {
-
   private lateinit var root: LifecycleAwareComponent
   private lateinit var mockSession: AutoCloseable
 
@@ -36,7 +35,7 @@ public class StatePrinterTest {
     root.getLifecycleStateSnapshot() shouldBe """
       DummyLifecycleOwner (Destroyed)
       └ MyStep (Destroyed)
-    """.trimIndent() + '\n'
+      """.trimIndent() + '\n'
   }
 
   @Test
@@ -75,7 +74,11 @@ public class StatePrinterTest {
 }
 
 private class DummyLifecycleOwner : LifecycleAwareComponent()
+
 private class MyJourney : LifecycleAwareComponent()
+
 private class MyStep : LifecycleAwareComponent()
+
 private class MySection : LifecycleAwareComponent()
+
 private class MyLifecycleAwareThing : LifecycleAware

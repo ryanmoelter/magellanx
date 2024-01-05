@@ -10,7 +10,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
 public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
-
   private lateinit var lifecycleView: CreateAndAttachFieldToLifecycleWhenShownDelegate<FrameLayout>
 
   @Mock

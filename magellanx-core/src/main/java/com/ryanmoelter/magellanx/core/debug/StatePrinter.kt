@@ -36,11 +36,13 @@ private fun LifecycleAware.getLifecycleStateSnapshotRecursive(
     stringBuilder.append(describeSelf(indent + lineChar + INDENT_SPACE))
     children
       .mapIndexed { index, lifecycleAware ->
-        val childIndent = indent + if (isLastChild) {
-          " $INDENT_SPACE"
-        } else {
-          "$VERTICAL_LINE$INDENT_SPACE"
-        }
+        val childIndent =
+          indent +
+            if (isLastChild) {
+              " $INDENT_SPACE"
+            } else {
+              "$VERTICAL_LINE$INDENT_SPACE"
+            }
         lifecycleAware.getLifecycleStateSnapshotRecursive(
           childIndent,
           index == children.lastIndex,
@@ -61,5 +63,4 @@ private fun LifecycleOwner.describeSelf(indent: String): String =
 private fun LifecycleAware.describeSelf(
   indent: String,
   parentLifecycleState: LifecycleState,
-): String =
-  "$indent${this::class.java.simpleName} (${parentLifecycleState.name}?)\n"
+): String = "$indent${this::class.java.simpleName} (${parentLifecycleState.name}?)\n"

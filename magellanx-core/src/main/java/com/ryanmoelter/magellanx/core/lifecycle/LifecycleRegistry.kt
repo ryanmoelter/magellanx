@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
-
   internal val listeners: Set<LifecycleAware>
     get() = listenersToMaxStates.keys
   private var listenersToMaxStates: Map<LifecycleAware, LifecycleLimit> = linkedMapOf()
@@ -36,7 +35,10 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
       _currentStateFlow.value = newState
     }
 
-  override fun attachToLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
+  override fun attachToLifecycle(
+    lifecycleAware: LifecycleAware,
+    detachedState: LifecycleState,
+  ) {
     attachToLifecycleWithMaxState(lifecycleAware, NO_LIMIT, detachedState)
   }
 
@@ -70,7 +72,10 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     lifecycleAware.transition(currentState.limitBy(maxState), detachedState)
   }
 
-  public fun updateMaxState(lifecycleAware: LifecycleAware, maxState: LifecycleLimit) {
+  public fun updateMaxState(
+    lifecycleAware: LifecycleAware,
+    maxState: LifecycleLimit,
+  ) {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalArgumentException(
         "Cannot update the state of a lifecycleAware that is not a child: " +
@@ -126,7 +131,10 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
 }
 
 public enum class LifecycleLimit(internal val order: Int) {
-  DESTROYED(0), CREATED(1), SHOWN(2), NO_LIMIT(3)
+  DESTROYED(0),
+  CREATED(1),
+  SHOWN(2),
+  NO_LIMIT(3),
 }
 
 private fun LifecycleState.isWithinLimit(limit: LifecycleLimit): Boolean = order <= limit.order
@@ -138,9 +146,10 @@ private fun LifecycleState.limitBy(limit: LifecycleLimit): LifecycleState =
     limit.getMaxLifecycleState()
   }
 
-private fun LifecycleLimit.getMaxLifecycleState(): LifecycleState = when (this) {
-  DESTROYED -> LifecycleState.Destroyed
-  CREATED -> LifecycleState.Created
-  SHOWN -> LifecycleState.Shown
-  NO_LIMIT -> LifecycleState.Resumed
-}
+private fun LifecycleLimit.getMaxLifecycleState(): LifecycleState =
+  when (this) {
+    DESTROYED -> LifecycleState.Destroyed
+    CREATED -> LifecycleState.Created
+    SHOWN -> LifecycleState.Shown
+    NO_LIMIT -> LifecycleState.Resumed
+  }

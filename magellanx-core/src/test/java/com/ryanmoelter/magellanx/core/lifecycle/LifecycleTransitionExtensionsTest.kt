@@ -15,7 +15,6 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations.openMocks
 
 internal class LifecycleTransitionExtensionsTest {
-
   @Mock
   lateinit var lifecycleAware: LifecycleAware
 

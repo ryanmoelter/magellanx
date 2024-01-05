@@ -14,7 +14,6 @@ import org.junit.Test
 import org.mockito.MockitoAnnotations
 
 internal class LifecycleStateTest {
-
   private lateinit var mockSession: AutoCloseable
 
   @Before

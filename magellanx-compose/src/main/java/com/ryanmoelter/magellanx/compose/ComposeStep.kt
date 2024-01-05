@@ -14,7 +14,6 @@ public abstract class ComposeStep : ComposeSection(), Navigable<@Composable () -
 
 public abstract class ComposeSection :
   LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
-
   override val view: (@Composable () -> Unit)?
     get() = {
       WhenShown {
@@ -29,5 +28,6 @@ public abstract class ComposeSection :
     @VisibleForTesting set
 
   @Composable
+  @Suppress("function-naming")
   protected abstract fun Content()
 }

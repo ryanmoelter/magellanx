@@ -6,9 +6,9 @@ import com.android.tools.lint.checks.infrastructure.TestMode
 import org.junit.Test
 
 class EnforceLifecycleAwareAttachmentTest {
-
-  private val LIFECYCLE_AWARE = kt(
-    """
+  private val lifecycleAware =
+    kt(
+      """
     package com.ryanmoelter.magellanx.lifecycle
 
     interface LifecycleAware {
@@ -17,10 +17,11 @@ class EnforceLifecycleAwareAttachmentTest {
     }
 
   """,
-  ).indented()
+    ).indented()
 
-  private val LINEAR_NAVIGATOR = kt(
-    """
+  private val linearNavigator =
+    kt(
+      """
     package com.ryanmoelter.magellanx.navigation
 
     import com.ryanmoelter.magellanx.lifecycle.LifecycleAware
@@ -30,10 +31,11 @@ class EnforceLifecycleAwareAttachmentTest {
       val backStack: List<NavigationEvent> = listOf()
     }
   """,
-  ).indented()
+    ).indented()
 
-  private val LIFECYCLE_OWNER = kt(
-    """
+  private val lifecycleOwner =
+    kt(
+      """
       package com.ryanmoelter.magellanx.lifecycle
 
       interface LifecycleOwner {
@@ -44,9 +46,9 @@ class EnforceLifecycleAwareAttachmentTest {
       }
 
   """,
-  ).indented()
+    ).indented()
 
-  private val LIFECYCLE_FILES = arrayOf(LIFECYCLE_AWARE, LIFECYCLE_OWNER, LINEAR_NAVIGATOR)
+  private val lifecycleFiles = arrayOf(lifecycleAware, lifecycleOwner, linearNavigator)
 
   @Test
   fun testThatInstanceCreationIsDetected() {
@@ -54,7 +56,7 @@ class EnforceLifecycleAwareAttachmentTest {
       .testModes(TestMode.DEFAULT)
       .allowMissingSdk()
       .files(
-        *LIFECYCLE_FILES,
+        *lifecycleFiles,
         kt(
           """
           package com.ryanmoelter.magellanx.app
@@ -89,7 +91,7 @@ class EnforceLifecycleAwareAttachmentTest {
     lint()
       .allowMissingSdk()
       .files(
-        *LIFECYCLE_FILES,
+        *lifecycleFiles,
         kt(
           """
           package com.ryanmoelter.magellanx.app
