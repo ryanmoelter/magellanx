@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.1
+- Fix Jitpack build
+
 ## 0.3.0
 - Update Kotlin to `1.9.21` and the compose compiler to `1.5.7`
 - Update compose BOM to `2023.10.01`
