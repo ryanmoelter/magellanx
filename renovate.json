@@ -4,6 +4,7 @@
     "config:base"
   ],
   "schedule": "every weekend",
+  "timezone": "America/Los_Angeles",
   "labels": [
     "dependencies"
   ],
