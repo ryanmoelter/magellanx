@@ -24,7 +24,7 @@ kotest = "5.8.0"
 testCore = "1.5.0"
 lint = "31.2.1"
 
-kotlinter = "4.1.1"
+kotlinter = "4.2.0"
 
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
