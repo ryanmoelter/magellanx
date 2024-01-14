@@ -118,16 +118,6 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
   override fun destroy() {
     currentState = LifecycleState.Destroyed
   }
-
-  override fun backPressed(): Boolean = onAllActiveListenersUntilTrue { it.backPressed() }
-
-  private fun onAllActiveListenersUntilTrue(action: (LifecycleAware) -> Boolean): Boolean =
-    listenersToMaxStates
-      .asSequence()
-      .filter { it.value >= SHOWN }
-      .map { it.key }
-      .map(action)
-      .any { it }
 }
 
 public enum class LifecycleLimit(internal val order: Int) {

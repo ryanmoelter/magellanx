@@ -24,6 +24,14 @@ public fun Displayable<@Composable () -> Unit>.Content(modifier: Modifier = Modi
 
 @Composable
 @Suppress("ktlint:standard:function-naming")
+public fun <Arg> Displayable<@Composable (Arg) -> Unit>.Content(arg: Arg, modifier: Modifier = Modifier) {
+  Box(modifier = modifier) {
+    view!!(arg)
+  }
+}
+
+@Composable
+@Suppress("ktlint:standard:function-naming")
 public fun Displayable(
   displayable: Displayable<@Composable () -> Unit>,
   modifier: Modifier = Modifier,

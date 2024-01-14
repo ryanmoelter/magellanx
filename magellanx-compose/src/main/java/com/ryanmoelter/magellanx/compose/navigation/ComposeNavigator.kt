@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ryanmoelter.magellanx.compose.Content
 import com.ryanmoelter.magellanx.compose.WhenShown
+import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.AT_ROOT
+import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.BACK_AVAILABLE
 import com.ryanmoelter.magellanx.compose.navigation.Direction.BACKWARD
 import com.ryanmoelter.magellanx.compose.navigation.Direction.FORWARD
 import com.ryanmoelter.magellanx.compose.transitions.MagellanComposeTransition
@@ -22,11 +24,17 @@ import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit
+import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
-public open class ComposeNavigator :
-  LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
+public open class ComposeNavigator(
+  private val onNavigatedBackwards: () -> Unit = { }
+) : LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
+
+  private val backHandler by attachFieldToLifecycle(ComposePredictiveBackHandler(::goBack))
+
   /**
    * The backstack. The last item in each list is the top of the stack.
    */
@@ -37,6 +45,8 @@ public open class ComposeNavigator :
    */
   public open val backStack: List<ComposeNavigationEvent>
     get() = backStackFlow.value
+  public open val backStackStatusFlow: Flow<BackstackStatus> = backStackFlow
+    .map { if (it.size <= 1) AT_ROOT else BACK_AVAILABLE }
 
   /**
    * Get a snapshot of the current navigable, i.e. the last item of the current [backStack].
@@ -65,6 +75,9 @@ public open class ComposeNavigator :
     val currentNavigable by currentNavigableFlow.collectAsState(null)
     val currentTransitionSpec by transitionFlow.collectAsState()
     val currentDirection by directionFlow.collectAsState()
+    val backstackStatus by backStackStatusFlow.collectAsState(initial = AT_ROOT)
+
+    backHandler.Content(backstackStatus)
 
     AnimatedContent(
       targetState = currentNavigable,
@@ -128,14 +141,12 @@ public open class ComposeNavigator :
     }
   }
 
-  public open fun goBack(): Boolean {
-    return if (!atRoot()) {
-      navigate(BACKWARD) { backStack ->
-        backStack - backStack.last()
-      }
-      true
+  public open fun goBack() {
+    if (!atRoot()) {
+      navigate(BACKWARD) { backStack -> backStack - backStack.last() }
+      onNavigatedBackwards()
     } else {
-      false
+      throw IllegalStateException("goBack() shouldn't be called with an empty backstack")
     }
   }
 
@@ -203,8 +214,6 @@ public open class ComposeNavigator :
       lifecycleRegistry.attachToLifecycleWithMaxState(newNavigable, LifecycleLimit.CREATED)
     }
   }
-
-  override fun onBackPressed(): Boolean = currentNavigable?.backPressed() ?: false || goBack()
 
   public open fun atRoot(): Boolean = backStack.size <= 1
 }
