@@ -3,7 +3,6 @@ package com.ryanmoelter.magellanx.core.lifecycle
 import kotlinx.coroutines.flow.StateFlow
 
 public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
-
   protected val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry()
 
   override val children: List<LifecycleAware>
@@ -90,11 +89,17 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     removeFromLifecycle(lifecycleAware, LifecycleState.Destroyed)
   }
 
-  override fun attachToLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
+  override fun attachToLifecycle(
+    lifecycleAware: LifecycleAware,
+    detachedState: LifecycleState,
+  ) {
     lifecycleRegistry.attachToLifecycle(lifecycleAware, detachedState)
   }
 
-  override fun removeFromLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
+  override fun removeFromLifecycle(
+    lifecycleAware: LifecycleAware,
+    detachedState: LifecycleState,
+  ) {
     lifecycleRegistry.removeFromLifecycle(lifecycleAware, detachedState)
   }
 

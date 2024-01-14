@@ -21,7 +21,6 @@ public class ActivityLifecycleComposeAdapter(
   private val navigable: Navigable<@Composable () -> Unit>,
   private val context: Activity,
 ) : DefaultLifecycleObserver {
-
   override fun onStart(owner: ActivityLifecycleOwner) {
     navigable.show()
   }

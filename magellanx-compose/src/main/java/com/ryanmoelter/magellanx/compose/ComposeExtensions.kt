@@ -15,6 +15,7 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Shown
 import kotlinx.coroutines.flow.map
 
 @Composable
+@Suppress("ktlint:standard:function-naming")
 public fun Displayable<@Composable () -> Unit>.Content(modifier: Modifier = Modifier) {
   Box(modifier = modifier) {
     view!!()
@@ -22,22 +23,25 @@ public fun Displayable<@Composable () -> Unit>.Content(modifier: Modifier = Modi
 }
 
 @Composable
+@Suppress("ktlint:standard:function-naming")
 public fun Displayable(
   displayable: Displayable<@Composable () -> Unit>,
   modifier: Modifier = Modifier,
 ): Unit = displayable.Content(modifier)
 
 @Composable
+@Suppress("ktlint:standard:function-naming")
 public fun LifecycleOwner.WhenShown(Content: @Composable () -> Unit) {
-  val isShownFlow = remember {
-    currentStateFlow
-      .map { lifecycleState ->
-        when (lifecycleState) {
-          Destroyed, Created -> false
-          Shown, Resumed -> true
+  val isShownFlow =
+    remember {
+      currentStateFlow
+        .map { lifecycleState ->
+          when (lifecycleState) {
+            Destroyed, Created -> false
+            Shown, Resumed -> true
+          }
         }
-      }
-  }
+    }
   val isShown by isShownFlow.collectAsState(false)
   if (isShown) {
     Content()

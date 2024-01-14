@@ -19,7 +19,6 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class, InternalCoroutinesApi::class)
 internal class CreatedLifecycleScopeTest {
-
   private lateinit var createdScope: CreatedLifecycleScope
 
   @Before

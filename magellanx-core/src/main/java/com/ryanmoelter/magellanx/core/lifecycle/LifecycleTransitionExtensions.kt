@@ -14,20 +14,27 @@ public fun <T> T.transitionToState(
   transition(this.currentState, newState)
 }
 
-public fun LifecycleAware.transition(oldState: LifecycleState, newState: LifecycleState) {
+public fun LifecycleAware.transition(
+  oldState: LifecycleState,
+  newState: LifecycleState,
+) {
   listOf(this).transition(oldState, newState)
 }
 
-public fun Iterable<LifecycleAware>.transition(oldState: LifecycleState, newState: LifecycleState) {
+public fun Iterable<LifecycleAware>.transition(
+  oldState: LifecycleState,
+  newState: LifecycleState,
+) {
   var currentState = oldState
   while (currentState.order != newState.order) {
-    currentState = when (currentState.getDirectionForMovement(newState)) {
-      FORWARD -> next(this, currentState)
-      BACKWARDS -> previous(this, currentState)
-      NO_MOVEMENT -> throw IllegalStateException(
-        "Attempting to transition from $currentState to $newState",
-      )
-    }
+    currentState =
+      when (currentState.getDirectionForMovement(newState)) {
+        FORWARD -> next(this, currentState)
+        BACKWARDS -> previous(this, currentState)
+        NO_MOVEMENT -> throw IllegalStateException(
+          "Attempting to transition from $currentState to $newState",
+        )
+      }
   }
 }
 

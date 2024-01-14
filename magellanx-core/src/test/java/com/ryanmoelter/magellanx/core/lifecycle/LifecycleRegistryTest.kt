@@ -7,46 +7,29 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations.openMocks
 
 internal class LifecycleRegistryTest {
-
   private val lifecycleRegistry = LifecycleRegistry()
 
   private lateinit var dummyLifecycleComponent1: DummyLifecycleComponent
   private lateinit var dummyLifecycleComponent2: DummyLifecycleComponent
-
-  @Mock
-  lateinit var lifecycleAware1: LifecycleAware
-
-  @Mock
-  lateinit var lifecycleAware2: LifecycleAware
-
-  @Mock
-  lateinit var lifecycleAware3: LifecycleAware
-
-  @Mock
-  lateinit var lifecycleAware4: LifecycleAware
-
-  @Mock
-  lateinit var lifecycleAware5: LifecycleAware
-
-  private lateinit var mockSession: AutoCloseable
+  private lateinit var lifecycleAware1: LifecycleAware
+  private lateinit var lifecycleAware2: LifecycleAware
+  private lateinit var lifecycleAware3: LifecycleAware
+  private lateinit var lifecycleAware4: LifecycleAware
+  private lateinit var lifecycleAware5: LifecycleAware
 
   @Before
   fun setUp() {
-    mockSession = openMocks(this)
     dummyLifecycleComponent1 = DummyLifecycleComponent()
     dummyLifecycleComponent2 = DummyLifecycleComponent()
-  }
-
-  @After
-  fun tearDown() {
-    mockSession.close()
+    lifecycleAware1 = DummyLifecycleAware()
+    lifecycleAware2 = DummyLifecycleAware()
+    lifecycleAware3 = DummyLifecycleAware()
+    lifecycleAware4 = DummyLifecycleAware()
+    lifecycleAware5 = DummyLifecycleAware()
   }
 
   @Test(expected = IllegalStateException::class)
@@ -204,6 +187,7 @@ internal class LifecycleRegistryTest {
 private class DummyLifecycleComponent(
   val backPressedAction: () -> Boolean = { true },
 ) : LifecycleAwareComponent() {
-
   override fun onBackPressed(): Boolean = backPressedAction()
 }
+
+private class DummyLifecycleAware : LifecycleAware

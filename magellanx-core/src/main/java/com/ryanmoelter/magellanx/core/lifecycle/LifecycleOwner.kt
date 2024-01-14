@@ -3,7 +3,6 @@ package com.ryanmoelter.magellanx.core.lifecycle
 import kotlinx.coroutines.flow.StateFlow
 
 public interface LifecycleOwner {
-
   public val currentStateFlow: StateFlow<LifecycleState>
 
   public val currentState: LifecycleState

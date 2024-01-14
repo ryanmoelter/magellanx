@@ -4,6 +4,7 @@
     "config:base"
   ],
   "schedule": "every weekend",
+  "timezone": "America/Los_Angeles",
   "labels": [
     "dependencies"
   ],
@@ -18,11 +19,17 @@
         "pin",
         "digest"
       ],
+      "excludePackageNames": [
+        "org.jetbrains.kotlin:kotlin-gradle-plugin"
+      ],
       "automerge": true
     },
     {
       "matchUpdateTypes": [
         "patch"
+      ],
+      "excludePackageNames": [
+        "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
       "groupName": "Patch dependency updates",
       "automerge": true

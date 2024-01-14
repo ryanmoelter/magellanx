@@ -4,7 +4,6 @@ import com.ryanmoelter.magellanx.core.init.Magellan.disableAnimations
 import com.ryanmoelter.magellanx.core.init.Magellan.logDebugInfo
 
 public object Magellan {
-
   internal var logDebugInfo: Boolean = false
   internal var disableAnimations: Boolean = false
 

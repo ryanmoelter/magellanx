@@ -71,7 +71,6 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.kotest.assertions.core)
-  testImplementation(libs.mockito)
 }
 
 publishing {

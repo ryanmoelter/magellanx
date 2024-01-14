@@ -13,7 +13,6 @@ import com.ryanmoelter.magellanx.core.navigation.LinearNavigator
  * re-instantiated, [destroy]ed, or [clear]ed between tests.
  */
 public class FakeComposeNavigator : ComposeNavigator() {
-
   public override var backStack: List<ComposeNavigationEvent> = emptyList()
 
   /**
