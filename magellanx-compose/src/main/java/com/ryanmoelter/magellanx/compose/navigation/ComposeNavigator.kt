@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 public open class ComposeNavigator(
-  private val onNavigatedBackwards: () -> Unit = { }
+  private val interceptBack: (performBack: () -> Unit) -> Unit = { }
 ) : LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
 
   private val backHandler by attachFieldToLifecycle(ComposePredictiveBackHandler(::goBack))
@@ -143,8 +143,9 @@ public open class ComposeNavigator(
 
   public open fun goBack() {
     if (!atRoot()) {
-      navigate(BACKWARD) { backStack -> backStack - backStack.last() }
-      onNavigatedBackwards()
+      interceptBack {
+        navigate(BACKWARD) { backStack -> backStack - backStack.last() }
+      }
     } else {
       throw IllegalStateException("goBack() shouldn't be called with an empty backstack")
     }
