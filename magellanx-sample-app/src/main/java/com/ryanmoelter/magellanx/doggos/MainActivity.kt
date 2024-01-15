@@ -15,10 +15,4 @@ class MainActivity : ComponentActivity() {
 
     setContentNavigable(rootJourney)
   }
-
-  override fun onBackPressed() {
-    if (!rootJourney.backPressed()) {
-      super.onBackPressed()
-    }
-  }
 }

@@ -70,10 +70,9 @@ class RatingGameJourney : ComposeJourney() {
     }
   }
 
-  override fun onBackPressed(): Boolean = super.onBackPressed().also { backHandled ->
-    if (backHandled) {
-      doggoRatings = doggoRatings.dropLast(1)
-    }
+  override fun interceptBack(performBack: () -> Unit) {
+    performBack()
+    doggoRatings = doggoRatings.dropLast(1)
   }
 }
 
