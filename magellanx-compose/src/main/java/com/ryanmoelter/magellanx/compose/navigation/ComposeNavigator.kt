@@ -2,15 +2,19 @@
 
 package com.ryanmoelter.magellanx.compose.navigation
 
+import androidx.activity.BackEventCompat
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import com.ryanmoelter.magellanx.compose.Content
 import com.ryanmoelter.magellanx.compose.WhenShown
 import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.AT_ROOT
@@ -30,10 +34,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 public open class ComposeNavigator(
-  private val interceptBack: (performBack: () -> Unit) -> Unit = { }
+  private val interceptBack: (performBack: () -> Unit) -> Unit = { },
+  private val interceptBackGestureAnimation: () -> Boolean = { false }
 ) : LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
 
-  private val backHandler by attachFieldToLifecycle(ComposePredictiveBackHandler(::goBack))
+  private val backHandler by attachFieldToLifecycle(ComposePredictiveBackHandler(::handlePredictiveBack))
 
   /**
    * The backstack. The last item in each list is the top of the stack.
@@ -56,11 +61,20 @@ public open class ComposeNavigator(
 
   private val currentNavigationEventFlow = backStackFlow.map { it.lastOrNull() }
   private val currentNavigableFlow = currentNavigationEventFlow.map { it?.navigable }
+  private val lastNavigableFlow = backStackFlow.map { stack ->
+    if (stack.size > 1) {
+      stack[stack.lastIndex - 1].navigable
+    } else {
+      null
+    }
+  }
 
   // TODO: make default transition configurable
   private val transitionFlow: MutableStateFlow<MagellanComposeTransition> =
     MutableStateFlow(defaultTransition)
   private val directionFlow: MutableStateFlow<Direction> = MutableStateFlow(FORWARD)
+
+  private val backSwipeProgressFlow = MutableStateFlow(0f)
 
   override val view: (@Composable () -> Unit)
     get() = {
@@ -73,9 +87,11 @@ public open class ComposeNavigator(
   @Suppress("ktlint:standard:function-naming")
   private fun Content() {
     val currentNavigable by currentNavigableFlow.collectAsState(null)
+    val lastNavigable by lastNavigableFlow.collectAsState(null)
     val currentTransitionSpec by transitionFlow.collectAsState()
     val currentDirection by directionFlow.collectAsState()
     val backstackStatus by backStackStatusFlow.collectAsState(initial = AT_ROOT)
+    val backSwipeProgress by backSwipeProgressFlow.collectAsState()
 
     backHandler.Content(backstackStatus)
 
@@ -103,7 +119,37 @@ public open class ComposeNavigator(
         },
       )
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        navigable?.Content()
+        val shouldShowPrevious by remember {
+          derivedStateOf { backSwipeProgress != 0f }
+        }
+        if (shouldShowPrevious) {
+          DisposableEffect(key1 = lastNavigable, key2 = shouldShowPrevious) {
+            val previous = lastNavigable
+            if (previous != null) {
+              lifecycleRegistry.updateMaxState(previous, LifecycleLimit.SHOWN)
+              onDispose {
+                if (children.contains(previous)) {
+                  if (backStack.map { it.navigable }.contains(previous)) {
+                    lifecycleRegistry.updateMaxState(previous, LifecycleLimit.CREATED)
+                  } else {
+                    removeFromLifecycle(previous)
+                  }
+                }
+              }
+            } else {
+              onDispose { }
+            }
+          }
+          lastNavigable?.Content()
+        }
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .scale(1f - backSwipeProgress),
+          contentAlignment = Alignment.Center
+        ) {
+          navigable?.Content()
+        }
       }
     }
   }
@@ -141,11 +187,27 @@ public open class ComposeNavigator(
     }
   }
 
+  private suspend fun handlePredictiveBack(backEventFlow: Flow<BackEventCompat>) {
+    require(backStack.size > 1) { "Backstack is too small for predictive back gesture" }
+    // TODO: handle case where backstack is changed during the predictive back animation
+    // TODO provide an intercept opportunity before the animation starts; tie to other intercept method?
+    if (interceptBackGestureAnimation()) {
+      backEventFlow.collect { /* Avoid animating, do nothing */ }
+    } else {
+      backEventFlow.collect { backEvent ->
+        backSwipeProgressFlow.value = backEvent.progress
+        // TODO: update Content() to handle backSwipeProgress
+      }
+    }
+    goBack()
+  }
+
   public open fun goBack() {
     if (!atRoot()) {
       interceptBack {
         navigate(BACKWARD) { backStack -> backStack - backStack.last() }
       }
+      backSwipeProgressFlow.value = 0f
     } else {
       throw IllegalStateException("goBack() shouldn't be called with an empty backstack")
     }
