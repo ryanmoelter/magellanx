@@ -17,7 +17,8 @@
       "matchPackageNames": [
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
-        "androidx.compose.compiler:compiler"
+        "androidx.compose.compiler:compiler",
+        "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
       "groupName": "Kotlin and dependencies",
       "automerge": false
@@ -31,7 +32,9 @@
       "excludePackageNames": [
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
-        "androidx.compose.compiler:compiler"
+        "androidx.compose.compiler:compiler",
+        "org.jetbrains.kotlin:kotlin-gradle-plugin",
+        "com.android.tools.build:gradle"
       ],
       "automerge": true
     },
@@ -42,7 +45,9 @@
       "excludePackageNames": [
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
-        "androidx.compose.compiler:compiler"
+        "androidx.compose.compiler:compiler",
+        "org.jetbrains.kotlin:kotlin-gradle-plugin",
+        "com.android.tools.build:gradle"
       ],
       "groupName": "Patch dependency updates",
       "automerge": true
