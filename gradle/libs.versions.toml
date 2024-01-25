@@ -1,11 +1,11 @@
 [versions]
 android-gradle = "8.2.1"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 coroutines = "1.7.3"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.01.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-compose-compiler = "1.5.7"
+compose-compiler = "1.5.8"
 compileSdk = "34"
 minSdk = "23"
 
