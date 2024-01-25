@@ -1,9 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "schedule": "every weekend",
+  "schedule": "after 10pm and before 8am every weekday",
   "timezone": "America/Los_Angeles",
   "labels": [
     "dependencies"
@@ -14,13 +14,24 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
+      "matchPackageNames": [
+        "org.jetbrains.kotlin.android",
+        "com.google.devtools.ksp",
+        "androidx.compose.compiler:compiler"
+      ],
+      "groupName": "Kotlin and dependencies",
+      "automerge": false
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "pin",
         "digest"
       ],
       "excludePackageNames": [
-        "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        "org.jetbrains.kotlin.android",
+        "com.google.devtools.ksp",
+        "androidx.compose.compiler:compiler"
       ],
       "automerge": true
     },
@@ -29,7 +40,9 @@
         "patch"
       ],
       "excludePackageNames": [
-        "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        "org.jetbrains.kotlin.android",
+        "com.google.devtools.ksp",
+        "androidx.compose.compiler:compiler"
       ],
       "groupName": "Patch dependency updates",
       "automerge": true
