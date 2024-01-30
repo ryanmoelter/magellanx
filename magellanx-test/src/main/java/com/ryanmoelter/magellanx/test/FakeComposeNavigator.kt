@@ -1,6 +1,5 @@
 package com.ryanmoelter.magellanx.test
 
-import androidx.compose.runtime.Composable
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigationEvent
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigator
 import com.ryanmoelter.magellanx.compose.navigation.Direction
