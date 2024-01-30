@@ -22,6 +22,7 @@ import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
@@ -41,11 +42,12 @@ public open class ComposeNavigator :
   /**
    * Get a snapshot of the current navigable, i.e. the last item of the current [backStack].
    */
-  private val currentNavigable
+  public val currentNavigable: Navigable<@Composable () -> Unit>?
     get() = backStack.lastOrNull()?.navigable
 
   private val currentNavigationEventFlow = backStackFlow.map { it.lastOrNull() }
-  private val currentNavigableFlow = currentNavigationEventFlow.map { it?.navigable }
+  public val currentNavigableFlow: Flow<Navigable<@Composable () -> Unit>?> =
+    currentNavigationEventFlow.map { it?.navigable }
 
   // TODO: make default transition configurable
   private val transitionFlow: MutableStateFlow<MagellanComposeTransition> =
