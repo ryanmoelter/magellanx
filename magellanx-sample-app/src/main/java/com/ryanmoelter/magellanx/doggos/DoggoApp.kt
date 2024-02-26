@@ -4,10 +4,9 @@ import android.app.Application
 import org.jetbrains.annotations.VisibleForTesting
 
 class DoggoApp : Application() {
-
   override fun onCreate() {
     super.onCreate()
-    injector = DoggoComponent::class.create(this)
+    injector = RealDoggoComponent::class.create()
   }
 }
 
