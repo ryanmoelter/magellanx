@@ -21,7 +21,11 @@ interface DoggoComponent {
   val rootJourney: RootJourney
   val doggoApi: DoggoApi
   val randomDoggoImageUrlGetter: RandomDoggoImageUrlGetter
+}
 
+@Component
+@Singleton
+abstract class RealDoggoComponent : DoggoComponent {
   val retrofit: Retrofit
     @Provides @Singleton
     get() =
@@ -36,8 +40,7 @@ interface DoggoComponent {
 
 @Component
 @Singleton
-abstract class RealDoggoComponent : DoggoComponent
-
-@Component
-@Singleton
-abstract class FakeDoggoComponent : DoggoComponent
+abstract class FakeDoggoComponent : DoggoComponent {
+  @Provides
+  fun provideDoggoApi(): DoggoApi = FakeDoggoApi()
+}

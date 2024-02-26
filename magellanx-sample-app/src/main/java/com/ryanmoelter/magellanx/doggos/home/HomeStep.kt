@@ -21,57 +21,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ryanmoelter.magellanx.compose.ComposeStep
-import com.ryanmoelter.magellanx.doggos.ui.theme.DoggoTheme
+import com.ryanmoelter.magellanx.doggos.ui.preview.PreviewNavigable
 
 class HomeStep(
-  val goToRandomDog: () -> Unit,
-  val goToBreedList: () -> Unit,
-  val goToRatingGame: () -> Unit,
+  private val goToRandomDog: () -> Unit,
+  private val goToBreedList: () -> Unit,
+  private val goToRatingGame: () -> Unit,
 ) : ComposeStep() {
-
   @Composable
-  override fun Content() = Home(goToRandomDog, goToBreedList, goToRatingGame)
-}
-
-@Composable
-fun Home(
-  goToRandomDog: () -> Unit,
-  goToBreedList: () -> Unit,
-  goToRatingGame: () -> Unit,
-) {
-  Column {
-    Text(
-      text = "Magellan Doggos",
-      style = MaterialTheme.typography.displayMedium,
-      modifier = Modifier
-        .padding(horizontal = 24.dp, vertical = 12.dp)
-    )
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 12.dp)
-        .height(1.dp)
-        .background(color = MaterialTheme.colorScheme.outline)
-    )
-    ListItem(title = "Show random doggo") { goToRandomDog() }
-    ListItem(title = "Filter by breed list") { goToBreedList() }
-    ListItem(title = "Rate doggos") { goToRatingGame() }
-    Spacer(modifier = Modifier.height(24.dp))
+  override fun Content() {
+    Column {
+      Text(
+        text = "Magellan Doggos",
+        style = MaterialTheme.typography.displayMedium,
+        modifier =
+          Modifier
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+      )
+      Box(
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp)
+            .height(1.dp)
+            .background(color = MaterialTheme.colorScheme.outline),
+      )
+      ListItem(title = "Show random doggo") { goToRandomDog() }
+      ListItem(title = "Filter by breed list") { goToBreedList() }
+      ListItem(title = "Rate doggos") { goToRatingGame() }
+      Spacer(modifier = Modifier.height(24.dp))
+    }
   }
 }
 
 @Composable
 fun ListItem(
   title: String,
-  onClick: () -> Unit
+  onClick: () -> Unit,
 ) {
   Row(
-    modifier = Modifier
-      .clickable { onClick() }
-      .minimumInteractiveComponentSize()
-      .padding(horizontal = 24.dp, vertical = 12.dp)
-      .fillMaxWidth(),
-    verticalAlignment = Alignment.CenterVertically
+    modifier =
+      Modifier
+        .clickable { onClick() }
+        .minimumInteractiveComponentSize()
+        .padding(horizontal = 24.dp, vertical = 12.dp)
+        .fillMaxWidth(),
+    verticalAlignment = Alignment.CenterVertically,
   ) {
     Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
     Icon(
@@ -84,8 +79,7 @@ fun ListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun HomePreview() {
-  DoggoTheme {
-    Home(goToRandomDog = { }, goToBreedList = { }, goToRatingGame = { })
+fun HomePreview() =
+  PreviewNavigable {
+    HomeStep(goToRandomDog = { }, goToBreedList = { }, goToRatingGame = { })
   }
-}

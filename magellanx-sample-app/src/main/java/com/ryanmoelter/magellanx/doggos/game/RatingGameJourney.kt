@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 const val NUM_RATINGS_IN_GAME = 10
 
 class RatingGameJourney(
-  val finish: () -> Unit,
+  private val finish: () -> Unit,
 ) : ComposeJourney() {
   private var doggoRatings: List<DoggoRating> = emptyList()
   private val doggoApi: DoggoApi = injector.doggoApi

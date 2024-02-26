@@ -16,28 +16,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ryanmoelter.magellanx.compose.ComposeStep
 import com.ryanmoelter.magellanx.doggos.ui.components.AsyncDoggoImage
+import com.ryanmoelter.magellanx.doggos.ui.preview.PreviewNavigable
 
 class RatingStep(
-  val doggoImageUrl: String,
-  val submitRating: (DoggoRating) -> Unit,
+  private val doggoImageUrl: String,
+  private val submitRating: (DoggoRating) -> Unit,
 ) : ComposeStep() {
-
   @Composable
   override fun Content() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
       AsyncDoggoImage(
         doggoImageUrl,
-        modifier = Modifier
-          .fillMaxWidth()
-          .weight(1f)
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .weight(1f),
       )
       Row(
-        modifier = Modifier
-          .padding(16.dp)
-          .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        modifier =
+          Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
       ) {
         Button(onClick = { dislikeDoggo() }) {
           Icon(Icons.Rounded.Close, "Dislike icon")
@@ -61,3 +65,10 @@ class RatingStep(
     submitRating(DoggoRating(doggoImageUrl, false))
   }
 }
+
+@Preview
+@Composable
+private fun RatingStep_Preview() =
+  PreviewNavigable {
+    RatingStep("https://example.com/doggo", submitRating = { })
+  }
