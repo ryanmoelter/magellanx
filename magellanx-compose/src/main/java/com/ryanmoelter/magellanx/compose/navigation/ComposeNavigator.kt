@@ -64,6 +64,7 @@ public open class ComposeNavigator :
   @Composable
   @Suppress("ktlint:standard:function-naming")
   private fun Content() {
+    val backStackFlow by backStackFlow.collectAsState()
     val currentNavigable by currentNavigableFlow.collectAsState(null)
     val currentTransitionSpec by transitionFlow.collectAsState()
     val currentDirection by directionFlow.collectAsState()
@@ -71,17 +72,33 @@ public open class ComposeNavigator :
     AnimatedContent(
       targetState = currentNavigable,
       transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection),
+      label = "Magellan Navigation transition",
     ) { navigable ->
       DisposableEffect(
         key1 = navigable,
+        key2 = backStackFlow,
         effect = {
           if (navigable != null) {
-            lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.NO_LIMIT)
+            if (backStack.lastOrNull()?.navigable == navigable) {
+              // Navigable is Resumed if it's on the top of the backstack
+              lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.NO_LIMIT)
+            } else {
+              // Navigable is Shown if it's in the composition, but not on top of the backstack
+              lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
+            }
+
             onDispose {
+              // If the navigable is being removed from composition, it might not be attached
+              // to this parent anymore
               if (children.contains(navigable)) {
+                // Back events will remove the navigable from the backstack, but we keep it attached
+                // to this parent until it's done animating out.
                 if (backStack.map { it.navigable }.contains(navigable)) {
+                  // Any navigable still in the backstack but not visible is Created
                   lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
                 } else {
+                  // Any navigable that's been removed from the backstack should also be removed
+                  // from this LifecycleOwner
                   removeFromLifecycle(navigable)
                 }
               }
