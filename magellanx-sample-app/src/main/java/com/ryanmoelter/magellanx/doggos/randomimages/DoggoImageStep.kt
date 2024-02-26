@@ -22,9 +22,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class DoggoImageStep(
-  val breed: String? = null
+  val breed: String? = null,
 ) : ComposeStep() {
-
   private val randomDoggoImageUrlGetter = injector.randomDoggoImageUrlGetter
   private val loadableImageUrlFlow: MutableStateFlow<Loadable<String>> =
     MutableStateFlow(Loading())
@@ -36,9 +35,10 @@ class DoggoImageStep(
       Column(horizontalAlignment = Alignment.CenterHorizontally) {
         AsyncDoggoImage(
           imageUrl,
-          modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .weight(1f),
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { refresh() }) {

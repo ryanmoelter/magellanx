@@ -29,7 +29,7 @@ import com.ryanmoelter.magellanx.doggos.ui.preview.PreviewNavigable
 
 class ResultsStep(
   private val doggoRatings: List<DoggoRating>,
-  private val goHome: () -> Unit
+  private val goHome: () -> Unit,
 ) : ComposeStep() {
   @Composable
   override fun Content() {
@@ -107,6 +107,6 @@ private fun ResultsStep_Preview() =
           DoggoRating("https://example.com/doggoImage", true),
           DoggoRating("https://example.com/doggoImage", true),
         ),
-      goHome = { }
+      goHome = { },
     )
   }
