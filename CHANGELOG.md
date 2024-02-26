@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.4.1
+- Expose `ComposeNavigator.currentNavigable` and `currentNavigableFlow`
+
 ## 0.4.0
 - Update Kotlin to `1.9.22` and compose compiler to `1.5.8`
 - Update Compose BOM to `2024.01.00` (Compose version `1.6.0`)

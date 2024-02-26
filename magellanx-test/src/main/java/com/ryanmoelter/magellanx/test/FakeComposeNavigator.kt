@@ -1,6 +1,5 @@
 package com.ryanmoelter.magellanx.test
 
-import androidx.compose.runtime.Composable
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigationEvent
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigator
 import com.ryanmoelter.magellanx.compose.navigation.Direction
@@ -14,12 +13,6 @@ import com.ryanmoelter.magellanx.core.navigation.LinearNavigator
  */
 public class FakeComposeNavigator : ComposeNavigator() {
   public override var backStack: List<ComposeNavigationEvent> = emptyList()
-
-  /**
-   * The [Navigable] that's currently on the top of the [backStack]
-   */
-  public val currentNavigable: Navigable<@Composable () -> Unit>?
-    get() = backStack.lastOrNull()?.navigable
 
   /**
    * Clear this navigator for the next test. [destroy] will do the same thing, and it's also safe to

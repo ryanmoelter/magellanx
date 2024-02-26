@@ -1,9 +1,9 @@
 [versions]
-android-gradle = "8.2.1"
+android-gradle = "8.2.2"
 kotlin = "1.9.22"
-coroutines = "1.7.3"
+coroutines = "1.8.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2024.01.00"
+compose-bom = "2024.02.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
 compose-compiler = "1.5.8"
 compileSdk = "34"
@@ -92,7 +92,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
-compose-material3 = { module = "androidx.compose.material3:material3", version = "1.1.2" }
+compose-material3 = { module = "androidx.compose.material3:material3", version = "1.2.0" }
 compose-material2 = { module = "androidx.compose.material:material" }
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
