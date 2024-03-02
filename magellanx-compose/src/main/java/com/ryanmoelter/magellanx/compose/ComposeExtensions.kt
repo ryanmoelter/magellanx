@@ -31,7 +31,7 @@ public fun Displayable(
 
 @Composable
 @Suppress("ktlint:standard:function-naming")
-public fun LifecycleOwner.WhenShown(Content: @Composable () -> Unit) {
+public fun LifecycleOwner.WhenShown(content: @Composable () -> Unit) {
   val isShownFlow =
     remember {
       currentStateFlow
@@ -44,6 +44,25 @@ public fun LifecycleOwner.WhenShown(Content: @Composable () -> Unit) {
     }
   val isShown by isShownFlow.collectAsState(false)
   if (isShown) {
-    Content()
+    content()
+  }
+}
+
+@Composable
+@Suppress("ktlint:standard:function-naming")
+public fun LifecycleOwner.WhenResumed(content: @Composable () -> Unit) {
+  val isResumedFlow =
+    remember {
+      currentStateFlow
+        .map { lifecycleState ->
+          when (lifecycleState) {
+            Destroyed, Created, Shown -> false
+            Resumed -> true
+          }
+        }
+    }
+  val isResumed by isResumedFlow.collectAsState(false)
+  if (isResumed) {
+    content()
   }
 }

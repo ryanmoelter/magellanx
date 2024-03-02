@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,6 +23,8 @@ import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -64,6 +67,7 @@ public open class ComposeNavigator :
   @Composable
   @Suppress("ktlint:standard:function-naming")
   private fun Content() {
+    val backStack by backStackFlow.collectAsState()
     val currentNavigable by currentNavigableFlow.collectAsState(null)
     val currentTransitionSpec by transitionFlow.collectAsState()
     val currentDirection by directionFlow.collectAsState()
@@ -71,26 +75,40 @@ public open class ComposeNavigator :
     AnimatedContent(
       targetState = currentNavigable,
       transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection),
+      label = "Magellan Navigation transition",
     ) { navigable ->
-      DisposableEffect(
-        key1 = navigable,
-        effect = {
-          if (navigable != null) {
+      if (navigable != null) {
+        LaunchedEffect(key1 = navigable, key2 = backStack) {
+          if (backStack.lastOrNull()?.navigable == navigable) {
+            // Navigable is Resumed if it's on the top of the backstack
             lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.NO_LIMIT)
+          } else {
+            // Navigable is Shown if it's in the composition, but not on top of the backstack
+            lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
+          }
+        }
+        DisposableEffect(
+          key1 = navigable,
+          effect = {
             onDispose {
+              // If the navigable is being removed from composition, it might not be attached
+              // to this parent anymore
               if (children.contains(navigable)) {
+                // Back events will remove the navigable from the backstack, but we keep it attached
+                // to this parent until it's done animating out.
                 if (backStack.map { it.navigable }.contains(navigable)) {
+                  // Any navigable still in the backstack but not visible is Created
                   lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
                 } else {
+                  // Any navigable that's been removed from the backstack should also be removed
+                  // from this LifecycleOwner
                   removeFromLifecycle(navigable)
                 }
               }
             }
-          } else {
-            onDispose { }
-          }
-        },
-      )
+          },
+        )
+      }
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         navigable?.Content()
       }
@@ -176,7 +194,6 @@ public open class ComposeNavigator :
     findBackstackChangesAndUpdateStates(
       oldBackStack = oldBackStack.map { it.navigable },
       newBackStack = newBackStack.map { it.navigable },
-      from = fromNavigable,
     )
     /* Optimistically update toNavigable's limit to smooth out transitions. This will also get set
      * by the DisposedEffect in #Content(), but redundancy is fine. fromNavigable's limit will be
@@ -191,14 +208,17 @@ public open class ComposeNavigator :
   private fun findBackstackChangesAndUpdateStates(
     oldBackStack: List<Navigable<*>>,
     newBackStack: List<Navigable<*>>,
-    from: Navigable<*>?,
   ) {
     val oldNavigables = oldBackStack.toSet()
     // Don't remove the last Navigable (from) until it's removed from composition in DisposedEffect
-    val newNavigables = (newBackStack + from).filterNotNull().toSet()
+    val newNavigables = newBackStack.toSet()
 
     (oldNavigables - newNavigables).forEach { oldNavigable ->
-      lifecycleRegistry.removeFromLifecycle(oldNavigable)
+      val isShown =
+        oldNavigable is LifecycleOwner && oldNavigable.currentState >= LifecycleState.Shown
+      if (!isShown) {
+        lifecycleRegistry.removeFromLifecycle(oldNavigable)
+      }
     }
 
     (newNavigables - oldNavigables).forEach { newNavigable ->
