@@ -27,6 +27,7 @@ class HomeStep(
   private val goToRandomDog: () -> Unit,
   private val goToBreedList: () -> Unit,
   private val goToRatingGame: () -> Unit,
+  private val goToTransitionTest: () -> Unit,
 ) : ComposeStep() {
   @Composable
   override fun Content() {
@@ -49,6 +50,7 @@ class HomeStep(
       ListItem(title = "Show random doggo") { goToRandomDog() }
       ListItem(title = "Filter by breed list") { goToBreedList() }
       ListItem(title = "Rate doggos") { goToRatingGame() }
+      ListItem(title = "Test Transitions") { goToTransitionTest() }
       Spacer(modifier = Modifier.height(24.dp))
     }
   }
@@ -81,5 +83,10 @@ fun ListItem(
 @Composable
 fun HomePreview() =
   PreviewNavigable {
-    HomeStep(goToRandomDog = { }, goToBreedList = { }, goToRatingGame = { })
+    HomeStep(
+      goToRandomDog = { },
+      goToBreedList = { },
+      goToRatingGame = { },
+      goToTransitionTest = { },
+    )
   }

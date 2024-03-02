@@ -5,6 +5,7 @@ import com.ryanmoelter.magellanx.doggos.Singleton
 import com.ryanmoelter.magellanx.doggos.game.RatingGameJourney
 import com.ryanmoelter.magellanx.doggos.randomimages.BreedImagesJourney
 import com.ryanmoelter.magellanx.doggos.randomimages.DoggoImageStep
+import com.ryanmoelter.magellanx.doggos.transitiontest.TransitionTestJourney
 import me.tatarka.inject.annotations.Inject
 
 @Inject
@@ -17,6 +18,7 @@ class RootJourney : ComposeJourney() {
         goToRandomDog = { navigator.goTo(DoggoImageStep()) },
         goToBreedList = { navigator.goTo(BreedImagesJourney()) },
         goToRatingGame = { navigator.goTo(RatingGameJourney(finish = { navigator.goBack() })) },
+        goToTransitionTest = { navigator.goTo(TransitionTestJourney()) },
       ),
     )
   }
