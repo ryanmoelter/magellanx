@@ -4,12 +4,16 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Created
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Destroyed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Resumed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Shown
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Started
 import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.CREATE
 import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.DESTROY
 import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.HIDE
 import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.PAUSE
 import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.RESUME
 import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.SHOW
+import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.START
+import com.ryanmoelter.magellanx.core.lifecycle.VerifyingLifecycleAware.LifecycleEvent.STOP
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.Before
 import org.junit.Test
@@ -23,28 +27,35 @@ internal class LifecycleTransitionExtensionsTest {
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_createToCreated() {
+  fun transitionBetweenLifecycleStates_createdToCreated() {
     lifecycleAware.transition(Created, Created)
 
     lifecycleAware.events shouldBe emptyList()
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_createToShown() {
+  fun transitionBetweenLifecycleStates_createdToShown() {
     lifecycleAware.transition(Created, Shown)
 
     lifecycleAware.events shouldBe listOf(SHOW)
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_createToResumed() {
-    lifecycleAware.transition(Created, Resumed)
+  fun transitionBetweenLifecycleStates_createdToStarted() {
+    lifecycleAware.transition(Created, Started)
 
-    lifecycleAware.events shouldBe listOf(SHOW, RESUME)
+    lifecycleAware.events shouldBe listOf(SHOW, START)
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_createToDestroy() {
+  fun transitionBetweenLifecycleStates_createdToResumed() {
+    lifecycleAware.transition(Created, Resumed)
+
+    lifecycleAware.events shouldBe listOf(SHOW, START, RESUME)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_createdToDestroyed() {
     lifecycleAware.transition(Created, Destroyed)
 
     lifecycleAware.events shouldBe listOf(DESTROY)
@@ -65,29 +76,78 @@ internal class LifecycleTransitionExtensionsTest {
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_shownToResumed() {
-    lifecycleAware.transition(Shown, Resumed)
+  fun transitionBetweenLifecycleStates_shownToStarted() {
+    lifecycleAware.transition(Shown, Started)
 
-    lifecycleAware.events shouldBe listOf(RESUME)
+    lifecycleAware.events shouldBe listOf(START)
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_shownToDestroy() {
+  fun transitionBetweenLifecycleStates_shownToResumed() {
+    lifecycleAware.transition(Shown, Resumed)
+
+    lifecycleAware.events shouldBe listOf(START, RESUME)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_shownToDestroyed() {
     lifecycleAware.transition(Shown, Destroyed)
 
     lifecycleAware.events shouldBe listOf(HIDE, DESTROY)
   }
 
   @Test
+  fun transitionBetweenLifecycleStates_startedToCreated() {
+    lifecycleAware.transition(Started, Created)
+
+    lifecycleAware.events shouldBe listOf(STOP, HIDE)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_startedToShown() {
+    lifecycleAware.transition(Started, Shown)
+
+    lifecycleAware.events shouldBe listOf(STOP)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_startedToStarted() {
+    lifecycleAware.transition(Started, Started)
+
+    lifecycleAware.events.shouldBeEmpty()
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_startedToResumed() {
+    lifecycleAware.transition(Started, Resumed)
+
+    lifecycleAware.events shouldBe listOf(RESUME)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_startedToDestroyed() {
+    lifecycleAware.transition(Started, Destroyed)
+
+    lifecycleAware.events shouldBe listOf(STOP, HIDE, DESTROY)
+  }
+
+  @Test
   fun transitionBetweenLifecycleStates_resumedToCreated() {
     lifecycleAware.transition(Resumed, Created)
 
-    lifecycleAware.events shouldBe listOf(PAUSE, HIDE)
+    lifecycleAware.events shouldBe listOf(PAUSE, STOP, HIDE)
   }
 
   @Test
   fun transitionBetweenLifecycleStates_resumedToShown() {
     lifecycleAware.transition(Resumed, Shown)
+
+    lifecycleAware.events shouldBe listOf(PAUSE, STOP)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_resumedToStarted() {
+    lifecycleAware.transition(Resumed, Started)
 
     lifecycleAware.events shouldBe listOf(PAUSE)
   }
@@ -103,7 +163,7 @@ internal class LifecycleTransitionExtensionsTest {
   fun transitionBetweenLifecycleStates_resumedToDestroy() {
     lifecycleAware.transition(Resumed, Destroyed)
 
-    lifecycleAware.events shouldBe listOf(PAUSE, HIDE, DESTROY)
+    lifecycleAware.events shouldBe listOf(PAUSE, STOP, HIDE, DESTROY)
   }
 
   @Test
@@ -121,14 +181,21 @@ internal class LifecycleTransitionExtensionsTest {
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_destroyedToResumed() {
-    lifecycleAware.transition(Destroyed, Resumed)
+  fun transitionBetweenLifecycleStates_destroyedToStarted() {
+    lifecycleAware.transition(Destroyed, Started)
 
-    lifecycleAware.events shouldBe listOf(CREATE, SHOW, RESUME)
+    lifecycleAware.events shouldBe listOf(CREATE, SHOW, START)
   }
 
   @Test
-  fun transitionBetweenLifecycleStates_destroyedToDestroy() {
+  fun transitionBetweenLifecycleStates_destroyedToResumed() {
+    lifecycleAware.transition(Destroyed, Resumed)
+
+    lifecycleAware.events shouldBe listOf(CREATE, SHOW, START, RESUME)
+  }
+
+  @Test
+  fun transitionBetweenLifecycleStates_destroyedToDestroyed() {
     lifecycleAware.transition(Destroyed, Destroyed)
 
     lifecycleAware.events shouldBe emptyList()
@@ -146,12 +213,20 @@ private class VerifyingLifecycleAware : LifecycleAware {
     events += SHOW
   }
 
+  override fun start() {
+    events += START
+  }
+
   override fun resume() {
     events += RESUME
   }
 
   override fun pause() {
     events += PAUSE
+  }
+
+  override fun stop() {
+    events += STOP
   }
 
   override fun hide() {
@@ -165,8 +240,10 @@ private class VerifyingLifecycleAware : LifecycleAware {
   enum class LifecycleEvent {
     CREATE,
     SHOW,
+    START,
     RESUME,
     PAUSE,
+    STOP,
     HIDE,
     DESTROY,
   }

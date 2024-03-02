@@ -55,6 +55,7 @@ internal class LifecycleRegistryTest {
   fun attachToLifecycleWithMaxState() {
     lifecycleRegistry.create()
     lifecycleRegistry.show()
+    lifecycleRegistry.start()
     lifecycleRegistry.resume()
 
     lifecycleRegistry.attachToLifecycle(dummyLifecycleComponent1)
@@ -94,6 +95,7 @@ internal class LifecycleRegistryTest {
     dummyLifecycleComponent1.currentState shouldBe Created
 
     lifecycleRegistry.show()
+    lifecycleRegistry.start()
     lifecycleRegistry.resume()
 
     dummyLifecycleComponent1.currentState shouldBe Shown
@@ -103,6 +105,7 @@ internal class LifecycleRegistryTest {
   fun updateMaxStateForChild_afterEvents() {
     lifecycleRegistry.create()
     lifecycleRegistry.show()
+    lifecycleRegistry.start()
     lifecycleRegistry.resume()
 
     lifecycleRegistry.attachToLifecycleWithMaxState(
@@ -125,6 +128,7 @@ internal class LifecycleRegistryTest {
   fun onBackPressed_limited() {
     lifecycleRegistry.create()
     lifecycleRegistry.show()
+    lifecycleRegistry.start()
     lifecycleRegistry.resume()
 
     var unwantedBackPressed = false
@@ -156,6 +160,7 @@ internal class LifecycleRegistryTest {
   fun onBackPressed_notLimited() {
     lifecycleRegistry.create()
     lifecycleRegistry.show()
+    lifecycleRegistry.start()
     lifecycleRegistry.resume()
 
     var wantedBackPressed = false

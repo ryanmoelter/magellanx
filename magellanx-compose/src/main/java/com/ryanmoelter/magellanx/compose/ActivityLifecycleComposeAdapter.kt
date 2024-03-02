@@ -22,7 +22,7 @@ public class ActivityLifecycleComposeAdapter(
   private val context: Activity,
 ) : DefaultLifecycleObserver {
   override fun onStart(owner: ActivityLifecycleOwner) {
-    navigable.show()
+    navigable.start()
   }
 
   override fun onResume(owner: ActivityLifecycleOwner) {
@@ -34,11 +34,12 @@ public class ActivityLifecycleComposeAdapter(
   }
 
   override fun onStop(owner: ActivityLifecycleOwner) {
-    navigable.hide()
+    navigable.stop()
   }
 
   override fun onDestroy(owner: ActivityLifecycleOwner) {
     if (context.isFinishing) {
+      navigable.hide()
       navigable.destroy()
     }
   }
@@ -47,6 +48,7 @@ public class ActivityLifecycleComposeAdapter(
 public fun ComponentActivity.setContentNavigable(navigable: Navigable<@Composable () -> Unit>) {
   if (navigable is LifecycleOwner && navigable.currentState == Destroyed) {
     navigable.create()
+    navigable.show()
   }
   if (adapterMap.containsKey(navigable)) {
     navigable.detachAndRemoveFromStaticMap()

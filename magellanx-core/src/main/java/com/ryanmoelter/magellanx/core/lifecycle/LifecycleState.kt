@@ -8,6 +8,7 @@ public enum class LifecycleState {
   Destroyed,
   Created,
   Shown,
+  Started,
   Resumed,
   ;
 

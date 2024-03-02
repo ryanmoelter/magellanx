@@ -58,7 +58,11 @@ internal class ShownLifecycleScopeTest {
 
       async.isCancelled.shouldBeFalse()
 
-      shownScope.transition(Resumed, Created)
+      shownScope.transition(Resumed, Shown)
+
+      async.isCancelled.shouldBeFalse()
+
+      shownScope.transition(Shown, Created)
 
       async.isCancelled.shouldBeTrue()
       async.getCancellationException().message shouldContain "Hidden"

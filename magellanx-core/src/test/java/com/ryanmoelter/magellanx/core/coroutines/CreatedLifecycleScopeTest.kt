@@ -4,6 +4,7 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Created
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Destroyed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Resumed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Shown
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Started
 import com.ryanmoelter.magellanx.core.lifecycle.transition
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -76,7 +77,11 @@ internal class CreatedLifecycleScopeTest {
       val async = createdScope.async(Dispatchers.Default) { delay(5000) }
       async.isCancelled shouldBe false
 
-      createdScope.transition(Shown, Resumed)
+      createdScope.transition(Shown, Started)
+
+      async.isCancelled shouldBe false
+
+      createdScope.transition(Started, Resumed)
 
       async.isCancelled shouldBe false
 
