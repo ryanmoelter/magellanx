@@ -26,7 +26,7 @@ public fun Iterable<LifecycleAware>.transition(
   newState: LifecycleState,
 ) {
   var currentState = oldState
-  while (currentState.order != newState.order) {
+  while (currentState != newState) {
     currentState =
       when (currentState.getDirectionForMovement(newState)) {
         FORWARD -> next(this, currentState)

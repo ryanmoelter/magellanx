@@ -25,7 +25,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     private set(newState) {
       val oldState = currentStateFlow.value
       listenersToMaxStates.forEach { (lifecycleAware, maxState) ->
-        if (oldState.limitBy(maxState).order != newState.limitBy(maxState).order) {
+        if (oldState.limitBy(maxState) != newState.limitBy(maxState)) {
           lifecycleAware.transition(
             oldState.limitBy(maxState),
             newState.limitBy(maxState),
@@ -130,14 +130,15 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
       .any { it }
 }
 
-public enum class LifecycleLimit(internal val order: Int) {
-  DESTROYED(0),
-  CREATED(1),
-  SHOWN(2),
-  NO_LIMIT(3),
+public enum class LifecycleLimit(internal val maxLifecycleState: LifecycleState) {
+  DESTROYED(LifecycleState.Destroyed),
+  CREATED(LifecycleState.Created),
+  SHOWN(LifecycleState.Shown),
+  NO_LIMIT(LifecycleState.Resumed),
 }
 
-private fun LifecycleState.isWithinLimit(limit: LifecycleLimit): Boolean = order <= limit.order
+private fun LifecycleState.isWithinLimit(limit: LifecycleLimit): Boolean =
+  this <= limit.maxLifecycleState
 
 private fun LifecycleState.limitBy(limit: LifecycleLimit): LifecycleState =
   if (isWithinLimit(limit)) {
