@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Created
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Destroyed
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Shown
 import com.ryanmoelter.magellanx.core.lifecycle.transition
 
 private typealias ActivityLifecycleOwner = androidx.lifecycle.LifecycleOwner
@@ -69,8 +69,8 @@ private fun Navigable<@Composable () -> Unit>.attachAndAddToStaticMap(
 private fun Navigable<@Composable () -> Unit>.detachAndRemoveFromStaticMap() {
   val (lifecycleAdapter, lifecycle) = adapterMap[this]!!
   lifecycle.removeObserver(lifecycleAdapter)
-  if (this is LifecycleOwner && currentState != Created) {
-    transition(this.currentState, Created)
+  if (this is LifecycleOwner && currentState >= Shown) {
+    transition(this.currentState, Shown)
   }
   adapterMap = adapterMap - this
 }
