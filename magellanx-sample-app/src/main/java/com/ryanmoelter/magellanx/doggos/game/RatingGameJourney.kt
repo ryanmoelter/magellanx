@@ -71,8 +71,8 @@ class RatingGameJourney(
   }
 
   override fun interceptBack(performBack: () -> Unit) {
-    performBack()
     doggoRatings = doggoRatings.dropLast(1)
+    performBack()
   }
 }
 

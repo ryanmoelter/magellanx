@@ -48,8 +48,7 @@ public val defaultTransition: MagellanComposeTransition =
       }
 
       Direction.BACKWARD -> {
-        // TODO: make this gesture-back-only
-        fadeIn(initialAlpha = 1f) togetherWith
+        fadeIn() + scaleIn(initialScale = SCALE_UP_FACTOR) togetherWith
           fadeOut() + scaleOut(targetScale = SCALE_DOWN_FACTOR)
       }
     }

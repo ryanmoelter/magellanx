@@ -4,8 +4,6 @@ import androidx.activity.BackEventCompat
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.runtime.Composable
 import com.ryanmoelter.magellanx.compose.WhenStarted
-import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.AT_ROOT
-import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.BACK_AVAILABLE
 import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import kotlinx.coroutines.flow.Flow
@@ -20,21 +18,16 @@ import kotlinx.coroutines.flow.Flow
  */
 public class ComposePredictiveBackHandler(
   private val backStarted: suspend (Flow<BackEventCompat>) -> Unit,
-) : LifecycleAwareComponent(), Displayable<@Composable (BackstackStatus) -> Unit> {
-  override val view: @Composable (BackstackStatus) -> Unit
-    get() = { backstackStatus ->
+) : LifecycleAwareComponent(), Displayable<@Composable (BackHandlerStatus) -> Unit> {
+  override val view: @Composable (BackHandlerStatus) -> Unit
+    get() = { backHandlerStatus ->
       WhenStarted {
-        val enabled =
-          when (backstackStatus) {
-            AT_ROOT -> false
-            BACK_AVAILABLE -> true
-          }
-        PredictiveBackHandler(enabled = enabled, onBack = backStarted)
+        PredictiveBackHandler(enabled = backHandlerStatus.enabled, onBack = backStarted)
       }
     }
 }
 
-public enum class BackstackStatus {
-  AT_ROOT,
-  BACK_AVAILABLE,
+public enum class BackHandlerStatus(public val enabled: Boolean) {
+  ENABLED(true),
+  DISABLED(false),
 }
