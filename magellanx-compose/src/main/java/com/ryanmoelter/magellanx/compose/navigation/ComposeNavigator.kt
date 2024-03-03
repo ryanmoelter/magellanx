@@ -17,10 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import com.ryanmoelter.magellanx.compose.Content
-import com.ryanmoelter.magellanx.compose.WhenShown
+import com.ryanmoelter.magellanx.compose.WhenStarted
 import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.AT_ROOT
 import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.BACK_AVAILABLE
-import com.ryanmoelter.magellanx.compose.WhenStarted
 import com.ryanmoelter.magellanx.compose.navigation.Direction.BACKWARD
 import com.ryanmoelter.magellanx.compose.navigation.Direction.FORWARD
 import com.ryanmoelter.magellanx.compose.transitions.MagellanComposeTransition
@@ -32,7 +31,6 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
-import kotlinx.coroutines.flow.Flow
 import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,10 +38,11 @@ import kotlinx.coroutines.flow.map
 
 public open class ComposeNavigator(
   private val interceptBack: (performBack: () -> Unit) -> Unit = { },
-  private val interceptBackGestureAnimation: () -> Boolean = { false }
+  private val interceptBackGestureAnimation: () -> Boolean = { false },
 ) : LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
-
-  private val backHandler by attachFieldToLifecycle(ComposePredictiveBackHandler(::handlePredictiveBack))
+  private val backHandler by attachFieldToLifecycle(
+    ComposePredictiveBackHandler(::handlePredictiveBack),
+  )
 
   /**
    * The backstack. The last item in each list is the top of the stack.
@@ -55,8 +54,9 @@ public open class ComposeNavigator(
    */
   public open val backStack: List<ComposeNavigationEvent>
     get() = backStackFlow.value
-  public open val backStackStatusFlow: Flow<BackstackStatus> = backStackFlow
-    .map { if (it.size <= 1) AT_ROOT else BACK_AVAILABLE }
+  public open val backStackStatusFlow: Flow<BackstackStatus> =
+    backStackFlow
+      .map { if (it.size <= 1) AT_ROOT else BACK_AVAILABLE }
 
   /**
    * Get a snapshot of the current navigable, i.e. the last item of the current [backStack].
@@ -67,13 +67,14 @@ public open class ComposeNavigator(
   private val currentNavigationEventFlow = backStackFlow.map { it.lastOrNull() }
   public val currentNavigableFlow: Flow<Navigable<@Composable () -> Unit>?> =
     currentNavigationEventFlow.map { it?.navigable }
-  private val lastNavigableFlow = backStackFlow.map { stack ->
-    if (stack.size > 1) {
-      stack[stack.lastIndex - 1].navigable
-    } else {
-      null
+  private val lastNavigableFlow =
+    backStackFlow.map { stack ->
+      if (stack.size > 1) {
+        stack[stack.lastIndex - 1].navigable
+      } else {
+        null
+      }
     }
-  }
 
   // TODO: make default transition configurable
   private val transitionFlow: MutableStateFlow<MagellanComposeTransition> =
@@ -131,10 +132,12 @@ public open class ComposeNavigator(
                     // The navigable on top of the backstack is Shown if not visible
                     lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
                   }
+
                   backStack.map { it.navigable }.contains(navigable) -> {
                     // Any navigable still in the backstack but not visible is Created
                     lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
                   }
+
                   else -> {
                     // Any navigable that's been removed from the backstack should also be removed
                     // from this LifecycleOwner
@@ -154,7 +157,7 @@ public open class ComposeNavigator(
           DisposableEffect(key1 = lastNavigable, key2 = shouldShowPrevious) {
             val previous = lastNavigable
             if (previous != null) {
-              lifecycleRegistry.updateMaxState(previous, LifecycleLimit.SHOWN)
+              lifecycleRegistry.updateMaxState(previous, LifecycleLimit.STARTED)
               onDispose {
                 if (children.contains(previous)) {
                   if (backStack.map { it.navigable }.contains(previous)) {
@@ -171,10 +174,11 @@ public open class ComposeNavigator(
           lastNavigable?.Content()
         }
         Box(
-          modifier = Modifier
-            .fillMaxSize()
-            .scale(1f - backSwipeProgress),
-          contentAlignment = Alignment.Center
+          modifier =
+            Modifier
+              .fillMaxSize()
+              .scale(1f - backSwipeProgress * 0.5f),
+          contentAlignment = Alignment.Center,
         ) {
           navigable?.Content()
         }
