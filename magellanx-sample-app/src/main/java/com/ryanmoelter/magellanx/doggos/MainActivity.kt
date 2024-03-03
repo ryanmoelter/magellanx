@@ -6,7 +6,6 @@ import com.ryanmoelter.magellanx.compose.setContentNavigable
 import com.ryanmoelter.magellanx.doggos.home.RootJourney
 
 class MainActivity : ComponentActivity() {
-
   lateinit var rootJourney: RootJourney
 
   override fun onCreate(savedInstanceState: Bundle?) {

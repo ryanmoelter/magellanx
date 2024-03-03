@@ -32,3 +32,6 @@ ij_continuation_indent_size = 2
 # Android specific rules
 ij_kotlin_import_nested_classes = false
 ij_kotlin_imports_layout = *, ^
+
+# Ktlint function naming breaks with composable functions
+ktlint_standard_function-naming = disabled

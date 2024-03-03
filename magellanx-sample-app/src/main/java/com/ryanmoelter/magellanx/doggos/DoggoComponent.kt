@@ -1,6 +1,5 @@
 package com.ryanmoelter.magellanx.doggos
 
-import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.ryanmoelter.magellanx.doggos.home.RootJourney
 import com.ryanmoelter.magellanx.doggos.randomimages.RandomDoggoImageUrlGetter
@@ -16,28 +15,32 @@ import retrofit2.Retrofit
 
 @Scope
 @Target(CLASS, FUNCTION, PROPERTY_GETTER)
-annotation class ApplicationScope
+annotation class Singleton
+
+interface DoggoComponent {
+  val rootJourney: RootJourney
+  val doggoApi: DoggoApi
+  val randomDoggoImageUrlGetter: RandomDoggoImageUrlGetter
+}
 
 @Component
-@ApplicationScope
-abstract class DoggoComponent(
-  val applicationContext: Context
-) {
-
-  abstract val rootJourney: RootJourney
-  abstract val doggoApi: DoggoApi
-  abstract val randomDoggoImageUrlGetter: RandomDoggoImageUrlGetter
-
+@Singleton
+abstract class RealDoggoComponent : DoggoComponent {
   val retrofit: Retrofit
-    @Provides @ApplicationScope get() = Retrofit.Builder()
-      .baseUrl("https://dog.ceo/api/")
-      .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-      .build()
+    @Provides @Singleton
+    get() =
+      Retrofit.Builder()
+        .baseUrl("https://dog.ceo/api/")
+        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .build()
 
   @Provides
-  fun provideDoggoApi(retrofit: Retrofit): DoggoApi =
-    retrofit.create(DoggoApi::class.java)
+  fun provideDoggoApi(retrofit: Retrofit): DoggoApi = retrofit.create(DoggoApi::class.java)
+}
 
+@Component
+@Singleton
+abstract class FakeDoggoComponent : DoggoComponent {
   @Provides
-  fun provideApplicationContext(): Context = applicationContext
+  fun provideDoggoApi(): DoggoApi = FakeDoggoApi()
 }

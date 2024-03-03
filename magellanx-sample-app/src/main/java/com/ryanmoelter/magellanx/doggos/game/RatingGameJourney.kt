@@ -16,12 +16,13 @@ import kotlinx.coroutines.launch
 
 const val NUM_RATINGS_IN_GAME = 10
 
-class RatingGameJourney : ComposeJourney() {
+class RatingGameJourney(
+  private val finish: () -> Unit,
+) : ComposeJourney() {
+  private var doggoRatings: List<DoggoRating> = emptyList()
+  private val doggoApi: DoggoApi = injector.doggoApi
 
-  var doggoRatings: List<DoggoRating> = emptyList()
-  val doggoApi: DoggoApi = injector.doggoApi
-
-  val isLoadingFlow = MutableStateFlow(true)
+  private val isLoadingFlow = MutableStateFlow(true)
 
   @Composable
   override fun Content() {
@@ -52,12 +53,11 @@ class RatingGameJourney : ComposeJourney() {
             navigator.goTo(
               RatingStep(
                 loadableString.value,
-                submitRating = ::rateDoggoAndGoToNext
-              )
+                submitRating = ::rateDoggoAndGoToNext,
+              ),
             )
           }
         }
-
       }
   }
 
@@ -66,7 +66,7 @@ class RatingGameJourney : ComposeJourney() {
     if (doggoRatings.size < NUM_RATINGS_IN_GAME) {
       createdScope.launch { getImageAndGoToNextStep() }
     } else {
-      TODO("Go to review page")
+      navigator.goTo(ResultsStep(doggoRatings, goHome = { finish() }))
     }
   }
 
@@ -78,5 +78,5 @@ class RatingGameJourney : ComposeJourney() {
 
 data class DoggoRating(
   val doggoImageUrl: String,
-  val liked: Boolean
+  val liked: Boolean,
 )

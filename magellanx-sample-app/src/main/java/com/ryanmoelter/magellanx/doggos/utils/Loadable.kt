@@ -27,44 +27,48 @@ import kotlinx.coroutines.flow.flow
 
 sealed interface Loadable<ValueType> {
   data class Success<ValueType>(val value: ValueType) : Loadable<ValueType>
+
   data class Loading<ValueType>(val previousValue: ValueType? = null) : Loadable<ValueType>
+
   data class Failure<ValueType>(val throwable: Throwable, val message: String? = null) :
     Loadable<ValueType>
 }
 
-fun <ReturnType> wrapInLoadableFlow(
-  action: suspend () -> ReturnType
-): Flow<Loadable<ReturnType>> = flow {
-  emit(Loading())
-  try {
-    emit(Success(action()))
-  } catch (throwable: Throwable) {
-    emit(Failure(throwable))
+fun <ReturnType> wrapInLoadableFlow(action: suspend () -> ReturnType): Flow<Loadable<ReturnType>> =
+  flow {
+    emit(Loading())
+    try {
+      emit(Success(action()))
+    } catch (throwable: Throwable) {
+      emit(Failure(throwable))
+    }
   }
-}
 
 fun <StartingType, TargetType> Loadable<StartingType>.map(
-  action: (StartingType) -> TargetType
-): Loadable<TargetType> = when (this) {
-  is Success -> Success(action(value))
-  is Loading -> if (previousValue != null) {
-    Loading(action(previousValue))
-  } else {
-    Loading(null)
-  }
+  action: (StartingType) -> TargetType,
+): Loadable<TargetType> =
+  when (this) {
+    is Success -> Success(action(value))
+    is Loading ->
+      if (previousValue != null) {
+        Loading(action(previousValue))
+      } else {
+        Loading(null)
+      }
 
-  is Failure -> Failure(throwable)
-}
+    is Failure -> Failure(throwable)
+  }
 
 @Composable
 fun <T : Any> ShowLoadingAround(
   loadable: Loadable<T>,
-  content: @Composable (T) -> Unit
+  content: @Composable (T) -> Unit,
 ) {
-  val blockTouches = when (loadable) {
-    is Success, is Failure -> false
-    is Loading -> true
-  }
+  val blockTouches =
+    when (loadable) {
+      is Success, is Failure -> false
+      is Loading -> true
+    }
   Box(Modifier.gesturesDisabled(blockTouches)) {
     AnimatedContent(
       targetState = loadable,
@@ -72,7 +76,7 @@ fun <T : Any> ShowLoadingAround(
       transitionSpec = {
         fadeIn(animationSpec = tween(220, delayMillis = 90))
           .togetherWith(fadeOut(animationSpec = tween(90)))
-      }
+      },
     ) { loadable ->
       when (loadable) {
         is Success -> content(loadable.value)
@@ -89,7 +93,9 @@ fun <T : Any> ShowLoadingAround(
 
         is Failure -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(loadable.throwable.toString()) // TODO: Show an error state, log to sentry, offer retry?
+            Text(
+              loadable.throwable.toString(),
+            ) // TODO: Show an error state, log to sentry, offer retry?
           }
         }
       }
@@ -101,7 +107,7 @@ fun <T : Any> ShowLoadingAround(
 fun ShowLoadingAround(
   isLoading: Boolean,
   showSpinner: Boolean = true,
-  content: @Composable () -> Unit
+  content: @Composable () -> Unit,
 ) {
   Box(Modifier.gesturesDisabled(isLoading), contentAlignment = Alignment.Center) {
     content()
@@ -109,13 +115,14 @@ fun ShowLoadingAround(
     AnimatedVisibility(
       visible = isLoading,
       enter = fadeIn(animationSpec = tween(300)),
-      exit = fadeOut(animationSpec = tween(200))
+      exit = fadeOut(animationSpec = tween(200)),
     ) {
       Box(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)),
-        contentAlignment = Alignment.Center
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)),
+        contentAlignment = Alignment.Center,
       ) {
         if (showSpinner) {
           CircularProgressIndicator(Modifier.align(Alignment.Center))
@@ -140,5 +147,3 @@ fun Modifier.gesturesDisabled(disabled: Boolean) =
   } else {
     this
   }
-
-

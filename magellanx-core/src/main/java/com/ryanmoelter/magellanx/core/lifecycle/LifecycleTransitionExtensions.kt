@@ -4,6 +4,7 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Created
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Destroyed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Resumed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Shown
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Started
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.BACKWARDS
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.FORWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.NO_MOVEMENT
@@ -26,7 +27,7 @@ public fun Iterable<LifecycleAware>.transition(
   newState: LifecycleState,
 ) {
   var currentState = oldState
-  while (currentState.order != newState.order) {
+  while (currentState != newState) {
     currentState =
       when (currentState.getDirectionForMovement(newState)) {
         FORWARD -> next(this, currentState)
@@ -47,14 +48,22 @@ private fun next(
       subjects.forEach { it.create() }
       Created
     }
+
     Created -> {
       subjects.forEach { it.show() }
       Shown
     }
+
     Shown -> {
+      subjects.forEach { it.start() }
+      Started
+    }
+
+    Started -> {
       subjects.forEach { it.resume() }
       Resumed
     }
+
     Resumed -> {
       throw IllegalStateException("Cannot go forward from resumed")
     }
@@ -66,20 +75,28 @@ private fun previous(
   currentState: LifecycleState,
 ): LifecycleState {
   return when (currentState) {
-    Destroyed -> {
-      throw IllegalStateException("Cannot go backward from destroyed")
+    Resumed -> {
+      subjects.forEach { it.pause() }
+      Started
     }
-    Created -> {
-      subjects.forEach { it.destroy() }
-      Destroyed
+
+    Started -> {
+      subjects.forEach { it.stop() }
+      Shown
     }
+
     Shown -> {
       subjects.forEach { it.hide() }
       Created
     }
-    Resumed -> {
-      subjects.forEach { it.pause() }
-      Shown
+
+    Created -> {
+      subjects.forEach { it.destroy() }
+      Destroyed
+    }
+
+    Destroyed -> {
+      throw IllegalStateException("Cannot go backward from destroyed")
     }
   }
 }

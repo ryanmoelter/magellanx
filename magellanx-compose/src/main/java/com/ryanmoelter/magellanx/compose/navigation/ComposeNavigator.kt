@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import com.ryanmoelter.magellanx.compose.Content
 import com.ryanmoelter.magellanx.compose.WhenShown
 import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.AT_ROOT
 import com.ryanmoelter.magellanx.compose.navigation.BackstackStatus.BACK_AVAILABLE
+import com.ryanmoelter.magellanx.compose.WhenStarted
 import com.ryanmoelter.magellanx.compose.navigation.Direction.BACKWARD
 import com.ryanmoelter.magellanx.compose.navigation.Direction.FORWARD
 import com.ryanmoelter.magellanx.compose.transitions.MagellanComposeTransition
@@ -28,6 +30,9 @@ import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
+import kotlinx.coroutines.flow.Flow
 import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,11 +61,12 @@ public open class ComposeNavigator(
   /**
    * Get a snapshot of the current navigable, i.e. the last item of the current [backStack].
    */
-  private val currentNavigable
+  public val currentNavigable: Navigable<@Composable () -> Unit>?
     get() = backStack.lastOrNull()?.navigable
 
   private val currentNavigationEventFlow = backStackFlow.map { it.lastOrNull() }
-  private val currentNavigableFlow = currentNavigationEventFlow.map { it?.navigable }
+  public val currentNavigableFlow: Flow<Navigable<@Composable () -> Unit>?> =
+    currentNavigationEventFlow.map { it?.navigable }
   private val lastNavigableFlow = backStackFlow.map { stack ->
     if (stack.size > 1) {
       stack[stack.lastIndex - 1].navigable
@@ -78,7 +84,7 @@ public open class ComposeNavigator(
 
   override val view: (@Composable () -> Unit)
     get() = {
-      WhenShown {
+      WhenStarted {
         Content()
       }
     }
@@ -86,6 +92,7 @@ public open class ComposeNavigator(
   @Composable
   @Suppress("ktlint:standard:function-naming")
   private fun Content() {
+    val backStack by backStackFlow.collectAsState()
     val currentNavigable by currentNavigableFlow.collectAsState(null)
     val lastNavigable by lastNavigableFlow.collectAsState(null)
     val currentTransitionSpec by transitionFlow.collectAsState()
@@ -98,26 +105,47 @@ public open class ComposeNavigator(
     AnimatedContent(
       targetState = currentNavigable,
       transitionSpec = currentTransitionSpec.getTransitionForDirection(currentDirection),
+      label = "Magellan Navigation transition",
     ) { navigable ->
-      DisposableEffect(
-        key1 = navigable,
-        effect = {
-          if (navigable != null) {
+      if (navigable != null) {
+        LaunchedEffect(key1 = navigable, key2 = backStack) {
+          if (backStack.lastOrNull()?.navigable == navigable) {
+            // Navigable is Resumed if it's on the top of the backstack
             lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.NO_LIMIT)
+          } else {
+            // Navigable is Started if it's in the composition, but not on top of the backstack
+            lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.STARTED)
+          }
+        }
+        DisposableEffect(
+          key1 = navigable,
+          effect = {
             onDispose {
+              // If the navigable is being removed from composition, it might not be attached
+              // to this parent anymore
               if (children.contains(navigable)) {
-                if (backStack.map { it.navigable }.contains(navigable)) {
-                  lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
-                } else {
-                  removeFromLifecycle(navigable)
+                // Back events will remove the navigable from the backstack, but we keep it attached
+                // to this parent until it's done animating out.
+                when {
+                  backStack.map { it.navigable }.last() == navigable -> {
+                    // The navigable on top of the backstack is Shown if not visible
+                    lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
+                  }
+                  backStack.map { it.navigable }.contains(navigable) -> {
+                    // Any navigable still in the backstack but not visible is Created
+                    lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
+                  }
+                  else -> {
+                    // Any navigable that's been removed from the backstack should also be removed
+                    // from this LifecycleOwner
+                    removeFromLifecycle(navigable)
+                  }
                 }
               }
             }
-          } else {
-            onDispose { }
-          }
-        },
-      )
+          },
+        )
+      }
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         val shouldShowPrevious by remember {
           derivedStateOf { backSwipeProgress != 0f }
@@ -235,7 +263,6 @@ public open class ComposeNavigator(
   ) {
     // TODO: Intercept touch events, if necessary
     NavigationPropagator._beforeNavigation.tryEmit(Unit)
-    val fromNavigable = currentNavigable
     val oldBackStack = backStack
     val newBackStack = backStackOperation(backStack)
     val toNavigable = newBackStack.last().navigable
@@ -248,7 +275,6 @@ public open class ComposeNavigator(
     findBackstackChangesAndUpdateStates(
       oldBackStack = oldBackStack.map { it.navigable },
       newBackStack = newBackStack.map { it.navigable },
-      from = fromNavigable,
     )
     /* Optimistically update toNavigable's limit to smooth out transitions. This will also get set
      * by the DisposedEffect in #Content(), but redundancy is fine. fromNavigable's limit will be
@@ -263,14 +289,17 @@ public open class ComposeNavigator(
   private fun findBackstackChangesAndUpdateStates(
     oldBackStack: List<Navigable<*>>,
     newBackStack: List<Navigable<*>>,
-    from: Navigable<*>?,
   ) {
     val oldNavigables = oldBackStack.toSet()
     // Don't remove the last Navigable (from) until it's removed from composition in DisposedEffect
-    val newNavigables = (newBackStack + from).filterNotNull().toSet()
+    val newNavigables = newBackStack.toSet()
 
     (oldNavigables - newNavigables).forEach { oldNavigable ->
-      lifecycleRegistry.removeFromLifecycle(oldNavigable)
+      val isStarted =
+        oldNavigable is LifecycleOwner && oldNavigable.currentState >= LifecycleState.Started
+      if (!isStarted) {
+        lifecycleRegistry.removeFromLifecycle(oldNavigable)
+      }
     }
 
     (newNavigables - oldNavigables).forEach { newNavigable ->

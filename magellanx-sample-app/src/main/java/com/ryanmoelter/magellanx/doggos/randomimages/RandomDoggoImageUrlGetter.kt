@@ -10,9 +10,8 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class RandomDoggoImageUrlGetter(
-  private val doggoApi: DoggoApi
+  private val doggoApi: DoggoApi,
 ) {
-
   suspend fun fetchDoggoImageUrl(breed: String? = null): Flow<Loadable<String>> =
     wrapInLoadableFlow {
       if (breed == null) {

@@ -1,7 +1,5 @@
 package com.ryanmoelter.magellanx.core.lifecycle
 
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.CREATED
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.DESTROYED
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.NO_LIMIT
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.SHOWN
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +23,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     private set(newState) {
       val oldState = currentStateFlow.value
       listenersToMaxStates.forEach { (lifecycleAware, maxState) ->
-        if (oldState.limitBy(maxState).order != newState.limitBy(maxState).order) {
+        if (oldState.limitBy(maxState) != newState.limitBy(maxState)) {
           lifecycleAware.transition(
             oldState.limitBy(maxState),
             newState.limitBy(maxState),
@@ -103,11 +101,19 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     currentState = LifecycleState.Shown
   }
 
+  override fun start() {
+    currentState = LifecycleState.Started
+  }
+
   override fun resume() {
     currentState = LifecycleState.Resumed
   }
 
   override fun pause() {
+    currentState = LifecycleState.Started
+  }
+
+  override fun stop() {
     currentState = LifecycleState.Shown
   }
 
@@ -120,26 +126,16 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
   }
 }
 
-public enum class LifecycleLimit(internal val order: Int) {
-  DESTROYED(0),
-  CREATED(1),
-  SHOWN(2),
-  NO_LIMIT(3),
+public enum class LifecycleLimit(internal val maxLifecycleState: LifecycleState) {
+  DESTROYED(LifecycleState.Destroyed),
+  CREATED(LifecycleState.Created),
+  SHOWN(LifecycleState.Shown),
+  STARTED(LifecycleState.Started),
+  NO_LIMIT(LifecycleState.Resumed),
 }
 
-private fun LifecycleState.isWithinLimit(limit: LifecycleLimit): Boolean = order <= limit.order
+private fun LifecycleState.isWithinLimit(limit: LifecycleLimit): Boolean =
+  this <= limit.maxLifecycleState
 
 private fun LifecycleState.limitBy(limit: LifecycleLimit): LifecycleState =
-  if (isWithinLimit(limit)) {
-    this
-  } else {
-    limit.getMaxLifecycleState()
-  }
-
-private fun LifecycleLimit.getMaxLifecycleState(): LifecycleState =
-  when (this) {
-    DESTROYED -> LifecycleState.Destroyed
-    CREATED -> LifecycleState.Created
-    SHOWN -> LifecycleState.Shown
-    NO_LIMIT -> LifecycleState.Resumed
-  }
+  minOf(this, limit.maxLifecycleState)

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class ChooseBreedStep(
-  val chooseBreed: (String) -> Unit
+  val chooseBreed: (String) -> Unit,
 ) : ComposeStep() {
 
   private val loadableBreedListFlow: MutableStateFlow<Loadable<List<String>>> =
@@ -36,7 +36,10 @@ class ChooseBreedStep(
       LazyColumn {
         item { Spacer(modifier = Modifier.height(12.dp)) }
         items(breeds, key = { it }) { breed ->
-          ListItem(title = breed.replaceFirstChar { it.uppercase() }, onClick = { chooseBreed(breed) })
+          ListItem(
+            title = breed.replaceFirstChar { it.uppercase() },
+            onClick = { chooseBreed(breed) },
+          )
         }
         item { Spacer(modifier = Modifier.height(12.dp)) }
       }

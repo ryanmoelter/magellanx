@@ -5,12 +5,12 @@ import io.kotest.matchers.shouldBe
 import org.junit.Before
 import org.junit.Test
 
-public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
-  private lateinit var lifecycleView: CreateAndAttachFieldToLifecycleWhenShownDelegate<Int>
+public class CreateAndAttachFieldToLifecycleWhenStartedDelegateTest {
+  private lateinit var lifecycleView: CreateAndAttachFieldToLifecycleWhenStartedDelegate<Int>
 
   @Before
   public fun setUp() {
-    lifecycleView = CreateAndAttachFieldToLifecycleWhenShownDelegate { 1 }
+    lifecycleView = CreateAndAttachFieldToLifecycleWhenStartedDelegate { 1 }
   }
 
   @Test
@@ -19,6 +19,9 @@ public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
     lifecycleView.field.shouldBeNull()
 
     lifecycleView.show()
+    lifecycleView.field.shouldBeNull()
+
+    lifecycleView.start()
     lifecycleView.field shouldBe 1
 
     lifecycleView.resume()
@@ -26,6 +29,9 @@ public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
 
     lifecycleView.pause()
     lifecycleView.field shouldBe 1
+
+    lifecycleView.stop()
+    lifecycleView.field.shouldBeNull()
 
     lifecycleView.hide()
     lifecycleView.field.shouldBeNull()
@@ -36,13 +42,13 @@ public class CreateAndAttachFieldToLifecycleWhenShownDelegateTest {
 
   @Test
   public fun onCreateView() {
-    lifecycleView.show()
+    lifecycleView.start()
     lifecycleView.field shouldBe 1
   }
 
   @Test
   public fun onDestroyView() {
-    lifecycleView.hide()
+    lifecycleView.stop()
     lifecycleView.field.shouldBeNull()
   }
 }
