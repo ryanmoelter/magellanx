@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.0
+- BREAKING: Add `Started` lifecycle state
+  - `Started` replaces `Shown` and represents "being drawn to the screen", but `Shown` now represents "on top of the backstack". `show()` and `hide()` are now effectively `navigatedTo()` and `navigatedFrom()` respectively.
+
+| State               | On backstack | Top of backstack | View created + <br/>Activity available + <br/>Compose active | In focus |
+|---------------------|--------------|------------------|--------------------------------------------------------------|----------|
+| Destroyed           | ✘            | ✘                | ✘                                                            | ✘        |
+| Created             | ✔ (roughly)  | ✘                | ✘                                                            | ✘        |
+| **Shown** (changed) | ✔            | ✔                | ✘                                                            | ✘        |
+| **Started** (new)   | ✔            | ✔                | ✔                                                            | ✘        |
+| Resumed             | ✔            | ✔                | ✔                                                            | ✔        |
+
+- Call pause() when starting to transition away from a screen
+
 ## 0.4.1
 - Expose `ComposeNavigator.currentNavigable` and `currentNavigableFlow`
 

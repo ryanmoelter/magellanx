@@ -50,10 +50,11 @@ android {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
-  kotlinOptions.freeCompilerArgs = listOf(
-    "-Xexplicit-api=strict",
-    "-opt-in=kotlin.RequiresOptIn"
-  )
+  kotlinOptions.freeCompilerArgs =
+    listOf(
+      "-Xexplicit-api=strict",
+      "-opt-in=kotlin.RequiresOptIn",
+    )
 }
 
 dependencies {
@@ -63,7 +64,6 @@ dependencies {
   testImplementation(libs.coroutines.test)
 
   // Android
-  implementation(libs.material)
   implementation(libs.appcompat)
   implementation(libs.constraintlayout)
   implementation(libs.ktx.core)
