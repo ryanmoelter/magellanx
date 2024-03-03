@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Created
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Destroyed
+import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Shown
 import com.ryanmoelter.magellanx.core.lifecycle.transition
 
 private typealias ActivityLifecycleOwner = androidx.lifecycle.LifecycleOwner
@@ -22,7 +22,7 @@ public class ActivityLifecycleComposeAdapter(
   private val context: Activity,
 ) : DefaultLifecycleObserver {
   override fun onStart(owner: ActivityLifecycleOwner) {
-    navigable.show()
+    navigable.start()
   }
 
   override fun onResume(owner: ActivityLifecycleOwner) {
@@ -34,11 +34,12 @@ public class ActivityLifecycleComposeAdapter(
   }
 
   override fun onStop(owner: ActivityLifecycleOwner) {
-    navigable.hide()
+    navigable.stop()
   }
 
   override fun onDestroy(owner: ActivityLifecycleOwner) {
     if (context.isFinishing) {
+      navigable.hide()
       navigable.destroy()
     }
   }
@@ -47,6 +48,7 @@ public class ActivityLifecycleComposeAdapter(
 public fun ComponentActivity.setContentNavigable(navigable: Navigable<@Composable () -> Unit>) {
   if (navigable is LifecycleOwner && navigable.currentState == Destroyed) {
     navigable.create()
+    navigable.show()
   }
   if (adapterMap.containsKey(navigable)) {
     navigable.detachAndRemoveFromStaticMap()
@@ -67,8 +69,8 @@ private fun Navigable<@Composable () -> Unit>.attachAndAddToStaticMap(
 private fun Navigable<@Composable () -> Unit>.detachAndRemoveFromStaticMap() {
   val (lifecycleAdapter, lifecycle) = adapterMap[this]!!
   lifecycle.removeObserver(lifecycleAdapter)
-  if (this is LifecycleOwner && currentState != Created) {
-    transition(this.currentState, Created)
+  if (this is LifecycleOwner && currentState >= Shown) {
+    transition(this.currentState, Shown)
   }
   adapterMap = adapterMap - this
 }

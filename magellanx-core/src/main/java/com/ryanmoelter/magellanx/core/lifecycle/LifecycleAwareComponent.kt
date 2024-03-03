@@ -15,7 +15,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Destroyed) {
       throw IllegalStateException(
         "Cannot create() from a state that is not Destroyed: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
+          "${this::class.java.simpleName} is ${currentState.name}",
       )
     }
     lifecycleRegistry.create()
@@ -26,18 +26,29 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Created) {
       throw IllegalStateException(
         "Cannot show() from a state that is not Created: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
+          "${this::class.java.simpleName} is ${currentState.name}",
       )
     }
     lifecycleRegistry.show()
     onShow()
   }
 
-  final override fun resume() {
+  final override fun start() {
     if (currentState != LifecycleState.Shown) {
       throw IllegalStateException(
-        "Cannot resume() from a state that is not Shown: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
+        "Cannot start() from a state that is not Shown: " +
+          "${this::class.java.simpleName} is ${currentState.name}",
+      )
+    }
+    lifecycleRegistry.start()
+    onStart()
+  }
+
+  final override fun resume() {
+    if (currentState != LifecycleState.Started) {
+      throw IllegalStateException(
+        "Cannot resume() from a state that is not Started: " +
+          "${this::class.java.simpleName} is ${currentState.name}",
       )
     }
     lifecycleRegistry.resume()
@@ -48,18 +59,29 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Resumed) {
       throw IllegalStateException(
         "Cannot pause() from a state that is not Resumed: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
+          "${this::class.java.simpleName} is ${currentState.name}",
       )
     }
     onPause()
     lifecycleRegistry.pause()
   }
 
+  final override fun stop() {
+    if (currentState != LifecycleState.Started) {
+      throw IllegalStateException(
+        "Cannot stop() from a state that is not Started: " +
+          "${this::class.java.simpleName} is ${currentState.name}",
+      )
+    }
+    onStop()
+    lifecycleRegistry.stop()
+  }
+
   final override fun hide() {
     if (currentState != LifecycleState.Shown) {
       throw IllegalStateException(
         "Cannot hide() from a state that is not Shown: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
+          "${this::class.java.simpleName} is ${currentState.name}",
       )
     }
     onHide()
@@ -70,7 +92,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     if (currentState != LifecycleState.Created) {
       throw IllegalStateException(
         "Cannot destroy() from a state that is not Created: " +
-          "${this::class.java.simpleName} is ${currentState::class.java.simpleName}",
+          "${this::class.java.simpleName} is ${currentState.name}",
       )
     }
     onDestroy()
@@ -107,9 +129,13 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
 
   protected open fun onShow() {}
 
+  protected open fun onStart() {}
+
   protected open fun onResume() {}
 
   protected open fun onPause() {}
+
+  protected open fun onStop() {}
 
   protected open fun onHide() {}
 

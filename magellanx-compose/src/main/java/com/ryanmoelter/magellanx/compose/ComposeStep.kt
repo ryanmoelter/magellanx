@@ -10,6 +10,7 @@ import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.coroutines.CreatedLifecycleScope
 import com.ryanmoelter.magellanx.core.coroutines.ResumedLifecycleScope
 import com.ryanmoelter.magellanx.core.coroutines.ShownLifecycleScope
+import com.ryanmoelter.magellanx.core.coroutines.StartedLifecycleScope
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
 import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
@@ -27,7 +28,7 @@ public abstract class ComposeSection :
   LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
   override val view: (@Composable () -> Unit)?
     get() = {
-      WhenShown {
+      WhenStarted {
         Content()
       }
     }
@@ -36,6 +37,9 @@ public abstract class ComposeSection :
     @VisibleForTesting set
 
   public var shownScope: CoroutineScope by attachFieldToLifecycle(ShownLifecycleScope()) { it }
+    @VisibleForTesting set
+
+  public var startedScope: CoroutineScope by attachFieldToLifecycle(StartedLifecycleScope()) { it }
     @VisibleForTesting set
 
   public var resumedScope: CoroutineScope by attachFieldToLifecycle(ResumedLifecycleScope()) { it }

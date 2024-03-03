@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ryanmoelter.magellanx.compose.Content
-import com.ryanmoelter.magellanx.compose.WhenShown
+import com.ryanmoelter.magellanx.compose.WhenStarted
 import com.ryanmoelter.magellanx.compose.navigation.Direction.BACKWARD
 import com.ryanmoelter.magellanx.compose.navigation.Direction.FORWARD
 import com.ryanmoelter.magellanx.compose.transitions.MagellanComposeTransition
@@ -59,7 +59,7 @@ public open class ComposeNavigator :
 
   override val view: (@Composable () -> Unit)
     get() = {
-      WhenShown {
+      WhenStarted {
         Content()
       }
     }
@@ -83,8 +83,8 @@ public open class ComposeNavigator :
             // Navigable is Resumed if it's on the top of the backstack
             lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.NO_LIMIT)
           } else {
-            // Navigable is Shown if it's in the composition, but not on top of the backstack
-            lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
+            // Navigable is Started if it's in the composition, but not on top of the backstack
+            lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.STARTED)
           }
         }
         DisposableEffect(
@@ -96,13 +96,20 @@ public open class ComposeNavigator :
               if (children.contains(navigable)) {
                 // Back events will remove the navigable from the backstack, but we keep it attached
                 // to this parent until it's done animating out.
-                if (backStack.map { it.navigable }.contains(navigable)) {
-                  // Any navigable still in the backstack but not visible is Created
-                  lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
-                } else {
-                  // Any navigable that's been removed from the backstack should also be removed
-                  // from this LifecycleOwner
-                  removeFromLifecycle(navigable)
+                when {
+                  backStack.map { it.navigable }.last() == navigable -> {
+                    // The navigable on top of the backstack is Shown if not visible
+                    lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
+                  }
+                  backStack.map { it.navigable }.contains(navigable) -> {
+                    // Any navigable still in the backstack but not visible is Created
+                    lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
+                  }
+                  else -> {
+                    // Any navigable that's been removed from the backstack should also be removed
+                    // from this LifecycleOwner
+                    removeFromLifecycle(navigable)
+                  }
                 }
               }
             }
@@ -181,7 +188,6 @@ public open class ComposeNavigator :
   ) {
     // TODO: Intercept touch events, if necessary
     NavigationPropagator._beforeNavigation.tryEmit(Unit)
-    val fromNavigable = currentNavigable
     val oldBackStack = backStack
     val newBackStack = backStackOperation(backStack)
     val toNavigable = newBackStack.last().navigable
@@ -214,9 +220,9 @@ public open class ComposeNavigator :
     val newNavigables = newBackStack.toSet()
 
     (oldNavigables - newNavigables).forEach { oldNavigable ->
-      val isShown =
-        oldNavigable is LifecycleOwner && oldNavigable.currentState >= LifecycleState.Shown
-      if (!isShown) {
+      val isStarted =
+        oldNavigable is LifecycleOwner && oldNavigable.currentState >= LifecycleState.Started
+      if (!isStarted) {
         lifecycleRegistry.removeFromLifecycle(oldNavigable)
       }
     }
