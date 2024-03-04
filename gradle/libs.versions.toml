@@ -24,7 +24,7 @@ kotlinter = "4.2.0"
 # Sample app
 kotlin-inject = "0.6.3"
 ksp = "1.9.22-1.0.16"
-coil = "2.4.0"
+coil = "2.6.0"
 retrofit = "2.9.0"
 junit-old = "1.1.5"
 espresso-core = "3.5.1"
