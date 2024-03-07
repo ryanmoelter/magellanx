@@ -21,10 +21,10 @@ import kotlinx.coroutines.launch
 class ChooseBreedStep(
   val chooseBreed: (String) -> Unit,
 ) : ComposeStep() {
-  val loadableBreedListFlow: MutableStateFlow<Loadable<List<String>>> =
+  private val loadableBreedListFlow: MutableStateFlow<Loadable<List<String>>> =
     MutableStateFlow(Loadable.Loading())
 
-  val doggoApi = injector.doggoApi
+  private val doggoApi = injector.doggoApi
 
   @Composable
   override fun Content() {

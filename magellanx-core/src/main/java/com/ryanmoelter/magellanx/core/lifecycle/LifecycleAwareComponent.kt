@@ -99,10 +99,6 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     lifecycleRegistry.destroy()
   }
 
-  override fun backPressed(): Boolean {
-    return lifecycleRegistry.backPressed() || onBackPressed()
-  }
-
   public fun attachToLifecycle(lifecycleAware: LifecycleAware) {
     attachToLifecycle(lifecycleAware, LifecycleState.Destroyed)
   }
@@ -140,6 +136,4 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
   protected open fun onHide() {}
 
   protected open fun onDestroy() {}
-
-  protected open fun onBackPressed(): Boolean = false
 }

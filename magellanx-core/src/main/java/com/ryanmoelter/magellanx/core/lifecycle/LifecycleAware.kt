@@ -16,6 +16,4 @@ public interface LifecycleAware {
   public fun hide() {}
 
   public fun destroy() {}
-
-  public fun backPressed(): Boolean = false
 }

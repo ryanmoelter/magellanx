@@ -1,7 +1,6 @@
 package com.ryanmoelter.magellanx.core.lifecycle
 
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.NO_LIMIT
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.SHOWN
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -124,16 +123,6 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
   override fun destroy() {
     currentState = LifecycleState.Destroyed
   }
-
-  override fun backPressed(): Boolean = onAllActiveListenersUntilTrue { it.backPressed() }
-
-  private fun onAllActiveListenersUntilTrue(action: (LifecycleAware) -> Boolean): Boolean =
-    listenersToMaxStates
-      .asSequence()
-      .filter { it.value >= SHOWN }
-      .map { it.key }
-      .map(action)
-      .any { it }
 }
 
 public enum class LifecycleLimit(internal val maxLifecycleState: LifecycleState) {

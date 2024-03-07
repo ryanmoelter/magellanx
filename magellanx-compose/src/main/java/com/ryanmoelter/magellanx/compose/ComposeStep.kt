@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.produceState
 import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.coroutines.CreatedLifecycleScope
@@ -12,15 +11,12 @@ import com.ryanmoelter.magellanx.core.coroutines.ResumedLifecycleScope
 import com.ryanmoelter.magellanx.core.coroutines.ShownLifecycleScope
 import com.ryanmoelter.magellanx.core.coroutines.StartedLifecycleScope
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
 import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.withContext
 
 public abstract class ComposeStep : ComposeSection(), Navigable<@Composable () -> Unit>
 
@@ -76,23 +72,9 @@ public abstract class ComposeSection :
     initial: R,
     context: CoroutineContext = EmptyCoroutineContext,
   ): State<R> =
-    produceState(initial, this, context) {
-      if (context == EmptyCoroutineContext) {
-        combine(lifecycleRegistry.currentStateFlow) { it, currentState -> it to currentState }
-          .collect { (it, currentState) ->
-            if (currentState == LifecycleState.Resumed) {
-              value = it
-            }
-          }
-      } else {
-        withContext(context) {
-          combine(lifecycleRegistry.currentStateFlow) { it, currentState -> it to currentState }
-            .collect { (it, currentState) ->
-              if (currentState == LifecycleState.Resumed) {
-                value = it
-              }
-            }
-        }
-      }
-    }
+    collectAsStateWhileResumed(
+      initial = initial,
+      lifecycleComponent = this@ComposeSection,
+      context = context,
+    )
 }
