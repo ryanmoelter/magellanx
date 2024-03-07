@@ -14,7 +14,6 @@ import com.ryanmoelter.magellanx.doggos.home.ListItem
 import com.ryanmoelter.magellanx.doggos.injector
 import com.ryanmoelter.magellanx.doggos.utils.Loadable
 import com.ryanmoelter.magellanx.doggos.utils.ShowLoadingAround
-import com.ryanmoelter.magellanx.doggos.utils.map
 import com.ryanmoelter.magellanx.doggos.utils.wrapInLoadableFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ import kotlinx.coroutines.launch
 class ChooseBreedStep(
   val chooseBreed: (String) -> Unit,
 ) : ComposeStep() {
-
   private val loadableBreedListFlow: MutableStateFlow<Loadable<List<String>>> =
     MutableStateFlow(Loadable.Loading())
 

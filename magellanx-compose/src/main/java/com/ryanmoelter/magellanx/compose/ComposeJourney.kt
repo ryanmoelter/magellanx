@@ -5,9 +5,8 @@ import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigator
 import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
 
 public abstract class ComposeJourney : ComposeStep() {
-
   protected var navigator: ComposeNavigator by attachFieldToLifecycle(
-    ComposeNavigator(::interceptBack, ::interceptBackGestureAnimation)
+    ComposeNavigator(::interceptBack, ::interceptBackGestureAnimation),
   )
 
   @Composable

@@ -1,7 +1,6 @@
 package com.ryanmoelter.magellanx.core.lifecycle
 
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.NO_LIMIT
-import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit.SHOWN
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
