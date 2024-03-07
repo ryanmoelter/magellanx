@@ -17,6 +17,7 @@
       "matchPackageNames": [
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
+        "org.jetbrains.kotlin.plugin.serialization",
         "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
@@ -32,6 +33,7 @@
       "excludePackageNames": [
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
+        "org.jetbrains.kotlin.plugin.serialization",
         "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin",
         "com.android.tools.build:gradle"
@@ -45,6 +47,7 @@
       "excludePackageNames": [
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
+        "org.jetbrains.kotlin.plugin.serialization",
         "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin",
         "com.android.tools.build:gradle"
