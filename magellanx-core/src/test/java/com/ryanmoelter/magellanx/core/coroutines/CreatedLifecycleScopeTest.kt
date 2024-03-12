@@ -1,5 +1,6 @@
 package com.ryanmoelter.magellanx.core.coroutines
 
+import com.ryanmoelter.magellanx.core.init.Magellan
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Created
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Destroyed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Resumed
@@ -14,7 +15,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 
@@ -24,8 +24,8 @@ internal class CreatedLifecycleScopeTest {
 
   @Before
   fun setUp() {
+    Magellan.init(mainDispatcher = Dispatchers.Default.limitedParallelism(1))
     createdScope = CreatedLifecycleScope()
-    Dispatchers.setMain(Dispatchers.Default.limitedParallelism(1))
   }
 
   @Test

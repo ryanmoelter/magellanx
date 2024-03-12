@@ -5,22 +5,25 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAware
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
 public open class MagellanLifecycleScope(
   private val lowercaseLifecycleDescription: String,
 ) : CoroutineScope, LifecycleAware {
+  private val dispatcher get() = Magellan.overrideMainDispatcher ?: Dispatchers.Main
+
   protected var job: Job =
     SupervisorJob().apply {
       cancel(CancellationException("Not $lowercaseLifecycleDescription yet"))
     }
     set(value) {
       field = value
-      coroutineContext = value + Magellan.mainDispatcher
+      coroutineContext = value + dispatcher
     }
 
-  override var coroutineContext: CoroutineContext = job + Magellan.mainDispatcher
+  override var coroutineContext: CoroutineContext = job + dispatcher
     protected set
 }
 
@@ -29,7 +32,7 @@ public class CreatedLifecycleScope : MagellanLifecycleScope("created") {
     job = SupervisorJob()
   }
 
-  override fun destroy(): Unit = job.cancel(CancellationException("destroyed"))
+  override fun destroy(): Unit = job.cancel(CancellationException("Destroyed"))
 }
 
 public class ShownLifecycleScope : MagellanLifecycleScope("shown") {
