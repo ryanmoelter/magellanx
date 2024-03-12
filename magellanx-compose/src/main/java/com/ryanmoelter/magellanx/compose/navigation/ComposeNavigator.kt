@@ -40,12 +40,13 @@ public open class ComposeNavigator :
   /**
    * The backstack. The last item in each list is the top of the stack.
    */
-  private val backStackFlow = MutableStateFlow<List<ComposeNavigationEvent>>(emptyList())
+  protected val backStackFlow: MutableStateFlow<List<ComposeNavigationEvent>> =
+    MutableStateFlow(emptyList())
 
   /**
    * Get a snapshot of the current item in [backStackFlow]. The last item is the top of the stack.
    */
-  public open val backStack: List<ComposeNavigationEvent>
+  public val backStack: List<ComposeNavigationEvent>
     get() = backStackFlow.value
 
   /**
@@ -58,7 +59,7 @@ public open class ComposeNavigator :
   public val currentNavigableFlow: StateFlow<Navigable<@Composable () -> Unit>?> =
     currentNavigationEventFlow
       .map { it?.navigable }
-      .stateIn(createdScope, SharingStarted.Eagerly, currentNavigable)
+      .stateIn(createdScope, SharingStarted.Eagerly, null)
 
   // TODO: make default transition configurable
   private val transitionFlow: MutableStateFlow<MagellanComposeTransition> =
