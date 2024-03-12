@@ -21,16 +21,22 @@ import com.ryanmoelter.magellanx.compose.transitions.defaultTransition
 import com.ryanmoelter.magellanx.compose.transitions.noTransition
 import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.Navigable
+import com.ryanmoelter.magellanx.core.coroutines.CreatedLifecycleScope
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleLimit
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
-import kotlinx.coroutines.flow.Flow
+import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 public open class ComposeNavigator :
   LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
+  private val createdScope by attachFieldToLifecycle(CreatedLifecycleScope())
+
   /**
    * The backstack. The last item in each list is the top of the stack.
    */
@@ -49,8 +55,10 @@ public open class ComposeNavigator :
     get() = backStack.lastOrNull()?.navigable
 
   private val currentNavigationEventFlow = backStackFlow.map { it.lastOrNull() }
-  public val currentNavigableFlow: Flow<Navigable<@Composable () -> Unit>?> =
-    currentNavigationEventFlow.map { it?.navigable }
+  public val currentNavigableFlow: StateFlow<Navigable<@Composable () -> Unit>?> =
+    currentNavigationEventFlow
+      .map { it?.navigable }
+      .stateIn(createdScope, SharingStarted.Eagerly, currentNavigable)
 
   // TODO: make default transition configurable
   private val transitionFlow: MutableStateFlow<MagellanComposeTransition> =
@@ -68,7 +76,7 @@ public open class ComposeNavigator :
   @Suppress("ktlint:standard:function-naming")
   private fun Content() {
     val backStack by backStackFlow.collectAsState()
-    val currentNavigable by currentNavigableFlow.collectAsState(null)
+    val currentNavigable by currentNavigableFlow.collectAsState()
     val currentTransitionSpec by transitionFlow.collectAsState()
     val currentDirection by directionFlow.collectAsState()
 
