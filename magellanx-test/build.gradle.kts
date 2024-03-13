@@ -33,8 +33,7 @@ android {
   }
 
   publishing {
-    multipleVariants {
-      allVariants()
+    singleVariant("release") {
       withJavadocJar()
       withSourcesJar()
     }
@@ -42,14 +41,15 @@ android {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-  kotlinOptions.freeCompilerArgs = if (!name.contains("UnitTest")) {
-    listOf(
-      "-Xexplicit-api=strict",
-      "-opt-in=kotlin.RequiresOptIn"
-    )
-  } else {
-    listOf("-opt-in=kotlin.RequiresOptIn")
-  }
+  kotlinOptions.freeCompilerArgs =
+    if (!name.contains("UnitTest")) {
+      listOf(
+        "-Xexplicit-api=strict",
+        "-opt-in=kotlin.RequiresOptIn",
+      )
+    } else {
+      listOf("-opt-in=kotlin.RequiresOptIn")
+    }
   kotlinOptions.allWarningsAsErrors = true
   kotlinOptions.jvmTarget = "1.8"
 }
@@ -75,7 +75,7 @@ dependencies {
 
 publishing {
   publications {
-    register<MavenPublication>("default") {
+    register<MavenPublication>("release") {
       groupId = extra["GROUP"] as String
       artifactId = extra["POM_ARTIFACT_ID"] as String
       version = extra["VERSION_NAME"] as String
@@ -114,4 +114,3 @@ publishing {
     }
   }
 }
-
