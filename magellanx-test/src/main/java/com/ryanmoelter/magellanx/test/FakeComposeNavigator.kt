@@ -12,21 +12,23 @@ import com.ryanmoelter.magellanx.core.navigation.LinearNavigator
  * re-instantiated, [destroy]ed, or [clear]ed between tests.
  */
 public class FakeComposeNavigator : ComposeNavigator() {
-  public override var backStack: List<ComposeNavigationEvent> = emptyList()
+  public fun setBackStack(backStack: List<ComposeNavigationEvent>) {
+    backStackFlow.value = backStack
+  }
 
   /**
    * Clear this navigator for the next test. [destroy] will do the same thing, and it's also safe to
    * leave this object to be garbage collected instead.
    */
   public fun clear() {
-    backStack = emptyList()
+    setBackStack(emptyList())
   }
 
   public override fun navigate(
     direction: Direction,
     backStackOperation: (List<ComposeNavigationEvent>) -> List<ComposeNavigationEvent>,
   ) {
-    backStack = backStackOperation(backStack)
+    setBackStack(backStackOperation(backStack))
   }
 
   public override fun onDestroy() {

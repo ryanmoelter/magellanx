@@ -3,6 +3,7 @@ package com.ryanmoelter.magellanx.test
 import com.ryanmoelter.magellanx.compose.navigation.ComposeNavigationEvent
 import com.ryanmoelter.magellanx.compose.navigation.Direction
 import com.ryanmoelter.magellanx.compose.transitions.defaultTransition
+import com.ryanmoelter.magellanx.core.init.Magellan
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState
 import com.ryanmoelter.magellanx.core.lifecycle.transitionToState
 import io.kotest.matchers.booleans.shouldBeFalse
@@ -12,27 +13,29 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.types.shouldBeSameInstanceAs
+import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Test
 
-public class FakeLinearNavigatorTest {
+class FakeLinearNavigatorTest {
   private lateinit var navigator: FakeComposeNavigator
 
   @Before
-  public fun setUp() {
+  fun setUp() {
+    Magellan.init(mainDispatcher = Dispatchers.Unconfined)
     navigator = FakeComposeNavigator()
   }
 
   @Test
-  public fun clear() {
-    navigator.backStack = listOf(ComposeNavigationEvent(TestNavigable(), defaultTransition))
+  fun clear() {
+    navigator.setBackStack(listOf(ComposeNavigationEvent(TestNavigable(), defaultTransition)))
     navigator.clear()
     navigator.backStack.shouldBeEmpty()
     navigator.currentNavigable.shouldBeNull()
   }
 
   @Test
-  public fun goTo() {
+  fun goTo() {
     navigator.goTo(TestNavigable())
     navigator.backStack shouldHaveSize 1
 
@@ -43,7 +46,7 @@ public class FakeLinearNavigatorTest {
   }
 
   @Test
-  public fun replace() {
+  fun replace() {
     navigator.goTo(TestNavigable())
     navigator.backStack shouldHaveSize 1
 
@@ -54,15 +57,16 @@ public class FakeLinearNavigatorTest {
   }
 
   @Test
-  public fun navigate() {
+  fun navigate() {
     val originalBottomNavigable = TestNavigable()
     val newBottomNavigable = TestNavigable()
     val newTopNavigable = TestNavigable()
-    navigator.backStack =
+    navigator.setBackStack(
       listOf(
         ComposeNavigationEvent(originalBottomNavigable, defaultTransition),
         ComposeNavigationEvent(TestNavigable(), defaultTransition),
-      )
+      ),
+    )
 
     navigator.navigate(Direction.FORWARD) {
       listOf(
@@ -81,7 +85,7 @@ public class FakeLinearNavigatorTest {
   }
 
   @Test
-  public fun goBack_noop() {
+  fun goBack_noop() {
     navigator.goBack().shouldBeFalse()
     navigator.goTo(TestNavigable())
     navigator.goBack().shouldBeFalse()
@@ -89,21 +93,22 @@ public class FakeLinearNavigatorTest {
   }
 
   @Test
-  public fun goBack_success() {
+  fun goBack_success() {
     val bottomNavigable = TestNavigable()
-    navigator.backStack =
+    navigator.setBackStack(
       listOf(
         ComposeNavigationEvent(bottomNavigable, defaultTransition),
         ComposeNavigationEvent(TestNavigable(), defaultTransition),
-      )
+      ),
+    )
     navigator.goBack().shouldBeTrue()
     navigator.backStack shouldHaveSize 1
     navigator.currentNavigable shouldBeSameInstanceAs bottomNavigable
   }
 
   @Test
-  public fun destroy() {
-    navigator.backStack = listOf(ComposeNavigationEvent(TestNavigable(), defaultTransition))
+  fun destroy() {
+    navigator.setBackStack(listOf(ComposeNavigationEvent(TestNavigable(), defaultTransition)))
     navigator.transitionToState(LifecycleState.Created)
     navigator.destroy()
     navigator.backStack.shouldBeEmpty()
