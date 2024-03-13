@@ -55,16 +55,20 @@ public open class ComposeNavigator :
   public val currentNavigable: Navigable<@Composable () -> Unit>?
     get() = backStack.lastOrNull()?.navigable
 
-  private val currentNavigationEventFlow = backStackFlow.map { it.lastOrNull() }
-  public val currentNavigableFlow: StateFlow<Navigable<@Composable () -> Unit>?> =
-    currentNavigationEventFlow
-      .map { it?.navigable }
-      .stateIn(createdScope, SharingStarted.Eagerly, null)
+  public lateinit var currentNavigableFlow: StateFlow<Navigable<@Composable () -> Unit>?>
+    private set
 
   // TODO: make default transition configurable
   private val transitionFlow: MutableStateFlow<MagellanComposeTransition> =
     MutableStateFlow(defaultTransition)
   private val directionFlow: MutableStateFlow<Direction> = MutableStateFlow(FORWARD)
+
+  override fun onCreate() {
+    currentNavigableFlow =
+      backStackFlow.map { it.lastOrNull() }
+        .map { it?.navigable }
+        .stateIn(createdScope, SharingStarted.Eagerly, null)
+  }
 
   override val view: (@Composable () -> Unit)
     get() = {
