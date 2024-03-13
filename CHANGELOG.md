@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.1
+- Fix transitions showing when they shouldn't when `Journey`s are first shown.
+
 ## 0.5.0
 - BREAKING: Add `Started` lifecycle state
   - `Started` replaces `Shown` and represents "being drawn to the screen", but `Shown` now represents "on top of the backstack". `show()` and `hide()` are now effectively `navigatedTo()` and `navigatedFrom()` respectively.
