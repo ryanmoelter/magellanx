@@ -47,8 +47,7 @@ android {
   }
 
   publishing {
-    multipleVariants {
-      allVariants()
+    singleVariant("release") {
       withJavadocJar()
       withSourcesJar()
     }
@@ -103,14 +102,14 @@ dependencies {
   testImplementation(libs.robolectric)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.androidx.test.core.ktx)
-  androidTestImplementation("junit:junit:4.13.2")
-  androidTestImplementation("androidx.test.ext:junit:1.1.5")
-  androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.espresso.core)
 }
 
 publishing {
   publications {
-    register<MavenPublication>("default") {
+    register<MavenPublication>("release") {
       groupId = extra["GROUP"] as String
       artifactId = extra["POM_ARTIFACT_ID"] as String
       version = extra["VERSION_NAME"] as String
