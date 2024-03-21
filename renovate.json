@@ -25,6 +25,15 @@
       "automerge": false
     },
     {
+      "matchPackageNames": [
+        "com.android.tools.build:gradle",
+        "com.android.application"
+      ],
+      "groupName": "Android Gradle Plugin",
+      "automerge": false
+    },
+
+    {
       "matchUpdateTypes": [
         "minor",
         "pin",
@@ -36,7 +45,8 @@
         "org.jetbrains.kotlin.plugin.serialization",
         "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin",
-        "com.android.tools.build:gradle"
+        "com.android.tools.build:gradle",
+        "com.android.application"
       ],
       "automerge": true
     },
@@ -50,7 +60,8 @@
         "org.jetbrains.kotlin.plugin.serialization",
         "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin",
-        "com.android.tools.build:gradle"
+        "com.android.tools.build:gradle",
+        "com.android.application"
       ],
       "groupName": "Patch dependency updates",
       "automerge": true
