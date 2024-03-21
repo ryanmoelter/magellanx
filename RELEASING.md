@@ -8,16 +8,11 @@
 6. Update the `gradle.properties` to the next SNAPSHOT version (increment patch by 1, e.g. `1.0.0` → `1.0.1-SNAPSHOT`).
 7. `git commit -am "Prepare next development version"`
 8. `git push && git push --tags`
-9. Visit [the GitHub releases page](https://github.com/ryanmoelter/magellanx/releases) and create a
-   new release, copying the changelog from `CHANGELOG.md`.
-10. Visit [the Jitpack site](https://jitpack.io/#com.ryanmoelter/magellanx) and check that the new
-    release shows up
+9. Visit [the GitHub releases page](https://github.com/ryanmoelter/magellanx/releases) and create a new release, copying the changelog from `CHANGELOG.md`.
+10. Visit [the Jitpack site](https://jitpack.io/#com.ryanmoelter/magellanx) and check that the new release shows up
 
 ## Publish to local maven repo
 
 1. Run `./gradlew publishToMavenLocal`.
-2. In the other project, add `mavenLocal()` as a repository (likely in `allProjects.repositories` of
-   the root `build.gradle` file).
-3. Update `com.ryanmoelter:magellanx-compose:X.Y.Z`
-   to `com.ryanmoelter:magellanx-compose:SNAPSHOT_VERSION`, where `SNAPSHOT_VERSION` is
-   the `VERSION_NAME` defined in this project's `./gradle.properties`.
+2. In the other project, add `mavenLocal()` as a repository (likely in `allProjects.repositories` of the root `build.gradle` file).
+3. Update `com.ryanmoelter.magellanx:magellanx-compose:X.Y.Z` to `com.ryanmoelter.magellanx:magellanx-compose:SNAPSHOT_VERSION`, where `SNAPSHOT_VERSION` is the `VERSION_NAME` defined in this project's `./gradle.properties`.
