@@ -3,22 +3,38 @@ package com.ryanmoelter.magellanx.compose.navigation
 import com.ryanmoelter.magellanx.core.Navigable
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
-@Suppress("ObjectPropertyName")
 public object NavigationPropagator {
-  internal val _beforeNavigation: MutableSharedFlow<Unit> = MutableSharedFlow()
+  internal fun onBeforeNavigation() {
+    _beforeNavigation.tryEmit(Unit)
+  }
+
+  private val _beforeNavigation: MutableSharedFlow<Unit> = MutableSharedFlow()
   public val beforeNavigation: SharedFlow<Unit>
-    get() = _beforeNavigation
+    get() = _beforeNavigation.asSharedFlow()
 
-  internal val _afterNavigation: MutableSharedFlow<Unit> = MutableSharedFlow()
+  internal fun onAfterNavigation() {
+    _afterNavigation.tryEmit(Unit)
+  }
+
+  private val _afterNavigation: MutableSharedFlow<Unit> = MutableSharedFlow()
   public val afterNavigation: SharedFlow<Unit>
-    get() = _afterNavigation
+    get() = _afterNavigation.asSharedFlow()
 
-  internal val _onNavigatedTo: MutableSharedFlow<Navigable<*>> = MutableSharedFlow()
+  internal fun navigatedTo(navigable: Navigable<*>) {
+    _onNavigatedTo.tryEmit(navigable)
+  }
+
+  private val _onNavigatedTo: MutableSharedFlow<Navigable<*>> = MutableSharedFlow()
   public val onNavigatedTo: SharedFlow<Navigable<*>>
-    get() = _onNavigatedTo
+    get() = _onNavigatedTo.asSharedFlow()
 
-  internal val _onNavigatedFrom: MutableSharedFlow<Navigable<*>> = MutableSharedFlow()
+  internal fun navigatedFrom(navigable: Navigable<*>) {
+    _onNavigatedFrom.tryEmit(navigable)
+  }
+
+  private val _onNavigatedFrom: MutableSharedFlow<Navigable<*>> = MutableSharedFlow()
   public val onNavigatedFrom: SharedFlow<Navigable<*>>
-    get() = _onNavigatedFrom
+    get() = _onNavigatedFrom.asSharedFlow()
 }

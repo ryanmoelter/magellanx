@@ -1,5 +1,3 @@
-@file:Suppress("ForbiddenComment")
-
 package com.ryanmoelter.magellanx.compose.navigation
 
 import androidx.compose.animation.AnimatedContent
@@ -114,10 +112,12 @@ public open class ComposeNavigator :
                     // The navigable on top of the backstack is Shown if not visible
                     lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.SHOWN)
                   }
+
                   backStack.map { it.navigable }.contains(navigable) -> {
                     // Any navigable still in the backstack but not visible is Created
                     lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.CREATED)
                   }
+
                   else -> {
                     // Any navigable that's been removed from the backstack should also be removed
                     // from this LifecycleOwner
@@ -199,10 +199,10 @@ public open class ComposeNavigator :
     direction: Direction,
     backStackOperation: (backStack: List<ComposeNavigationEvent>) -> List<ComposeNavigationEvent>,
   ) {
-    // TODO: Intercept touch events, if necessary
-    NavigationPropagator._beforeNavigation.tryEmit(Unit)
+    NavigationPropagator.onBeforeNavigation()
     val oldBackStack = backStack
     val newBackStack = backStackOperation(backStack)
+    val fromNavigable = oldBackStack.lastOrNull()?.navigable
     val toNavigable = newBackStack.last().navigable
     directionFlow.value = direction
     transitionFlow.value =
@@ -219,9 +219,12 @@ public open class ComposeNavigator :
      * reset to CREATED in DisposedEffect.
      */
     lifecycleRegistry.updateMaxState(toNavigable, LifecycleLimit.NO_LIMIT)
-    NavigationPropagator._onNavigatedTo.tryEmit(toNavigable)
+    if (fromNavigable != null) {
+      NavigationPropagator.navigatedFrom(fromNavigable)
+    }
+    NavigationPropagator.navigatedTo(toNavigable)
     backStackFlow.value = newBackStack
-    NavigationPropagator._afterNavigation.tryEmit(Unit)
+    NavigationPropagator.onAfterNavigation()
   }
 
   private fun findBackstackChangesAndUpdateStates(
