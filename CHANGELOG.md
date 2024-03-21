@@ -1,7 +1,7 @@
 # Changelog
 
-## 0.5.1
-- Update dependencies, including to Kotlin 1.9.23, Compose BOM to 2024.03.00, Compose Compiler to 1.5.11
+## 0.5.2
+- Update dependencies, including to Kotlin `1.9.23`, Compose BOM to `2024.03.00`, Compose Compiler to `1.5.11`.
 
 ## 0.5.1
 - Fix transitions showing when they shouldn't when `Journey`s are first shown.
