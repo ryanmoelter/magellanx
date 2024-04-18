@@ -9,7 +9,7 @@ compose-compiler = "1.5.11"
 compileSdk = "34"
 minSdk = "23"
 
-activity = "1.8.2"
+activity = "1.9.0"
 accompanist = "0.34.0"
 material3 = "1.2.1"
 appcompat = "1.6.1"
