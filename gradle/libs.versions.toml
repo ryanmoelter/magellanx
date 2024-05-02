@@ -83,7 +83,7 @@ accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-dra
 # Android
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
-ktx-core = { module = "androidx.core:core-ktx", version = "1.13.0" }
+ktx-core = { module = "androidx.core:core-ktx", version = "1.13.1" }
 
 # Generated
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-old" }
