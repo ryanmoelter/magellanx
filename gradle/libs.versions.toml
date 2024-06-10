@@ -15,9 +15,9 @@ material3 = "1.2.1"
 appcompat = "1.7.0"
 constraintlayout = "2.1.4"
 
-kotest = "5.9.0"
+kotest = "5.9.1"
 testCore = "1.5.0"
-lint = "31.4.1"
+lint = "31.4.2"
 
 kotlinter = "4.3.0"
 
