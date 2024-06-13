@@ -28,7 +28,7 @@ coil = "2.6.0"
 retrofit = "2.11.0"
 junit-old = "1.1.5"
 espresso-core = "3.5.1"
-lifecycle-runtime-ktx = "2.8.1"
+lifecycle-runtime-ktx = "2.8.2"
 
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
