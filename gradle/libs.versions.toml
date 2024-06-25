@@ -16,7 +16,7 @@ appcompat = "1.7.0"
 constraintlayout = "2.1.4"
 
 kotest = "5.9.1"
-testCore = "1.5.0"
+testCore = "1.6.0"
 lint = "31.5.0"
 
 kotlinter = "4.3.0"
