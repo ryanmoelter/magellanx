@@ -113,6 +113,91 @@ Magellan X uses the following dependencies, and since `0.2.0` is using
 
 </details>
 
+## Quickstart
+
+To start, create a `RootStep` that just says "Hello world":
+
+```kotlin
+class RootStep : ComposeStep() {
+  @Composable
+  override fun Content() {
+    Text("Hello world!")
+  }
+}
+```
+
+Then attach it in your `MainActivity`:
+
+```kotlin
+class MainActivity : ComponentActivity() {
+  private val rootStep = /* Get singleton from dependency injection */
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    // ...
+    setContentNavigable(rootStep)  // Add rootStep to the lifecycle and UI
+    onBackPressedDispatcher.addCallback {  // Handle back navigation (eventually won't be necessary)
+      if (!rootStep.backPressed()) {
+        this@MainActivity.finish()
+      }
+    }
+    // ...
+  }
+}
+```
+
+And run the app! You should see your "Hello world!" message.
+
+If you want to navigate, make the `RootStep` a `Journey` and create a child step:
+
+```kotlin
+class RootStep : ComposeJourney() {
+  override fun onCreate() {
+    // Navigating in onCreate (before the UI is shown) sets the initial `Step` with no transition
+    navigator.goTo(
+      ChildStep(
+        goToNext = { navigator.goTo(MessageStep("Hello Magellan!")) }
+      )
+    )
+  }
+
+  // No need to override Content() in a Journey, unless you want to add decoration around the child Steps
+}
+
+class ChildStep(
+  // Navigation is passed into child Steps as parameters
+  // Steps don't do their own navigation, instead they delegate to their parent Journey
+  val goToNext: () -> Unit
+) : ComposeStep() {
+  @Composable
+  override fun Content() {
+    Button(onClick = { goToNext() }) {
+      Text("Go to next page")
+    }
+  }
+}
+
+class SecondChildStep(
+  // Step parameters are typesafe
+  val message: String
+): ComposeStep() {
+  @Composable
+  override fun Content() {
+    Text("Navigation is fun!")
+  }
+}
+```
+
+And congrats, you've now created your first two pages! 🥳
+
+These are simple concepts, but they're powerful layers of abstraction. Some more advanced patterns include:
+
+- `Journey`s are `Step`s, meaning you can nest `Journey`s inside other `Journey`s to encapsulate your navigation.
+- You can nest a `Step` inside another `Step` using `val nestedChild by attachFieldToLifecycle(MyStep())`, and it will receive all lifecycle events. This is especially useful to break up complex pages into smaller, more maintainable parts.
+- If you want to reuse a piece of lifecycle-aware logic, make an object that implements the `LifecycleAware` interface, and attach it with `attachFieldToLifecycle` just like a step.
+- In addition to the usual Android lifecycle events (which work as expected), Magellan also has `Shown` (`onShow()`/`onHide()`), which is like `Started` but not called when the activity is simply recreated (e.g. on rotation or another configuration change).
+
+Eventually, I'll get around to adding a proper wiki, but feel free to [create an issue](https://github.com/ryanmoelter/magellanx/issues) or [a discussion](https://github.com/ryanmoelter/magellanx/discussions) if you have any questions!
+
 ## Learning
 
 > Note: This library is a fork of [wealthfront/magellan](https://github.com/wealthfront/magellan),
