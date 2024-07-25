@@ -9,7 +9,7 @@ compose-compiler = "1.5.11"
 compileSdk = "34"
 minSdk = "23"
 
-activity = "1.9.0"
+activity = "1.9.1"
 accompanist = "0.34.0"
 material3 = "1.2.1"
 appcompat = "1.7.0"
@@ -28,7 +28,7 @@ coil = "2.7.0"
 retrofit = "2.11.0"
 junit-old = "1.2.1"
 espresso-core = "3.6.1"
-lifecycle-runtime-ktx = "2.8.3"
+lifecycle-runtime-ktx = "2.8.4"
 
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
