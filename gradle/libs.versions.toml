@@ -1,6 +1,6 @@
 [versions]
-android-gradle = "8.5.1"
-kotlin = "1.9.23"
+android-gradle = "8.5.2"
+kotlin = "1.9.25"
 coroutines = "1.8.1"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.06.00"
@@ -17,13 +17,13 @@ constraintlayout = "2.1.4"
 
 kotest = "5.9.1"
 testCore = "1.6.1"
-lint = "31.5.1"
+lint = "31.5.2"
 
 kotlinter = "4.3.0"
 
 # Sample app
 kotlin-inject = "0.7.1"
-ksp = "1.9.23-1.0.19"
+ksp = "1.9.25-1.0.20"
 coil = "2.7.0"
 retrofit = "2.11.0"
 junit-old = "1.2.1"
