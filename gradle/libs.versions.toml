@@ -10,7 +10,7 @@ compileSdk = "34"
 minSdk = "23"
 
 activity = "1.9.1"
-accompanist = "0.34.0"
+accompanist = "0.36.0"
 material3 = "1.2.1"
 appcompat = "1.7.0"
 constraintlayout = "2.1.4"
