@@ -32,7 +32,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 public open class ComposeNavigator :
-  LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
+  LifecycleAwareComponent(),
+  Displayable<@Composable () -> Unit> {
   private val createdScope by attachFieldToLifecycle(CreatedLifecycleScope())
 
   /**
@@ -63,9 +64,9 @@ public open class ComposeNavigator :
 
   override fun onCreate() {
     currentNavigableFlow =
-      backStackFlow.map { it.lastOrNull() }
-        .map { it?.navigable }
-        .stateIn(createdScope, SharingStarted.Eagerly, null)
+      backStackFlow
+        .map { it.lastOrNull()?.navigable }
+        .stateIn(createdScope, SharingStarted.Eagerly, backStack.lastOrNull()?.navigable)
   }
 
   override val view: (@Composable () -> Unit)
@@ -93,7 +94,10 @@ public open class ComposeNavigator :
           if (backStack.lastOrNull()?.navigable == navigable) {
             // Navigable is Resumed if it's on the top of the backstack
             lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.NO_LIMIT)
-          } else {
+          } else if (children.contains(navigable)) {
+            // If the navigable is being removed from composition, it might not be attached
+            // to this parent anymore
+
             // Navigable is Started if it's in the composition, but not on top of the backstack
             lifecycleRegistry.updateMaxState(navigable, LifecycleLimit.STARTED)
           }
@@ -168,8 +172,8 @@ public open class ComposeNavigator :
     }
   }
 
-  public open fun goBack(): Boolean {
-    return if (!atRoot()) {
+  public open fun goBack(): Boolean =
+    if (!atRoot()) {
       navigate(BACKWARD) { backStack ->
         backStack - backStack.last()
       }
@@ -177,7 +181,6 @@ public open class ComposeNavigator :
     } else {
       false
     }
-  }
 
   public open fun goBackTo(navigable: Navigable<@Composable () -> Unit>) {
     navigate(BACKWARD) { backStack ->
@@ -232,12 +235,13 @@ public open class ComposeNavigator :
     newBackStack: List<Navigable<*>>,
   ) {
     val oldNavigables = oldBackStack.toSet()
-    // Don't remove the last Navigable (from) until it's removed from composition in DisposedEffect
     val newNavigables = newBackStack.toSet()
 
     (oldNavigables - newNavigables).forEach { oldNavigable ->
       val isStarted =
         oldNavigable is LifecycleOwner && oldNavigable.currentState >= LifecycleState.Started
+
+      // Don't remove the last Navigable (from) until it's removed from composition in DisposedEffect
       if (!isStarted) {
         lifecycleRegistry.removeFromLifecycle(oldNavigable)
       }
