@@ -4,13 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.ryanmoelter.magellanx.core.Displayable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleOwner
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Resumed
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Started
-import kotlinx.coroutines.flow.map
 
 @Composable
 @Suppress("ktlint:standard:function-naming")
@@ -30,12 +28,8 @@ public fun Displayable(
 @Composable
 @Suppress("ktlint:standard:function-naming")
 public fun LifecycleOwner.WhenStarted(content: @Composable () -> Unit) {
-  val isStartedFlow =
-    remember {
-      currentStateFlow
-        .map { lifecycleState -> lifecycleState >= Started }
-    }
-  val isStarted by isStartedFlow.collectAsState(false)
+  val currentState by currentStateFlow.collectAsState()
+  val isStarted = currentState >= Started
   if (isStarted) {
     content()
   }
@@ -44,12 +38,8 @@ public fun LifecycleOwner.WhenStarted(content: @Composable () -> Unit) {
 @Composable
 @Suppress("ktlint:standard:function-naming")
 public fun LifecycleOwner.WhenResumed(content: @Composable () -> Unit) {
-  val isResumedFlow =
-    remember {
-      currentStateFlow
-        .map { lifecycleState -> lifecycleState >= Resumed }
-    }
-  val isResumed by isResumedFlow.collectAsState(false)
+  val currentState by currentStateFlow.collectAsState()
+  val isResumed = currentState >= Resumed
   if (isResumed) {
     content()
   }
