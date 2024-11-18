@@ -19,7 +19,7 @@ kotest = "5.9.1"
 testCore = "1.6.1"
 lint = "31.7.0"
 
-kotlinter = "4.3.0"
+kotlinter = "4.5.0"
 
 # Sample app
 kotlin-inject = "0.7.1"
