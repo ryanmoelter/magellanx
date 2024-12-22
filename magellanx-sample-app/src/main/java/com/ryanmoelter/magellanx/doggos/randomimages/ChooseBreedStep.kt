@@ -52,8 +52,7 @@ class ChooseBreedStep(
     shownScope.launch {
       wrapInLoadableFlow {
         doggoApi.getBreeds().breeds
-      }
-        .collect { breeds -> loadableBreedListFlow.value = breeds }
+      }.collect { breeds -> loadableBreedListFlow.value = breeds }
     }
   }
 }

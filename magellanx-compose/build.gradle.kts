@@ -2,15 +2,22 @@ plugins {
   id("com.android.library")
   kotlin("android")
   alias(libs.plugins.kotest)
+  alias(libs.plugins.composeCompiler)
   `maven-publish`
 }
 
 android {
   namespace = "com.ryanmoelter.magellanx.compose"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.compileSdk
+      .get()
+      .toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
+    minSdk =
+      libs.versions.minSdk
+        .get()
+        .toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -36,10 +43,6 @@ android {
     compose = true
   }
 
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-  }
-
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -54,12 +57,13 @@ android {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
-  kotlinOptions.freeCompilerArgs =
-    listOf(
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
       "-Xexplicit-api=strict",
       "-opt-in=kotlin.RequiresOptIn",
     )
+  }
 }
 
 tasks.withType<Test> {

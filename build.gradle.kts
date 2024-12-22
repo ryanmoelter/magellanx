@@ -17,6 +17,7 @@ plugins {
   alias(libs.plugins.kotlinter)
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.composeCompiler) apply false
 }
 
 allprojects {
@@ -32,6 +33,7 @@ allprojects {
 
   kotlinter {
     tasks.findByName("lint")?.dependsOn("lintKotlin")
+    ignoreFormatFailures = false
   }
 
   tasks.withType<Test> {

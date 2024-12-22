@@ -29,7 +29,8 @@ abstract class RealDoggoComponent : DoggoComponent {
   val retrofit: Retrofit
     @Provides @Singleton
     get() =
-      Retrofit.Builder()
+      Retrofit
+        .Builder()
         .baseUrl("https://dog.ceo/api/")
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .build()

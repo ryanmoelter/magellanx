@@ -70,8 +70,7 @@ class EnforceLifecycleAwareAttachmentTest {
           }
         """,
         ).indented(),
-      )
-      .issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
+      ).issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
       .run()
       .expect(
         "src/com/ryanmoelter/magellanx/app/SomeClass.kt:8: " +
@@ -82,8 +81,7 @@ class EnforceLifecycleAwareAttachmentTest {
           "  val navigator = LinearNavigator()\n" +
           "  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
           "1 errors, 0 warnings",
-      )
-      .expectFixDiffs("")
+      ).expectFixDiffs("")
   }
 
   @Test
@@ -105,8 +103,7 @@ class EnforceLifecycleAwareAttachmentTest {
           }
         """,
         ).indented(),
-      )
-      .issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
+      ).issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
       .run()
       .expectClean()
   }

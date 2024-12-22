@@ -31,9 +31,10 @@ public class SimpleComposeTransition(
   @Composable
   public override fun getTransitionForDirection(
     direction: Direction,
-  ): AnimatedContentTransitionScope<Navigable<@Composable () -> Unit>?>.() -> ContentTransform {
-    return { transitionSpec(direction) }
-  }
+  ): AnimatedContentTransitionScope<Navigable<@Composable () -> Unit>?>.() -> ContentTransform =
+    {
+      transitionSpec(direction)
+    }
 }
 
 private const val SCALE_DOWN_FACTOR = 0.85f

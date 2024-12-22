@@ -6,15 +6,24 @@ plugins {
 
 android {
   namespace = "com.ryanmoelter.magellanx.core"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.compileSdk
+      .get()
+      .toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
+    minSdk =
+      libs.versions.minSdk
+        .get()
+        .toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
     aarMetadata {
-      minCompileSdk = libs.versions.compileSdk.get().toInt()
+      minCompileSdk =
+        libs.versions.compileSdk
+          .get()
+          .toInt()
     }
   }
 
@@ -48,12 +57,13 @@ android {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
-  kotlinOptions.freeCompilerArgs =
-    listOf(
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
       "-Xexplicit-api=strict",
       "-opt-in=kotlin.RequiresOptIn",
     )
+  }
 }
 
 dependencies {

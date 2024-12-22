@@ -9,10 +9,16 @@ version = extra["VERSION_NAME"]!!
 
 android {
   namespace = "com.ryanmoelter.magellanx.test"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.compileSdk
+      .get()
+      .toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
+    minSdk =
+      libs.versions.minSdk
+        .get()
+        .toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -40,18 +46,16 @@ android {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-  kotlinOptions.freeCompilerArgs =
-    if (!name.contains("UnitTest")) {
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
       listOf(
         "-Xexplicit-api=strict",
         "-opt-in=kotlin.RequiresOptIn",
-      )
-    } else {
-      listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-  kotlinOptions.allWarningsAsErrors = true
-  kotlinOptions.jvmTarget = "1.8"
+      ),
+    )
+    allWarningsAsErrors = true
+  }
 }
 
 dependencies {

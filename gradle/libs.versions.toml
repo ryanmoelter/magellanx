@@ -1,12 +1,11 @@
 [versions]
-android-gradle = "8.5.1"
-kotlin = "1.9.23"
+android-gradle = "8.5.2"
+kotlin = "2.1.0"
 coroutines = "1.9.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2024.09.00"
+compose-bom = "2024.12.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-compose-compiler = "1.5.11"
-compileSdk = "34"
+compileSdk = "35"
 minSdk = "23"
 
 activity = "1.9.1"
@@ -17,22 +16,24 @@ constraintlayout = "2.1.4"
 
 kotest = "5.9.1"
 testCore = "1.6.1"
-lint = "31.7.0"
+lint = "31.7.3"
 
-kotlinter = "4.3.0"
+kotlinter = "5.0.0"
 
 # Sample app
-kotlin-inject = "0.7.1"
-ksp = "1.9.23-1.0.19"
+kotlin-inject = "0.7.2"
+ksp = "2.1.0-1.0.29"
 coil = "2.7.0"
 retrofit = "2.11.0"
 junit-old = "1.2.1"
 espresso-core = "3.6.1"
 lifecycle-runtime-ktx = "2.8.4"
+serialization = "1.7.3"
 
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 # Sample app
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
@@ -74,7 +75,6 @@ compose-material3 = { module = "androidx.compose.material3:material3", version.r
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "compose-compiler" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -83,7 +83,7 @@ accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-dra
 # Android
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
-ktx-core = { module = "androidx.core:core-ktx", version = "1.13.1" }
+ktx-core = { module = "androidx.core:core-ktx", version = "1.15.0" }
 
 # Generated
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit-old" }
@@ -97,7 +97,7 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlinx-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version = "1.0.0"}
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json",  version = "1.6.3"}
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json",  version.ref = "serialization"}
 kotlin-inject-ksp = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
 kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }
 

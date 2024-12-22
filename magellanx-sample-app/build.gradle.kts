@@ -3,16 +3,26 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlinx.serialization)
   alias(libs.plugins.ksp)
+  alias(libs.plugins.composeCompiler)
 }
 
 android {
   namespace = "com.ryanmoelter.magellanx.doggos"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.compileSdk
+      .get()
+      .toInt()
 
   defaultConfig {
     applicationId = "com.ryanmoelter.magellanx.doggos"
-    minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = libs.versions.compileSdk.get().toInt()
+    minSdk =
+      libs.versions.minSdk
+        .get()
+        .toInt()
+    targetSdk =
+      libs.versions.compileSdk
+        .get()
+        .toInt()
     versionCode = 1
     versionName = "1.0"
 
@@ -37,9 +47,6 @@ android {
   }
   buildFeatures {
     compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
   packaging {
     resources {
