@@ -55,10 +55,6 @@ android {
   }
 }
 
-kotlin {
-  jvmToolchain(8)
-}
-
 dependencies {
   implementation(project(":magellanx-compose"))
 

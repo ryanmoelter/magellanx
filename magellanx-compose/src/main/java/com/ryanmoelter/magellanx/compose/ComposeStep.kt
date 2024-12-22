@@ -79,6 +79,7 @@ public abstract class ComposeSection :
     initial: R,
     context: CoroutineContext = EmptyCoroutineContext,
   ): State<R> =
+    @Suppress("ProduceStateDoesNotAssignValue")
     produceState(initial, this, context) {
       if (context == EmptyCoroutineContext) {
         combine(lifecycleRegistry.currentStateFlow) { it, currentState -> it to currentState }

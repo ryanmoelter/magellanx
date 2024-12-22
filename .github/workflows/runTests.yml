@@ -11,12 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.2.2
-    - name: Set up our JDK environment
-      uses: actions/setup-java@v4.4.0
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4.6.0
       with:
         distribution: 'zulu'
-        java-version: '17'
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@v3.5.0
+        java-version-file: .java-version
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v4.2.2
       with:
-        arguments: build
+        cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+    - name: Build with Gradle
+      run: ./gradlew testDebugUnitTest
