@@ -33,6 +33,7 @@ allprojects {
 
   kotlinter {
     tasks.findByName("lint")?.dependsOn("lintKotlin")
+    ignoreFormatFailures = false
   }
 
   tasks.withType<Test> {
