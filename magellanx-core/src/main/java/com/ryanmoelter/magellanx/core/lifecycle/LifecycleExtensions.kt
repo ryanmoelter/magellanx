@@ -5,23 +5,21 @@ import kotlin.reflect.KProperty
 public fun <ChildType : LifecycleAware, PropertyType> LifecycleOwner.attachFieldToLifecycle(
   lifecycleAware: ChildType,
   getPropertyType: (ChildType) -> PropertyType,
-): AttachFieldToLifecycleDelegate<ChildType, PropertyType> {
-  return AttachFieldToLifecycleDelegate(
+): AttachFieldToLifecycleDelegate<ChildType, PropertyType> =
+  AttachFieldToLifecycleDelegate(
     parent = this,
     lifecycleAware = lifecycleAware,
     getPropertyType = getPropertyType,
   )
-}
 
 public fun <ChildType : LifecycleAware> LifecycleOwner.attachFieldToLifecycle(
   lifecycleAware: ChildType,
-): AttachFieldToLifecycleDelegate<ChildType, ChildType> {
-  return AttachFieldToLifecycleDelegate(
+): AttachFieldToLifecycleDelegate<ChildType, ChildType> =
+  AttachFieldToLifecycleDelegate(
     parent = this,
     lifecycleAware = lifecycleAware,
     getPropertyType = { lifecycleAware },
   )
-}
 
 public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, PropertyType>(
   private val parent: LifecycleOwner,
@@ -39,13 +37,12 @@ public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, Property
   public operator fun getValue(
     thisRef: Any?,
     property: KProperty<*>,
-  ): PropertyType {
-    return if (hasOverrideValue) {
+  ): PropertyType =
+    if (hasOverrideValue) {
       overrideValue as PropertyType
     } else {
       getPropertyType(lifecycleAware)
     }
-  }
 
   public operator fun setValue(
     thisRef: Any?,
@@ -69,9 +66,8 @@ public class AttachFieldToLifecycleDelegate<ChildType : LifecycleAware, Property
 }
 
 public fun <ChildType : LifecycleAware> LifecycleOwner.attachLateinitFieldToLifecycle():
-  AttachLateinitFieldToLifecycleDelegate<ChildType> {
-  return AttachLateinitFieldToLifecycleDelegate(this)
-}
+  AttachLateinitFieldToLifecycleDelegate<ChildType> =
+  AttachLateinitFieldToLifecycleDelegate(this)
 
 public class AttachLateinitFieldToLifecycleDelegate<ChildType : LifecycleAware>(
   private val parent: LifecycleOwner,
@@ -81,11 +77,10 @@ public class AttachLateinitFieldToLifecycleDelegate<ChildType : LifecycleAware>(
   public operator fun getValue(
     thisRef: Any?,
     property: KProperty<*>,
-  ): ChildType {
-    return lifecycleAware ?: error(
+  ): ChildType =
+    lifecycleAware ?: error(
       "This lateinit LifecycleAware has not been set yet. (Has your dependency injection run yet?)",
     )
-  }
 
   public operator fun setValue(
     thisRef: Any?,

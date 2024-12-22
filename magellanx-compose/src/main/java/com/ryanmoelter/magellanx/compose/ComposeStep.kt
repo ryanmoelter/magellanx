@@ -22,10 +22,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 
-public abstract class ComposeStep : ComposeSection(), Navigable<@Composable () -> Unit>
+public abstract class ComposeStep :
+  ComposeSection(),
+  Navigable<@Composable () -> Unit>
 
 public abstract class ComposeSection :
-  LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
+  LifecycleAwareComponent(),
+  Displayable<@Composable () -> Unit> {
   override val view: (@Composable () -> Unit)?
     get() = {
       WhenStarted {

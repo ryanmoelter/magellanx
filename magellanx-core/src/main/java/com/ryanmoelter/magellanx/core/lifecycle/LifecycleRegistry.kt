@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
+public class LifecycleRegistry :
+  LifecycleAware,
+  LifecycleOwner {
   internal val listeners: Set<LifecycleAware>
     get() = listenersToMaxStates.keys
   private var listenersToMaxStates: Map<LifecycleAware, LifecycleLimit> = linkedMapOf()
@@ -136,7 +138,9 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
       .any { it }
 }
 
-public enum class LifecycleLimit(internal val maxLifecycleState: LifecycleState) {
+public enum class LifecycleLimit(
+  internal val maxLifecycleState: LifecycleState,
+) {
   DESTROYED(LifecycleState.Destroyed),
   CREATED(LifecycleState.Created),
   SHOWN(LifecycleState.Shown),

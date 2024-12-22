@@ -32,7 +32,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 public open class ComposeNavigator :
-  LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
+  LifecycleAwareComponent(),
+  Displayable<@Composable () -> Unit> {
   private val createdScope by attachFieldToLifecycle(CreatedLifecycleScope())
 
   /**
@@ -63,7 +64,8 @@ public open class ComposeNavigator :
 
   override fun onCreate() {
     currentNavigableFlow =
-      backStackFlow.map { it.lastOrNull() }
+      backStackFlow
+        .map { it.lastOrNull() }
         .map { it?.navigable }
         .stateIn(createdScope, SharingStarted.Eagerly, null)
   }
@@ -168,8 +170,8 @@ public open class ComposeNavigator :
     }
   }
 
-  public open fun goBack(): Boolean {
-    return if (!atRoot()) {
+  public open fun goBack(): Boolean =
+    if (!atRoot()) {
       navigate(BACKWARD) { backStack ->
         backStack - backStack.last()
       }
@@ -177,7 +179,6 @@ public open class ComposeNavigator :
     } else {
       false
     }
-  }
 
   public open fun goBackTo(navigable: Navigable<@Composable () -> Unit>) {
     navigate(BACKWARD) { backStack ->

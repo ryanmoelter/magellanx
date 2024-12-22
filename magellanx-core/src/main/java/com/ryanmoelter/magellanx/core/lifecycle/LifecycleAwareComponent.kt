@@ -2,7 +2,9 @@ package com.ryanmoelter.magellanx.core.lifecycle
 
 import kotlinx.coroutines.flow.StateFlow
 
-public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
+public abstract class LifecycleAwareComponent :
+  LifecycleAware,
+  LifecycleOwner {
   protected val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry()
 
   override val children: List<LifecycleAware>
@@ -99,9 +101,7 @@ public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
     lifecycleRegistry.destroy()
   }
 
-  override fun backPressed(): Boolean {
-    return lifecycleRegistry.backPressed() || onBackPressed()
-  }
+  override fun backPressed(): Boolean = lifecycleRegistry.backPressed() || onBackPressed()
 
   public fun attachToLifecycle(lifecycleAware: LifecycleAware) {
     attachToLifecycle(lifecycleAware, LifecycleState.Destroyed)

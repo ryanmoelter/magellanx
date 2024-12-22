@@ -26,12 +26,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 sealed interface Loadable<ValueType> {
-  data class Success<ValueType>(val value: ValueType) : Loadable<ValueType>
+  data class Success<ValueType>(
+    val value: ValueType,
+  ) : Loadable<ValueType>
 
-  data class Loading<ValueType>(val previousValue: ValueType? = null) : Loadable<ValueType>
+  data class Loading<ValueType>(
+    val previousValue: ValueType? = null,
+  ) : Loadable<ValueType>
 
-  data class Failure<ValueType>(val throwable: Throwable, val message: String? = null) :
-    Loadable<ValueType>
+  data class Failure<ValueType>(
+    val throwable: Throwable,
+    val message: String? = null,
+  ) : Loadable<ValueType>
 }
 
 fun <ReturnType> wrapInLoadableFlow(action: suspend () -> ReturnType): Flow<Loadable<ReturnType>> =

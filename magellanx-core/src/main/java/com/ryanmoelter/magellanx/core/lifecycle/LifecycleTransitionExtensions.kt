@@ -42,8 +42,8 @@ public fun Iterable<LifecycleAware>.transition(
 private fun next(
   subjects: Iterable<LifecycleAware>,
   currentState: LifecycleState,
-): LifecycleState {
-  return when (currentState) {
+): LifecycleState =
+  when (currentState) {
     Destroyed -> {
       subjects.forEach { it.create() }
       Created
@@ -68,13 +68,12 @@ private fun next(
       throw IllegalStateException("Cannot go forward from resumed")
     }
   }
-}
 
 private fun previous(
   subjects: Iterable<LifecycleAware>,
   currentState: LifecycleState,
-): LifecycleState {
-  return when (currentState) {
+): LifecycleState =
+  when (currentState) {
     Resumed -> {
       subjects.forEach { it.pause() }
       Started
@@ -99,4 +98,3 @@ private fun previous(
       throw IllegalStateException("Cannot go backward from destroyed")
     }
   }
-}

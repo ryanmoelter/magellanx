@@ -26,12 +26,16 @@ internal val ENFORCE_LIFECYCLE_AWARE_ATTACHMENT =
     implementation = Implementation(EnforceLifecycleAwareAttachment::class.java, JAVA_FILE_SCOPE),
   )
 
-internal class EnforceLifecycleAwareAttachment : Detector(), Detector.UastScanner {
+internal class EnforceLifecycleAwareAttachment :
+  Detector(),
+  Detector.UastScanner {
   override fun getApplicableUastTypes() = listOf(UField::class.java)
 
   override fun createUastHandler(context: JavaContext) = LifecycleAwareChecker(context)
 
-  class LifecycleAwareChecker(private val context: JavaContext) : UElementHandler() {
+  class LifecycleAwareChecker(
+    private val context: JavaContext,
+  ) : UElementHandler() {
     override fun visitField(node: UField) {
       if (context.isKotlin() && node.isLifecycleAware() && node.isConstructor()) {
         context.report(
@@ -50,12 +54,9 @@ internal class EnforceLifecycleAwareAttachment : Detector(), Detector.UastScanne
 
 private fun JavaContext.isKotlin() = file.name.endsWith("kt")
 
-private fun UField.isLifecycleAware(): Boolean {
-  return typeReference?.type?.superTypes?.any {
+private fun UField.isLifecycleAware(): Boolean =
+  typeReference?.type?.superTypes?.any {
     it.canonicalText == "com.ryanmoelter.magellanx.lifecycle.LifecycleAware"
   } ?: false
-}
 
-private fun UField.isConstructor(): Boolean {
-  return uastInitializer?.isConstructorCall() ?: false
-}
+private fun UField.isConstructor(): Boolean = uastInitializer?.isConstructorCall() ?: false

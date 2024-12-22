@@ -55,7 +55,8 @@ class DoggoImageStep(
 
   private fun refresh() {
     createdScope.launch {
-      randomDoggoImageUrlGetter.fetchDoggoImageUrl(breed)
+      randomDoggoImageUrlGetter
+        .fetchDoggoImageUrl(breed)
         .collect { loadableImageUrl ->
           loadableImageUrlFlow.value = loadableImageUrl
         }

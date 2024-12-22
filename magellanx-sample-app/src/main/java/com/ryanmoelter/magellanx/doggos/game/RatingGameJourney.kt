@@ -40,8 +40,7 @@ class RatingGameJourney(
     wrapInLoadableFlow { doggoApi.getRandomDoggoImage() }
       .map { loadableResponse ->
         loadableResponse.map { it.imageUrl }
-      }
-      .collect { loadableString ->
+      }.collect { loadableString ->
         when (loadableString) {
           is Loadable.Failure -> TODO()
           is Loadable.Loading -> {

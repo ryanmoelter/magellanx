@@ -19,8 +19,7 @@ class RandomDoggoImageUrlGetter(
       } else {
         doggoApi.getRandomDoggoImageByBreed(breed)
       }
+    }.map { loadable ->
+      loadable.map { doggoImageResponse -> doggoImageResponse.imageUrl }
     }
-      .map { loadable ->
-        loadable.map { doggoImageResponse -> doggoImageResponse.imageUrl }
-      }
 }

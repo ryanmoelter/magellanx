@@ -23,7 +23,8 @@ fun AsyncDoggoImage(
 ) {
   SubcomposeAsyncImage(
     model =
-      ImageRequest.Builder(LocalContext.current)
+      ImageRequest
+        .Builder(LocalContext.current)
         .data(imageUrl)
         .crossfade(true)
         .build(),
