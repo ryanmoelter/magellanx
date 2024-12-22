@@ -184,7 +184,7 @@ public open class ComposeNavigator :
     navigate(BACKWARD) { backStack ->
       val mutableBackstack = backStack.toMutableList()
       while (navigable !== mutableBackstack.last().navigable) {
-        mutableBackstack.removeLast()
+        mutableBackstack.removeAt(mutableBackstack.lastIndex)
       }
       mutableBackstack.toList()
     }
