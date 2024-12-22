@@ -5,7 +5,7 @@ coroutines = "1.9.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.12.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-compileSdk = "34"
+compileSdk = "35"
 minSdk = "23"
 
 activity = "1.9.1"
