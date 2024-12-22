@@ -135,11 +135,6 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     // ...
     setContentNavigable(rootStep)  // Add rootStep to the lifecycle and UI
-    onBackPressedDispatcher.addCallback {  // Handle back navigation (eventually won't be necessary)
-      if (!rootStep.backPressed()) {
-        this@MainActivity.finish()
-      }
-    }
     // ...
   }
 }

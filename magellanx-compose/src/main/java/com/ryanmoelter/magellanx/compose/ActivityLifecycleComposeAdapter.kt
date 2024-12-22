@@ -46,6 +46,10 @@ public class ActivityLifecycleComposeAdapter(
   }
 }
 
+/**
+ * Attach [navigable] as the root [Navigable] for this Activity. Sets the UI, attaches the
+ * lifecycle, and handles back navigation. Should be called in [Activity.onCreate].
+ */
 public fun ComponentActivity.setContentNavigable(navigable: Navigable<@Composable () -> Unit>) {
   if (navigable is LifecycleOwner && navigable.currentState == Destroyed) {
     navigable.create()
@@ -56,7 +60,9 @@ public fun ComponentActivity.setContentNavigable(navigable: Navigable<@Composabl
   }
   val lifecycleAdapter = ActivityLifecycleComposeAdapter(navigable, this)
   navigable.attachAndAddToStaticMap(lifecycleAdapter, lifecycle)
+
   setContent { navigable.Content() }
+
   onBackPressedDispatcher.addCallback {
     if (!navigable.backPressed()) {
       this@setContentNavigable.finish()
