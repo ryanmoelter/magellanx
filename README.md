@@ -66,10 +66,8 @@ dependencies {
 }
 ```
 
-### Add to `dependencies` block
-
 <details>
-  <summary>Add to <code>dependencies</code> block instead</summary>
+  <summary><h3>Add to <code>dependencies</code> block (without version catalogs)</h3></summary>
 
 If you don't want to use version catalogs, you can add the dependencies you need directly in your
 `dependencies` block:
@@ -93,16 +91,15 @@ implementation("com.github.ryanmoelter.magellanx:magellanx-core:0.5.2")
 
 </details>
 
-### Dependency versions
-
 <details>
-  <summary>Dependencies' versions for different Magellan X versions</summary>
+  <summary><h3>Dependency versions</h3></summary>
 
 Magellan X uses the following dependencies, and since `0.2.0` is using
 [the compose bill of materials (BOM)](https://developer.android.com/jetpack/compose/setup#using-the-bom).
 
 | Magellan X version | Kotlin version | Compose compiler version | Compose BOM  | Tested compatible compose versions |
 |--------------------|----------------|--------------------------|--------------|------------------------------------|
+| `0.6.0`            | `2.1.0`        | Bundled with Kotlin      | `2024.12.01` | `1.6.4`                            |
 | `0.5.2`            | `1.9.23`       | `1.5.11`                 | `2024.03.00` | `1.6.4`                            |
 | `0.5.1`            | `1.9.22`       | `1.5.10`                 | `2024.02.02` | `1.6.3`                            |
 | `0.5.0`            | `1.9.22`       | `1.5.10`                 | `2024.02.01` | `1.6.2`                            |
