@@ -9,10 +9,16 @@ version = extra["VERSION_NAME"]!!
 
 android {
   namespace = "com.ryanmoelter.magellanx.test"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.compileSdk
+      .get()
+      .toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
+    minSdk =
+      libs.versions.minSdk
+        .get()
+        .toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -43,14 +49,10 @@ android {
 kotlin {
   compilerOptions {
     freeCompilerArgs.addAll(
-      if (!name.contains("UnitTest")) {
-        listOf(
-          "-Xexplicit-api=strict",
-          "-opt-in=kotlin.RequiresOptIn",
-        )
-      } else {
-        listOf("-opt-in=kotlin.RequiresOptIn")
-      }
+      listOf(
+        "-Xexplicit-api=strict",
+        "-opt-in=kotlin.RequiresOptIn",
+      ),
     )
     allWarningsAsErrors = true
   }

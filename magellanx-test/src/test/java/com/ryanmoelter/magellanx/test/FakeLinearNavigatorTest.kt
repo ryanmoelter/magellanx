@@ -17,17 +17,17 @@ import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Test
 
-class FakeLinearNavigatorTest {
+public class FakeLinearNavigatorTest {
   private lateinit var navigator: FakeComposeNavigator
 
   @Before
-  fun setUp() {
+  public fun setUp() {
     Magellan.init(mainDispatcher = Dispatchers.Unconfined)
     navigator = FakeComposeNavigator()
   }
 
   @Test
-  fun clear() {
+  public fun clear() {
     navigator.setBackStack(listOf(ComposeNavigationEvent(TestNavigable(), defaultTransition)))
     navigator.clear()
     navigator.backStack.shouldBeEmpty()
@@ -35,7 +35,7 @@ class FakeLinearNavigatorTest {
   }
 
   @Test
-  fun goTo() {
+  public fun goTo() {
     navigator.goTo(TestNavigable())
     navigator.backStack shouldHaveSize 1
 
@@ -46,7 +46,7 @@ class FakeLinearNavigatorTest {
   }
 
   @Test
-  fun replace() {
+  public fun replace() {
     navigator.goTo(TestNavigable())
     navigator.backStack shouldHaveSize 1
 
@@ -57,7 +57,7 @@ class FakeLinearNavigatorTest {
   }
 
   @Test
-  fun navigate() {
+  public fun navigate() {
     val originalBottomNavigable = TestNavigable()
     val newBottomNavigable = TestNavigable()
     val newTopNavigable = TestNavigable()
@@ -85,7 +85,7 @@ class FakeLinearNavigatorTest {
   }
 
   @Test
-  fun goBack_noop() {
+  public fun goBack_noop() {
     navigator.goBack().shouldBeFalse()
     navigator.goTo(TestNavigable())
     navigator.goBack().shouldBeFalse()
@@ -93,7 +93,7 @@ class FakeLinearNavigatorTest {
   }
 
   @Test
-  fun goBack_success() {
+  public fun goBack_success() {
     val bottomNavigable = TestNavigable()
     navigator.setBackStack(
       listOf(
@@ -107,7 +107,7 @@ class FakeLinearNavigatorTest {
   }
 
   @Test
-  fun destroy() {
+  public fun destroy() {
     navigator.setBackStack(listOf(ComposeNavigationEvent(TestNavigable(), defaultTransition)))
     navigator.transitionToState(LifecycleState.Created)
     navigator.destroy()

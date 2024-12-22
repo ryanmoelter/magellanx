@@ -8,12 +8,21 @@ plugins {
 
 android {
   namespace = "com.ryanmoelter.magellanx.doggos"
-  compileSdk = libs.versions.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.compileSdk
+      .get()
+      .toInt()
 
   defaultConfig {
     applicationId = "com.ryanmoelter.magellanx.doggos"
-    minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = libs.versions.compileSdk.get().toInt()
+    minSdk =
+      libs.versions.minSdk
+        .get()
+        .toInt()
+    targetSdk =
+      libs.versions.compileSdk
+        .get()
+        .toInt()
     versionCode = 1
     versionName = "1.0"
 
