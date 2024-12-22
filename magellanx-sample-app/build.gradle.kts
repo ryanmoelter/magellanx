@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlinx.serialization)
   alias(libs.plugins.ksp)
+  alias(libs.plugins.composeCompiler)
 }
 
 android {
@@ -37,9 +38,6 @@ android {
   }
   buildFeatures {
     compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
   packaging {
     resources {

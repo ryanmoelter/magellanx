@@ -40,18 +40,20 @@ android {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-  kotlinOptions.freeCompilerArgs =
-    if (!name.contains("UnitTest")) {
-      listOf(
-        "-Xexplicit-api=strict",
-        "-opt-in=kotlin.RequiresOptIn",
-      )
-    } else {
-      listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-  kotlinOptions.allWarningsAsErrors = true
-  kotlinOptions.jvmTarget = "1.8"
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
+      if (!name.contains("UnitTest")) {
+        listOf(
+          "-Xexplicit-api=strict",
+          "-opt-in=kotlin.RequiresOptIn",
+        )
+      } else {
+        listOf("-opt-in=kotlin.RequiresOptIn")
+      }
+    )
+    allWarningsAsErrors = true
+  }
 }
 
 dependencies {

@@ -18,7 +18,6 @@
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
         "org.jetbrains.kotlin.plugin.serialization",
-        "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
       "groupName": "Kotlin and dependencies",
@@ -43,7 +42,6 @@
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
         "org.jetbrains.kotlin.plugin.serialization",
-        "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin",
         "com.android.tools.build:gradle",
         "com.android.application"
@@ -58,7 +56,6 @@
         "org.jetbrains.kotlin.android",
         "com.google.devtools.ksp",
         "org.jetbrains.kotlin.plugin.serialization",
-        "androidx.compose.compiler:compiler",
         "org.jetbrains.kotlin:kotlin-gradle-plugin",
         "com.android.tools.build:gradle",
         "com.android.application"

@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   kotlin("android")
   alias(libs.plugins.kotest)
+  alias(libs.plugins.composeCompiler)
   `maven-publish`
 }
 
@@ -36,10 +37,6 @@ android {
     compose = true
   }
 
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-  }
-
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -54,12 +51,13 @@ android {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
-  kotlinOptions.freeCompilerArgs =
-    listOf(
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
       "-Xexplicit-api=strict",
       "-opt-in=kotlin.RequiresOptIn",
     )
+  }
 }
 
 tasks.withType<Test> {

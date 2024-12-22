@@ -48,12 +48,13 @@ android {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
-  kotlinOptions.freeCompilerArgs =
-    listOf(
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
       "-Xexplicit-api=strict",
       "-opt-in=kotlin.RequiresOptIn",
     )
+  }
 }
 
 dependencies {

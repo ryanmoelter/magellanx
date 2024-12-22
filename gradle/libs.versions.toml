@@ -5,7 +5,6 @@ coroutines = "1.9.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.09.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-compose-compiler = "1.5.11"
 compileSdk = "34"
 minSdk = "23"
 
@@ -33,6 +32,7 @@ lifecycle-runtime-ktx = "2.8.4"
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 # Sample app
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
@@ -74,7 +74,6 @@ compose-material3 = { module = "androidx.compose.material3:material3", version.r
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "compose-compiler" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
