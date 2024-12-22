@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowForward
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -70,7 +70,7 @@ fun ListItem(
   ) {
     Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
     Icon(
-      imageVector = Icons.Rounded.ArrowForward,
+      imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
       contentDescription = "Open a new page",
       tint = MaterialTheme.colorScheme.primary,
     )
