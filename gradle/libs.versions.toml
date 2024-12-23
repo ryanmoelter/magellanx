@@ -55,7 +55,7 @@ kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref 
 kotest-extensions-robolectric = { module = "io.kotest.extensions:kotest-extensions-robolectric", version = "0.5.0" }
 
 junit = { module = "junit:junit", version = "4.13.2" }
-robolectric = { module = "org.robolectric:robolectric", version = "4.13" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.14.1" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "testCore" }
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "testCore" }
 
