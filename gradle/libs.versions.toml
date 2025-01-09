@@ -28,7 +28,7 @@ retrofit = "2.11.0"
 junit-old = "1.2.1"
 espresso-core = "3.6.1"
 lifecycle-runtime-ktx = "2.8.7"
-serialization = "1.7.3"
+serialization = "1.8.0"
 
 [plugins]
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
