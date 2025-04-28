@@ -21,7 +21,7 @@ lint = "31.9.2"
 kotlinter = "5.0.2"
 
 # Sample app
-kotlin-inject = "0.7.2"
+kotlin-inject = "0.8.0"
 ksp = "2.1.20-2.0.0"
 coil = "2.7.0"
 retrofit = "2.11.0"
