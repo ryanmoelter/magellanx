@@ -1,5 +1,5 @@
 [versions]
-android-gradle = "8.11.0"
+android-gradle = "8.11.1"
 kotlin = "2.2.0"
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -16,7 +16,7 @@ constraintlayout = "2.2.1"
 
 kotest = "5.9.1"
 testCore = "1.6.1"
-lint = "31.11.0"
+lint = "31.11.1"
 
 kotlinter = "5.1.1"
 
