@@ -16,7 +16,7 @@ constraintlayout = "2.2.1"
 
 kotest = "5.9.1"
 testCore = "1.7.0"
-lint = "31.12.2"
+lint = "31.13.0"
 
 kotlinter = "5.2.0"
 
