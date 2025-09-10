@@ -1,6 +1,6 @@
 [versions]
 android-gradle = "8.13.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2025.08.01"
