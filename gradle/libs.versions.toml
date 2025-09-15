@@ -22,7 +22,7 @@ kotlinter = "5.2.0"
 
 # Sample app
 kotlin-inject = "0.8.0"
-ksp = "2.2.20-2.0.2"
+ksp = "2.2.20-2.0.3"
 coil = "2.7.0"
 retrofit = "3.0.0"
 junit-old = "1.3.0"
