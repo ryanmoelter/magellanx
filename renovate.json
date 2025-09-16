@@ -3,7 +3,10 @@
   "extends": [
     "config:recommended"
   ],
-  "schedule": "after 10pm and before 8am every weekday",
+  "schedule": [
+    "after 10pm every weekday",
+    "before 8am every weekday"
+  ],
   "timezone": "America/Los_Angeles",
   "labels": [
     "dependencies"
@@ -31,37 +34,36 @@
       "groupName": "Android Gradle Plugin",
       "automerge": false
     },
-
     {
       "matchUpdateTypes": [
         "minor",
         "pin",
         "digest"
       ],
-      "excludePackageNames": [
-        "org.jetbrains.kotlin.android",
-        "com.google.devtools.ksp",
-        "org.jetbrains.kotlin.plugin.serialization",
-        "org.jetbrains.kotlin:kotlin-gradle-plugin",
-        "com.android.tools.build:gradle",
-        "com.android.application"
-      ],
-      "automerge": true
+      "automerge": true,
+      "matchPackageNames": [
+        "!org.jetbrains.kotlin.android",
+        "!com.google.devtools.ksp",
+        "!org.jetbrains.kotlin.plugin.serialization",
+        "!org.jetbrains.kotlin:kotlin-gradle-plugin",
+        "!com.android.tools.build:gradle",
+        "!com.android.application"
+      ]
     },
     {
       "matchUpdateTypes": [
         "patch"
       ],
-      "excludePackageNames": [
-        "org.jetbrains.kotlin.android",
-        "com.google.devtools.ksp",
-        "org.jetbrains.kotlin.plugin.serialization",
-        "org.jetbrains.kotlin:kotlin-gradle-plugin",
-        "com.android.tools.build:gradle",
-        "com.android.application"
-      ],
       "groupName": "Patch dependency updates",
-      "automerge": true
+      "automerge": true,
+      "matchPackageNames": [
+        "!org.jetbrains.kotlin.android",
+        "!com.google.devtools.ksp",
+        "!org.jetbrains.kotlin.plugin.serialization",
+        "!org.jetbrains.kotlin:kotlin-gradle-plugin",
+        "!com.android.tools.build:gradle",
+        "!com.android.application"
+      ]
     }
   ]
 }
