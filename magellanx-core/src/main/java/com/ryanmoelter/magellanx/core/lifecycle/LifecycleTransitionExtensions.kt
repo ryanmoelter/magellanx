@@ -9,9 +9,8 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.BACKWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.FORWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.NO_MOVEMENT
 
-public fun <T> T.transitionToState(newState: LifecycleState) where
-T : LifecycleAware,
-T : LifecycleOwner {
+public fun <T> T.transitionToState(newState: LifecycleState)
+  where T : LifecycleAware, T : LifecycleOwner {
   transition(this.currentState, newState)
 }
 

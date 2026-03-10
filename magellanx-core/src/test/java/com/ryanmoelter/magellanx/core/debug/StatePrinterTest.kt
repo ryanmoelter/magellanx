@@ -28,7 +28,7 @@ public class StatePrinterTest {
       """
       DummyLifecycleOwner (Destroyed)
       └ MyStep (Destroyed)
-    """
+      """
         .trimIndent() + '\n'
   }
 
@@ -45,7 +45,7 @@ public class StatePrinterTest {
       DummyLifecycleOwner (Shown)
       ├ MyStep (Shown)
       └ MyStep (Shown)
-    """
+      """
         .trimIndent() + '\n'
   }
 
@@ -68,7 +68,7 @@ public class StatePrinterTest {
       |   └ MySection (Created)
       └ MyJourney (Created)
         └ MyLifecycleAwareThing (Created?)
-    """
+      """
         .trimIndent() + '\n'
   }
 }

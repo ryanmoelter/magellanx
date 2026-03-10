@@ -22,10 +22,8 @@ import com.ryanmoelter.magellanx.doggos.ui.theme.DoggoTheme
 
 /** Preview a given compose navigable, populating the theme and providing toaster scaffolding */
 @Composable
-fun <T> PreviewNavigable(createNavigable: () -> T) where
-T : Displayable<@Composable () -> Unit>,
-T : LifecycleAware,
-T : LifecycleOwner {
+fun <T> PreviewNavigable(createNavigable: () -> T)
+  where T : Displayable<@Composable () -> Unit>, T : LifecycleAware, T : LifecycleOwner {
   val step = remember {
     @SuppressLint("VisibleForTests")
     injector = FakeDoggoComponent::class.create()
