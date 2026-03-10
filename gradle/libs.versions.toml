@@ -19,6 +19,7 @@ testCore = "1.7.0"
 lint = "31.13.0"
 
 kotlinter = "5.2.0"
+vanniktech-publish = "0.36.0"
 
 # Sample app
 kotlin-inject = "0.8.0"
@@ -34,6 +35,7 @@ serialization = "1.9.0"
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+vanniktech-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-publish" }
 
 # Sample app
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
