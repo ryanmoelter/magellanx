@@ -20,8 +20,10 @@ dependencies {
   testImplementation(libs.test.utils)
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile).configureEach {
-  kotlinOptions.freeCompilerArgs = ["-opt-in=kotlin.RequiresOptIn"]
+kotlin {
+  compilerOptions {
+    freeCompilerArgs = ["-opt-in=kotlin.RequiresOptIn"]
+  }
 }
 
 jar {
