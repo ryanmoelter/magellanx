@@ -19,7 +19,8 @@ public fun LifecycleOwner.getLifecycleStateSnapshot(): String {
         index == children.lastIndex,
         currentState,
       )
-    }.forEach { stringBuilder.append(it) }
+    }
+    .forEach { stringBuilder.append(it) }
 
   return stringBuilder.toString()
 }
@@ -47,7 +48,8 @@ private fun LifecycleAware.getLifecycleStateSnapshotRecursive(
           index == children.lastIndex,
           currentState,
         )
-      }.forEach { stringBuilder.append(it) }
+      }
+      .forEach { stringBuilder.append(it) }
   } else {
     stringBuilder.append(describeSelf(indent + lineChar + INDENT_SPACE, parentLifecycleState))
   }

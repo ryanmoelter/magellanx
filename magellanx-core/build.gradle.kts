@@ -6,25 +6,14 @@ plugins {
 
 android {
   namespace = "com.ryanmoelter.magellanx.core"
-  compileSdk =
-    libs.versions.compileSdk
-      .get()
-      .toInt()
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk =
-      libs.versions.minSdk
-        .get()
-        .toInt()
+    minSdk = libs.versions.minSdk.get().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
-    aarMetadata {
-      minCompileSdk =
-        libs.versions.compileSdk
-          .get()
-          .toInt()
-    }
+    aarMetadata { minCompileSdk = libs.versions.compileSdk.get().toInt() }
   }
 
   buildTypes {
@@ -39,15 +28,9 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
+  kotlinOptions { jvmTarget = "1.8" }
 
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
-  }
+  testOptions { unitTests { isIncludeAndroidResources = true } }
 
   publishing {
     singleVariant("release") {
@@ -59,10 +42,7 @@ android {
 
 kotlin {
   compilerOptions {
-    freeCompilerArgs.addAll(
-      "-Xexplicit-api=strict",
-      "-opt-in=kotlin.RequiresOptIn",
-    )
+    freeCompilerArgs.addAll("-Xexplicit-api=strict", "-opt-in=kotlin.RequiresOptIn")
   }
 }
 
@@ -121,9 +101,7 @@ publishing {
         }
       }
 
-      afterEvaluate {
-        from(components["release"])
-      }
+      afterEvaluate { from(components["release"]) }
     }
   }
 }

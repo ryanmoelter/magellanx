@@ -18,9 +18,7 @@ import com.ryanmoelter.magellanx.doggos.utils.wrapInLoadableFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class ChooseBreedStep(
-  val chooseBreed: (String) -> Unit,
-) : ComposeStep() {
+class ChooseBreedStep(val chooseBreed: (String) -> Unit) : ComposeStep() {
   val loadableBreedListFlow: MutableStateFlow<Loadable<List<String>>> =
     MutableStateFlow(Loadable.Loading())
 
@@ -50,9 +48,8 @@ class ChooseBreedStep(
 
   fun refresh() {
     shownScope.launch {
-      wrapInLoadableFlow {
-        doggoApi.getBreeds().breeds
-      }.collect { breeds -> loadableBreedListFlow.value = breeds }
+      wrapInLoadableFlow { doggoApi.getBreeds().breeds }
+        .collect { breeds -> loadableBreedListFlow.value = breeds }
     }
   }
 }

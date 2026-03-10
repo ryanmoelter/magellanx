@@ -17,27 +17,14 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun AsyncDoggoImage(
-  imageUrl: String,
-  modifier: Modifier = Modifier,
-) {
+fun AsyncDoggoImage(imageUrl: String, modifier: Modifier = Modifier) {
   SubcomposeAsyncImage(
-    model =
-      ImageRequest
-        .Builder(LocalContext.current)
-        .data(imageUrl)
-        .crossfade(true)
-        .build(),
+    model = ImageRequest.Builder(LocalContext.current).data(imageUrl).crossfade(true).build(),
     contentDescription = "A good doggo",
     modifier = modifier,
-    loading = {
-      CircularProgressIndicator(modifier = Modifier.wrapContentSize())
-    },
+    loading = { CircularProgressIndicator(modifier = Modifier.wrapContentSize()) },
     error = {
-      Row(
-        modifier = Modifier.wrapContentSize(),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
+      Row(modifier = Modifier.wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
         Icon(
           imageVector = Icons.Filled.Close,
           contentDescription = "Image failed to load",

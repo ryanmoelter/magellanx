@@ -9,40 +9,30 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.BACKWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.FORWARD
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleStateDirection.NO_MOVEMENT
 
-public fun <T> T.transitionToState(
-  newState: LifecycleState,
-) where T : LifecycleAware, T : LifecycleOwner {
+public fun <T> T.transitionToState(newState: LifecycleState) where
+T : LifecycleAware,
+T : LifecycleOwner {
   transition(this.currentState, newState)
 }
 
-public fun LifecycleAware.transition(
-  oldState: LifecycleState,
-  newState: LifecycleState,
-) {
+public fun LifecycleAware.transition(oldState: LifecycleState, newState: LifecycleState) {
   listOf(this).transition(oldState, newState)
 }
 
-public fun Iterable<LifecycleAware>.transition(
-  oldState: LifecycleState,
-  newState: LifecycleState,
-) {
+public fun Iterable<LifecycleAware>.transition(oldState: LifecycleState, newState: LifecycleState) {
   var currentState = oldState
   while (currentState != newState) {
     currentState =
       when (currentState.getDirectionForMovement(newState)) {
         FORWARD -> next(this, currentState)
         BACKWARDS -> previous(this, currentState)
-        NO_MOVEMENT -> throw IllegalStateException(
-          "Attempting to transition from $currentState to $newState",
-        )
+        NO_MOVEMENT ->
+          throw IllegalStateException("Attempting to transition from $currentState to $newState")
       }
   }
 }
 
-private fun next(
-  subjects: Iterable<LifecycleAware>,
-  currentState: LifecycleState,
-): LifecycleState =
+private fun next(subjects: Iterable<LifecycleAware>, currentState: LifecycleState): LifecycleState =
   when (currentState) {
     Destroyed -> {
       subjects.forEach { it.create() }

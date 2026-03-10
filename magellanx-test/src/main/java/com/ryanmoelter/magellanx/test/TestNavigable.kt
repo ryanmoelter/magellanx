@@ -7,16 +7,9 @@ import com.ryanmoelter.magellanx.core.Navigable
 import com.ryanmoelter.magellanx.core.lifecycle.LifecycleAwareComponent
 import com.ryanmoelter.magellanx.core.lifecycle.createAndAttachFieldToLifecycleWhenStarted
 
-/**
- * A simple [Navigable] implementation for use in tests.
- */
-public class TestNavigable :
-  LifecycleAwareComponent(),
-  Navigable<@Composable () -> Unit> {
-  public override val view: (@Composable () -> Unit)? by
-    createAndAttachFieldToLifecycleWhenStarted {
-      {
-        Box(Modifier)
-      }
-    }
+/** A simple [Navigable] implementation for use in tests. */
+public class TestNavigable : LifecycleAwareComponent(), Navigable<@Composable () -> Unit> {
+  public override val view:
+    (@Composable
+    () -> Unit)? by createAndAttachFieldToLifecycleWhenStarted { { Box(Modifier) } }
 }

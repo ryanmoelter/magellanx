@@ -27,18 +27,12 @@ import coil.compose.AsyncImage
 import com.ryanmoelter.magellanx.compose.ComposeStep
 import com.ryanmoelter.magellanx.doggos.ui.preview.PreviewNavigable
 
-class ResultsStep(
-  private val doggoRatings: List<DoggoRating>,
-  private val goHome: () -> Unit,
-) : ComposeStep() {
+class ResultsStep(private val doggoRatings: List<DoggoRating>, private val goHome: () -> Unit) :
+  ComposeStep() {
   @Composable
   override fun Content() {
     Column {
-      Column(
-        Modifier
-          .verticalScroll(rememberScrollState())
-          .weight(1f),
-      ) {
+      Column(Modifier.verticalScroll(rememberScrollState()).weight(1f)) {
         val numCorrect = doggoRatings.count { it.liked }
         val possibleCorrect = doggoRatings.size
 
@@ -55,10 +49,7 @@ class ResultsStep(
 
         doggoRatings.forEach {
           Row(
-            modifier =
-              Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
           ) {
@@ -73,12 +64,7 @@ class ResultsStep(
       }
 
       HorizontalDivider()
-      Row(
-        Modifier
-          .fillMaxWidth()
-          .padding(all = 16.dp),
-        horizontalArrangement = Arrangement.End,
-      ) {
+      Row(Modifier.fillMaxWidth().padding(all = 16.dp), horizontalArrangement = Arrangement.End) {
         Button(onClick = { goHome() }) {
           Text(text = "Take me home")
           Spacer(modifier = Modifier.width(4.dp))
@@ -91,22 +77,21 @@ class ResultsStep(
 
 @Preview
 @Composable
-private fun ResultsStep_Preview() =
-  PreviewNavigable {
-    ResultsStep(
-      doggoRatings =
-        listOf(
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", false),
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", false),
-          DoggoRating("https://example.com/doggoImage", true),
-          DoggoRating("https://example.com/doggoImage", true),
-        ),
-      goHome = { },
-    )
-  }
+private fun ResultsStep_Preview() = PreviewNavigable {
+  ResultsStep(
+    doggoRatings =
+      listOf(
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", false),
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", false),
+        DoggoRating("https://example.com/doggoImage", true),
+        DoggoRating("https://example.com/doggoImage", true),
+      ),
+    goHome = {},
+  )
+}

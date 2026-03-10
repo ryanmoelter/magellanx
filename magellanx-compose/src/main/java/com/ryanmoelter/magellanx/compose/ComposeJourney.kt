@@ -8,7 +8,5 @@ import com.ryanmoelter.magellanx.core.lifecycle.attachFieldToLifecycle
 public abstract class ComposeJourney : ComposeStep() {
   protected var navigator: ComposeNavigator by attachFieldToLifecycle(ComposeNavigator())
 
-  @CallSuper
-  @Composable
-  protected override fun Content(): Unit = navigator.Content()
+  @CallSuper @Composable protected override fun Content(): Unit = navigator.Content()
 }

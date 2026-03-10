@@ -9,11 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
-public open class MagellanLifecycleScope(
-  private val lowercaseLifecycleDescription: String,
-) : CoroutineScope,
-  LifecycleAware {
-  private val dispatcher get() = Magellan.overrideMainDispatcher ?: Dispatchers.Main
+public open class MagellanLifecycleScope(private val lowercaseLifecycleDescription: String) :
+  CoroutineScope, LifecycleAware {
+  private val dispatcher
+    get() = Magellan.overrideMainDispatcher ?: Dispatchers.Main
 
   protected var job: Job =
     SupervisorJob().apply {

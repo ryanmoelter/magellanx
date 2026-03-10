@@ -16,9 +16,7 @@ import kotlinx.coroutines.launch
 
 const val NUM_RATINGS_IN_GAME = 10
 
-class RatingGameJourney(
-  private val finish: () -> Unit,
-) : ComposeJourney() {
+class RatingGameJourney(private val finish: () -> Unit) : ComposeJourney() {
   private var doggoRatings: List<DoggoRating> = emptyList()
   private val doggoApi: DoggoApi = injector.doggoApi
 
@@ -27,9 +25,7 @@ class RatingGameJourney(
   @Composable
   override fun Content() {
     val isLoading by isLoadingFlow.collectAsState()
-    ShowLoadingAround(isLoading = isLoading, showSpinner = false) {
-      super.Content()
-    }
+    ShowLoadingAround(isLoading = isLoading, showSpinner = false) { super.Content() }
   }
 
   override fun onCreate() {
@@ -38,9 +34,8 @@ class RatingGameJourney(
 
   private suspend fun getImageAndGoToNextStep() {
     wrapInLoadableFlow { doggoApi.getRandomDoggoImage() }
-      .map { loadableResponse ->
-        loadableResponse.map { it.imageUrl }
-      }.collect { loadableString ->
+      .map { loadableResponse -> loadableResponse.map { it.imageUrl } }
+      .collect { loadableString ->
         when (loadableString) {
           is Loadable.Failure -> TODO()
           is Loadable.Loading -> {
@@ -49,12 +44,7 @@ class RatingGameJourney(
 
           is Loadable.Success -> {
             isLoadingFlow.value = false
-            navigator.goTo(
-              RatingStep(
-                loadableString.value,
-                submitRating = ::rateDoggoAndGoToNext,
-              ),
-            )
+            navigator.goTo(RatingStep(loadableString.value, submitRating = ::rateDoggoAndGoToNext))
           }
         }
       }
@@ -77,7 +67,4 @@ class RatingGameJourney(
     }
 }
 
-data class DoggoRating(
-  val doggoImageUrl: String,
-  val liked: Boolean,
-)
+data class DoggoRating(val doggoImageUrl: String, val liked: Boolean)

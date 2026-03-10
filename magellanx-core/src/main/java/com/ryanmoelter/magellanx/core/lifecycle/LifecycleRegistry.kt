@@ -6,11 +6,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-public class LifecycleRegistry :
-  LifecycleAware,
-  LifecycleOwner {
+public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
   internal val listeners: Set<LifecycleAware>
     get() = listenersToMaxStates.keys
+
   private var listenersToMaxStates: Map<LifecycleAware, LifecycleLimit> = linkedMapOf()
 
   override val children: List<LifecycleAware>
@@ -18,7 +17,8 @@ public class LifecycleRegistry :
 
   private val _currentStateFlow: MutableStateFlow<LifecycleState> =
     MutableStateFlow(LifecycleState.Destroyed)
-  override val currentStateFlow: StateFlow<LifecycleState> get() = _currentStateFlow.asStateFlow()
+  override val currentStateFlow: StateFlow<LifecycleState>
+    get() = _currentStateFlow.asStateFlow()
 
   override var currentState: LifecycleState
     get() = currentStateFlow.value
@@ -26,19 +26,13 @@ public class LifecycleRegistry :
       val oldState = currentStateFlow.value
       listenersToMaxStates.forEach { (lifecycleAware, maxState) ->
         if (oldState.limitBy(maxState) != newState.limitBy(maxState)) {
-          lifecycleAware.transition(
-            oldState.limitBy(maxState),
-            newState.limitBy(maxState),
-          )
+          lifecycleAware.transition(oldState.limitBy(maxState), newState.limitBy(maxState))
         }
       }
       _currentStateFlow.value = newState
     }
 
-  override fun attachToLifecycle(
-    lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState,
-  ) {
+  override fun attachToLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
     attachToLifecycleWithMaxState(lifecycleAware, NO_LIMIT, detachedState)
   }
 
@@ -50,21 +44,18 @@ public class LifecycleRegistry :
     if (listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalStateException(
         "Cannot attach a lifecycleAware that is already a child: " +
-          lifecycleAware::class.java.simpleName,
+          lifecycleAware::class.java.simpleName
       )
     }
     lifecycleAware.transition(detachedState, currentState.limitBy(maxState))
     listenersToMaxStates = listenersToMaxStates + (lifecycleAware to maxState)
   }
 
-  override fun removeFromLifecycle(
-    lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState,
-  ) {
+  override fun removeFromLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalStateException(
         "Cannot remove a lifecycleAware that is not a child: " +
-          lifecycleAware::class.java.simpleName,
+          lifecycleAware::class.java.simpleName
       )
     }
     val maxState = listenersToMaxStates[lifecycleAware]!!
@@ -72,24 +63,18 @@ public class LifecycleRegistry :
     lifecycleAware.transition(currentState.limitBy(maxState), detachedState)
   }
 
-  public fun updateMaxState(
-    lifecycleAware: LifecycleAware,
-    maxState: LifecycleLimit,
-  ) {
+  public fun updateMaxState(lifecycleAware: LifecycleAware, maxState: LifecycleLimit) {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalArgumentException(
         "Cannot update the state of a lifecycleAware that is not a child: " +
-          lifecycleAware::class.java.simpleName,
+          lifecycleAware::class.java.simpleName
       )
     }
     val oldMaxState = listenersToMaxStates[lifecycleAware]!!
     if (oldMaxState != maxState) {
       val needsToTransition = !currentState.isWithinLimit(minOf(maxState, oldMaxState))
       if (needsToTransition) {
-        lifecycleAware.transition(
-          currentState.limitBy(oldMaxState),
-          currentState.limitBy(maxState),
-        )
+        lifecycleAware.transition(currentState.limitBy(oldMaxState), currentState.limitBy(maxState))
       }
       listenersToMaxStates = listenersToMaxStates + (lifecycleAware to maxState)
     }
@@ -138,9 +123,7 @@ public class LifecycleRegistry :
       .any { it }
 }
 
-public enum class LifecycleLimit(
-  internal val maxLifecycleState: LifecycleState,
-) {
+public enum class LifecycleLimit(internal val maxLifecycleState: LifecycleState) {
   DESTROYED(LifecycleState.Destroyed),
   CREATED(LifecycleState.Created),
   SHOWN(LifecycleState.Shown),

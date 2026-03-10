@@ -26,18 +26,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 sealed interface Loadable<ValueType> {
-  data class Success<ValueType>(
-    val value: ValueType,
-  ) : Loadable<ValueType>
+  data class Success<ValueType>(val value: ValueType) : Loadable<ValueType>
 
-  data class Loading<ValueType>(
-    val previousValue: ValueType? = null,
-  ) : Loadable<ValueType>
+  data class Loading<ValueType>(val previousValue: ValueType? = null) : Loadable<ValueType>
 
-  data class Failure<ValueType>(
-    val throwable: Throwable,
-    val message: String? = null,
-  ) : Loadable<ValueType>
+  data class Failure<ValueType>(val throwable: Throwable, val message: String? = null) :
+    Loadable<ValueType>
 }
 
 fun <ReturnType> wrapInLoadableFlow(action: suspend () -> ReturnType): Flow<Loadable<ReturnType>> =
@@ -51,7 +45,7 @@ fun <ReturnType> wrapInLoadableFlow(action: suspend () -> ReturnType): Flow<Load
   }
 
 fun <StartingType, TargetType> Loadable<StartingType>.map(
-  action: (StartingType) -> TargetType,
+  action: (StartingType) -> TargetType
 ): Loadable<TargetType> =
   when (this) {
     is Success -> Success(action(value))
@@ -66,13 +60,11 @@ fun <StartingType, TargetType> Loadable<StartingType>.map(
   }
 
 @Composable
-fun <T : Any> ShowLoadingAround(
-  loadable: Loadable<T>,
-  content: @Composable (T) -> Unit,
-) {
+fun <T : Any> ShowLoadingAround(loadable: Loadable<T>, content: @Composable (T) -> Unit) {
   val blockTouches =
     when (loadable) {
-      is Success, is Failure -> false
+      is Success,
+      is Failure -> false
       is Loading -> true
     }
   Box(Modifier.gesturesDisabled(blockTouches)) {
@@ -89,9 +81,7 @@ fun <T : Any> ShowLoadingAround(
         is Loading -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             if (loadable.previousValue != null) {
-              Box(modifier = Modifier.alpha(0.6f)) {
-                content(loadable.previousValue)
-              }
+              Box(modifier = Modifier.alpha(0.6f)) { content(loadable.previousValue) }
             }
             CircularProgressIndicator(Modifier.align(Alignment.Center))
           }
@@ -100,7 +90,7 @@ fun <T : Any> ShowLoadingAround(
         is Failure -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
-              loadable.throwable.toString(),
+              loadable.throwable.toString()
             ) // TODO: Show an error state, log to sentry, offer retry?
           }
         }
@@ -125,8 +115,7 @@ fun ShowLoadingAround(
     ) {
       Box(
         modifier =
-          Modifier
-            .fillMaxSize()
+          Modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6f)),
         contentAlignment = Alignment.Center,
       ) {
