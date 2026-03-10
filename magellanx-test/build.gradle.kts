@@ -1,12 +1,8 @@
 plugins {
   id("com.android.library")
   kotlin("android")
-  `maven-publish`
+  alias(libs.plugins.vanniktech.publish)
 }
-
-group = extra["GROUP"]!!
-
-version = extra["VERSION_NAME"]!!
 
 android {
   namespace = "com.ryanmoelter.magellanx.test"
@@ -27,12 +23,6 @@ android {
 
   buildTypes { release { isMinifyEnabled = false } }
 
-  publishing {
-    singleVariant("release") {
-      withJavadocJar()
-      withSourcesJar()
-    }
-  }
 }
 
 kotlin {
@@ -59,44 +49,4 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.kotest.assertions.core)
-}
-
-publishing {
-  publications {
-    register<MavenPublication>("release") {
-      groupId = extra["GROUP"] as String
-      artifactId = extra["POM_ARTIFACT_ID"] as String
-      version = extra["VERSION_NAME"] as String
-
-      pom {
-        name.set(extra["POM_NAME"] as String)
-        packaging = extra["POM_PACKAGING"] as String
-        description.set(extra["POM_DESCRIPTION"] as String)
-        url.set(extra["POM_URL"] as String)
-
-        scm {
-          url.set(extra["POM_SCM_URL"] as String)
-          connection.set(extra["POM_SCM_CONNECTION"] as String)
-          developerConnection.set(extra["POM_SCM_DEV_CONNECTION"] as String)
-        }
-
-        licenses {
-          license {
-            name.set(extra["POM_LICENCE_NAME"] as String)
-            url.set(extra["POM_LICENCE_URL"] as String)
-            distribution.set(extra["POM_LICENCE_DIST"] as String)
-          }
-        }
-
-        developers {
-          developer {
-            id.set(extra["POM_DEVELOPER_ID"] as String)
-            name.set(extra["POM_DEVELOPER_NAME"] as String)
-          }
-        }
-      }
-
-      afterEvaluate { from(components["release"]) }
-    }
-  }
 }
