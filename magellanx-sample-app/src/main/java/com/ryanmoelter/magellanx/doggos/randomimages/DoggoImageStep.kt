@@ -21,29 +21,18 @@ import com.ryanmoelter.magellanx.doggos.utils.ShowLoadingAround
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class DoggoImageStep(
-  val breed: String? = null,
-) : ComposeStep() {
+class DoggoImageStep(val breed: String? = null) : ComposeStep() {
   private val randomDoggoImageUrlGetter = injector.randomDoggoImageUrlGetter
-  private val loadableImageUrlFlow: MutableStateFlow<Loadable<String>> =
-    MutableStateFlow(Loading())
+  private val loadableImageUrlFlow: MutableStateFlow<Loadable<String>> = MutableStateFlow(Loading())
 
   @Composable
   override fun Content() {
     val loadableImageUrl by loadableImageUrlFlow.collectAsState()
     ShowLoadingAround(loadableImageUrl) { imageUrl ->
       Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        AsyncDoggoImage(
-          imageUrl,
-          modifier =
-            Modifier
-              .fillMaxWidth()
-              .weight(1f),
-        )
+        AsyncDoggoImage(imageUrl, modifier = Modifier.fillMaxWidth().weight(1f))
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { refresh() }) {
-          Text("Another!")
-        }
+        Button(onClick = { refresh() }) { Text("Another!") }
         Spacer(modifier = Modifier.height(16.dp))
       }
     }
@@ -55,11 +44,9 @@ class DoggoImageStep(
 
   private fun refresh() {
     createdScope.launch {
-      randomDoggoImageUrlGetter
-        .fetchDoggoImageUrl(breed)
-        .collect { loadableImageUrl ->
-          loadableImageUrlFlow.value = loadableImageUrl
-        }
+      randomDoggoImageUrlGetter.fetchDoggoImageUrl(breed).collect { loadableImageUrl ->
+        loadableImageUrlFlow.value = loadableImageUrl
+      }
     }
   }
 }

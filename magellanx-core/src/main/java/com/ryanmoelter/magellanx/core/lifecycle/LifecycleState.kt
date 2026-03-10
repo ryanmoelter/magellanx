@@ -9,17 +9,15 @@ public enum class LifecycleState {
   Created,
   Shown,
   Started,
-  Resumed,
-  ;
+  Resumed;
 
   internal fun getDirectionForMovement(other: LifecycleState) =
     when {
       this > other -> BACKWARDS
       this == other -> NO_MOVEMENT
       this < other -> FORWARD
-      else -> throw IllegalStateException(
-        "Unhandled order comparison: this is $this and other is $other",
-      )
+      else ->
+        throw IllegalStateException("Unhandled order comparison: this is $this and other is $other")
     }
 }
 

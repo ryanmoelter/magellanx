@@ -26,16 +26,12 @@ internal val ENFORCE_LIFECYCLE_AWARE_ATTACHMENT =
     implementation = Implementation(EnforceLifecycleAwareAttachment::class.java, JAVA_FILE_SCOPE),
   )
 
-internal class EnforceLifecycleAwareAttachment :
-  Detector(),
-  Detector.UastScanner {
+internal class EnforceLifecycleAwareAttachment : Detector(), Detector.UastScanner {
   override fun getApplicableUastTypes() = listOf(UField::class.java)
 
   override fun createUastHandler(context: JavaContext) = LifecycleAwareChecker(context)
 
-  class LifecycleAwareChecker(
-    private val context: JavaContext,
-  ) : UElementHandler() {
+  class LifecycleAwareChecker(private val context: JavaContext) : UElementHandler() {
     override fun visitField(node: UField) {
       if (context.isKotlin() && node.isLifecycleAware() && node.isConstructor()) {
         context.report(

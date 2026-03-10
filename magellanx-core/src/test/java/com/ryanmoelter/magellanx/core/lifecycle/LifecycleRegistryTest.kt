@@ -42,13 +42,7 @@ internal class LifecycleRegistryTest {
     lifecycleRegistry.attachToLifecycle(lifecycleAware5, Created)
 
     lifecycleRegistry.listeners shouldContainExactly
-      setOf(
-        lifecycleAware1,
-        lifecycleAware2,
-        lifecycleAware3,
-        lifecycleAware5,
-        lifecycleAware4,
-      )
+      setOf(lifecycleAware1, lifecycleAware2, lifecycleAware3, lifecycleAware5, lifecycleAware4)
   }
 
   @Test
@@ -189,9 +183,8 @@ internal class LifecycleRegistryTest {
   }
 }
 
-private class DummyLifecycleComponent(
-  val backPressedAction: () -> Boolean = { true },
-) : LifecycleAwareComponent() {
+private class DummyLifecycleComponent(val backPressedAction: () -> Boolean = { true }) :
+  LifecycleAwareComponent() {
   override fun onBackPressed(): Boolean = backPressedAction()
 }
 

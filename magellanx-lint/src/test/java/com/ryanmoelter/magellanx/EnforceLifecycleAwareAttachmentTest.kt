@@ -8,7 +8,7 @@ import org.junit.Test
 class EnforceLifecycleAwareAttachmentTest {
   private val lifecycleAware =
     kt(
-      """
+        """
     package com.ryanmoelter.magellanx.lifecycle
 
     interface LifecycleAware {
@@ -16,12 +16,13 @@ class EnforceLifecycleAwareAttachmentTest {
       fun create() {}
     }
 
-  """,
-    ).indented()
+  """
+      )
+      .indented()
 
   private val linearNavigator =
     kt(
-      """
+        """
     package com.ryanmoelter.magellanx.navigation
 
     import com.ryanmoelter.magellanx.lifecycle.LifecycleAware
@@ -30,12 +31,13 @@ class EnforceLifecycleAwareAttachmentTest {
 
       val backStack: List<NavigationEvent> = listOf()
     }
-  """,
-    ).indented()
+  """
+      )
+      .indented()
 
   private val lifecycleOwner =
     kt(
-      """
+        """
       package com.ryanmoelter.magellanx.lifecycle
 
       interface LifecycleOwner {
@@ -45,8 +47,9 @@ class EnforceLifecycleAwareAttachmentTest {
         fun removeFromLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState = LifecycleState.Destroyed)
       }
 
-  """,
-    ).indented()
+  """
+      )
+      .indented()
 
   private val lifecycleFiles = arrayOf(lifecycleAware, lifecycleOwner, linearNavigator)
 
@@ -58,7 +61,7 @@ class EnforceLifecycleAwareAttachmentTest {
       .files(
         *lifecycleFiles,
         kt(
-          """
+            """
           package com.ryanmoelter.magellanx.app
 
           import com.ryanmoelter.magellanx.lifecycle.LifecycleOwner
@@ -68,9 +71,11 @@ class EnforceLifecycleAwareAttachmentTest {
 
             val navigator = LinearNavigator()
           }
-        """,
-        ).indented(),
-      ).issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
+        """
+          )
+          .indented(),
+      )
+      .issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
       .run()
       .expect(
         "src/com/ryanmoelter/magellanx/app/SomeClass.kt:8: " +
@@ -80,8 +85,9 @@ class EnforceLifecycleAwareAttachmentTest {
           "by lateinitLifecycle() [EnforceLifecycleAwareAttachment]\n" +
           "  val navigator = LinearNavigator()\n" +
           "  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-          "1 errors, 0 warnings",
-      ).expectFixDiffs("")
+          "1 errors, 0 warnings"
+      )
+      .expectFixDiffs("")
   }
 
   @Test
@@ -91,7 +97,7 @@ class EnforceLifecycleAwareAttachmentTest {
       .files(
         *lifecycleFiles,
         kt(
-          """
+            """
           package com.ryanmoelter.magellanx.app
 
           import com.ryanmoelter.magellanx.lifecycle.LifecycleAware
@@ -101,9 +107,11 @@ class EnforceLifecycleAwareAttachmentTest {
 
             val navigator by lifecycle(LinearNavigator())
           }
-        """,
-        ).indented(),
-      ).issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
+        """
+          )
+          .indented(),
+      )
+      .issues(ENFORCE_LIFECYCLE_AWARE_ATTACHMENT)
       .run()
       .expectClean()
   }

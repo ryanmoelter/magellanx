@@ -9,19 +9,19 @@ buildscript {
   dependencies {
     classpath(libs.kotlin.gradle)
     classpath(libs.android.gradle)
-    classpath("org.jmailen.gradle:kotlinter-gradle:${libs.versions.kotlinter.get()}")
+    classpath("com.ncorti.ktfmt.gradle:com.ncorti.ktfmt.gradle.gradle.plugin:${libs.versions.ktfmt.get()}")
   }
 }
 
 plugins {
-  alias(libs.plugins.kotlinter)
+  alias(libs.plugins.ktfmt)
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.composeCompiler) apply false
 }
 
 allprojects {
-  apply(plugin = "org.jmailen.kotlinter")
+  apply(plugin = "com.ncorti.ktfmt.gradle")
 
   group = extra["GROUP"]!!
   version = extra["VERSION_NAME"]!!
@@ -31,9 +31,9 @@ allprojects {
     google()
   }
 
-  kotlinter {
-    tasks.findByName("lint")?.dependsOn("lintKotlin")
-    ignoreFormatFailures = false
+  ktfmt {
+    googleStyle()
+    tasks.findByName("lint")?.dependsOn("ktfmtCheck")
   }
 
   tasks.withType<Test> {

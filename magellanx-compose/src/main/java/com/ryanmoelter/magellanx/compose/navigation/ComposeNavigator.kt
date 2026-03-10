@@ -32,13 +32,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 public open class ComposeNavigator :
-  LifecycleAwareComponent(),
-  Displayable<@Composable () -> Unit> {
+  LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
   private val createdScope by attachFieldToLifecycle(CreatedLifecycleScope())
 
-  /**
-   * The backstack. The last item in each list is the top of the stack.
-   */
+  /** The backstack. The last item in each list is the top of the stack. */
   protected val backStackFlow: MutableStateFlow<List<ComposeNavigationEvent>> =
     MutableStateFlow(emptyList())
 
@@ -48,9 +45,7 @@ public open class ComposeNavigator :
   public val backStack: List<ComposeNavigationEvent>
     get() = backStackFlow.value
 
-  /**
-   * Get a snapshot of the current navigable, i.e. the last item of the current [backStack].
-   */
+  /** Get a snapshot of the current navigable, i.e. the last item of the current [backStack]. */
   public val currentNavigable: Navigable<@Composable () -> Unit>?
     get() = backStack.lastOrNull()?.navigable
 
@@ -70,11 +65,7 @@ public open class ComposeNavigator :
   }
 
   override val view: (@Composable () -> Unit)
-    get() = {
-      WhenStarted {
-        Content()
-      }
-    }
+    get() = { WhenStarted { Content() } }
 
   @Composable
   @Suppress("ktlint:standard:function-naming")
@@ -140,9 +131,7 @@ public open class ComposeNavigator :
   }
 
   override fun onDestroy() {
-    backStack
-      .map { it.navigable }
-      .forEach { lifecycleRegistry.removeFromLifecycle(it) }
+    backStack.map { it.navigable }.forEach { lifecycleRegistry.removeFromLifecycle(it) }
     backStackFlow.value = emptyList()
   }
 
@@ -174,9 +163,7 @@ public open class ComposeNavigator :
 
   public open fun goBack(): Boolean =
     if (!atRoot()) {
-      navigate(BACKWARD) { backStack ->
-        backStack - backStack.last()
-      }
+      navigate(BACKWARD) { backStack -> backStack - backStack.last() }
       true
     } else {
       false
@@ -193,9 +180,7 @@ public open class ComposeNavigator :
   }
 
   public open fun resetWithRoot(navigable: Navigable<@Composable () -> Unit>) {
-    navigate(FORWARD) {
-      listOf(ComposeNavigationEvent(navigable, noTransition))
-    }
+    navigate(FORWARD) { listOf(ComposeNavigationEvent(navigable, noTransition)) }
   }
 
   public open fun navigate(
@@ -241,7 +226,8 @@ public open class ComposeNavigator :
       val isStarted =
         oldNavigable is LifecycleOwner && oldNavigable.currentState >= LifecycleState.Started
 
-      // Don't remove the last Navigable (from) until it's removed from composition in DisposedEffect
+      // Don't remove the last Navigable (from) until it's removed from composition in
+      // DisposedEffect
       if (!isStarted) {
         lifecycleRegistry.removeFromLifecycle(oldNavigable)
       }

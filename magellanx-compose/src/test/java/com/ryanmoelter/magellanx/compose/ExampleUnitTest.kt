@@ -9,8 +9,4 @@ import io.kotest.matchers.shouldBe
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 public class ExampleUnitTest :
-  FunSpec({
-    test("addition is correct (example)") {
-      2 + 2 shouldBe 4
-    }
-  })
+  FunSpec({ test("addition is correct (example)") { 2 + 2 shouldBe 4 } })

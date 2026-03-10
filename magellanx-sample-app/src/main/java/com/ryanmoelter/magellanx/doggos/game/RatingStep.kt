@@ -29,18 +29,9 @@ class RatingStep(
   @Composable
   override fun Content() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-      AsyncDoggoImage(
-        doggoImageUrl,
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .weight(1f),
-      )
+      AsyncDoggoImage(doggoImageUrl, modifier = Modifier.fillMaxWidth().weight(1f))
       Row(
-        modifier =
-          Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
       ) {
         Button(onClick = { dislikeDoggo() }) {
@@ -68,7 +59,6 @@ class RatingStep(
 
 @Preview
 @Composable
-private fun RatingStep_Preview() =
-  PreviewNavigable {
-    RatingStep("https://example.com/doggo", submitRating = { })
-  }
+private fun RatingStep_Preview() = PreviewNavigable {
+  RatingStep("https://example.com/doggo", submitRating = {})
+}

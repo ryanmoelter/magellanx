@@ -17,7 +17,7 @@ class RootJourney : ComposeJourney() {
         goToRandomDog = { navigator.goTo(DoggoImageStep()) },
         goToBreedList = { navigator.goTo(BreedImagesJourney()) },
         goToRatingGame = { navigator.goTo(RatingGameJourney(finish = { navigator.goBack() })) },
-      ),
+      )
     )
   }
 }

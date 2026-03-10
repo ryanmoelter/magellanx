@@ -22,19 +22,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 
-public abstract class ComposeStep :
-  ComposeSection(),
-  Navigable<@Composable () -> Unit>
+public abstract class ComposeStep : ComposeSection(), Navigable<@Composable () -> Unit>
 
 public abstract class ComposeSection :
-  LifecycleAwareComponent(),
-  Displayable<@Composable () -> Unit> {
+  LifecycleAwareComponent(), Displayable<@Composable () -> Unit> {
   override val view: (@Composable () -> Unit)?
-    get() = {
-      WhenStarted {
-        Content()
-      }
-    }
+    get() = { WhenStarted { Content() } }
 
   public var createdScope: CoroutineScope by attachFieldToLifecycle(CreatedLifecycleScope()) { it }
     @VisibleForTesting set
@@ -48,9 +41,7 @@ public abstract class ComposeSection :
   public var resumedScope: CoroutineScope by attachFieldToLifecycle(ResumedLifecycleScope()) { it }
     @VisibleForTesting set
 
-  @Composable
-  @Suppress("ktlint:standard:function-naming")
-  protected abstract fun Content()
+  @Composable @Suppress("ktlint:standard:function-naming") protected abstract fun Content()
 
   /**
    * Like [collectAsState], but stops emitting values when this ComposeStep is not Resumed. This is
@@ -63,7 +54,7 @@ public abstract class ComposeSection :
   @Suppress("StateFlowValueCalledInComposition")
   @Composable
   public fun <T> StateFlow<T>.collectAsStateWhileResumed(
-    context: CoroutineContext = EmptyCoroutineContext,
+    context: CoroutineContext = EmptyCoroutineContext
   ): State<T> = collectAsStateWhileResumed(value, context)
 
   /**

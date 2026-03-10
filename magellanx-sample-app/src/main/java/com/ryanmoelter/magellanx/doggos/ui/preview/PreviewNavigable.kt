@@ -22,25 +22,18 @@ import com.ryanmoelter.magellanx.doggos.ui.theme.DoggoTheme
 
 /** Preview a given compose navigable, populating the theme and providing toaster scaffolding */
 @Composable
-fun <T> PreviewNavigable(
-  createNavigable: () -> T,
-) where T : Displayable<@Composable () -> Unit>, T : LifecycleAware, T : LifecycleOwner {
-  val step =
-    remember {
-      @SuppressLint("VisibleForTests")
-      injector = FakeDoggoComponent::class.create()
-      val step = createNavigable().apply { transitionToState(LifecycleState.Resumed) }
-      step
-    }
+fun <T> PreviewNavigable(createNavigable: () -> T)
+  where T : Displayable<@Composable () -> Unit>, T : LifecycleAware, T : LifecycleOwner {
+  val step = remember {
+    @SuppressLint("VisibleForTests")
+    injector = FakeDoggoComponent::class.create()
+    val step = createNavigable().apply { transitionToState(LifecycleState.Resumed) }
+    step
+  }
 
   DoggoTheme {
-    Surface(
-      modifier = Modifier.fillMaxSize(),
-      color = MaterialTheme.colorScheme.background,
-    ) {
-      Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        step.Content()
-      }
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+      Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) { step.Content() }
     }
   }
 }

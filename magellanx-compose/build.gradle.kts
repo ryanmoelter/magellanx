@@ -8,16 +8,10 @@ plugins {
 
 android {
   namespace = "com.ryanmoelter.magellanx.compose"
-  compileSdk =
-    libs.versions.compileSdk
-      .get()
-      .toInt()
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk =
-      libs.versions.minSdk
-        .get()
-        .toInt()
+    minSdk = libs.versions.minSdk.get().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -35,34 +29,20 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
+  kotlinOptions { jvmTarget = "1.8" }
 
-  buildFeatures {
-    compose = true
-  }
+  buildFeatures { compose = true }
 
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
-  }
-
+  testOptions { unitTests { isIncludeAndroidResources = true } }
 }
 
 kotlin {
   compilerOptions {
-    freeCompilerArgs.addAll(
-      "-Xexplicit-api=strict",
-      "-opt-in=kotlin.RequiresOptIn",
-    )
+    freeCompilerArgs.addAll("-Xexplicit-api=strict", "-opt-in=kotlin.RequiresOptIn")
   }
 }
 
-tasks.withType<Test> {
-  useJUnitPlatform()
-}
+tasks.withType<Test> { useJUnitPlatform() }
 
 dependencies {
   api(project(":magellanx-core"))

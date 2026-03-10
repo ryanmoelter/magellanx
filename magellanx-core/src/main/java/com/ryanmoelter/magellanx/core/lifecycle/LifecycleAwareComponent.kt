@@ -2,9 +2,7 @@ package com.ryanmoelter.magellanx.core.lifecycle
 
 import kotlinx.coroutines.flow.StateFlow
 
-public abstract class LifecycleAwareComponent :
-  LifecycleAware,
-  LifecycleOwner {
+public abstract class LifecycleAwareComponent : LifecycleAware, LifecycleOwner {
   protected val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry()
 
   override val children: List<LifecycleAware>
@@ -17,7 +15,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Destroyed) {
       throw IllegalStateException(
         "Cannot create() from a state that is not Destroyed: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     lifecycleRegistry.create()
@@ -28,7 +26,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Created) {
       throw IllegalStateException(
         "Cannot show() from a state that is not Created: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     lifecycleRegistry.show()
@@ -39,7 +37,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Shown) {
       throw IllegalStateException(
         "Cannot start() from a state that is not Shown: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     lifecycleRegistry.start()
@@ -50,7 +48,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Started) {
       throw IllegalStateException(
         "Cannot resume() from a state that is not Started: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     lifecycleRegistry.resume()
@@ -61,7 +59,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Resumed) {
       throw IllegalStateException(
         "Cannot pause() from a state that is not Resumed: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     onPause()
@@ -72,7 +70,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Started) {
       throw IllegalStateException(
         "Cannot stop() from a state that is not Started: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     onStop()
@@ -83,7 +81,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Shown) {
       throw IllegalStateException(
         "Cannot hide() from a state that is not Shown: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     onHide()
@@ -94,7 +92,7 @@ public abstract class LifecycleAwareComponent :
     if (currentState != LifecycleState.Created) {
       throw IllegalStateException(
         "Cannot destroy() from a state that is not Created: " +
-          "${this::class.java.simpleName} is ${currentState.name}",
+          "${this::class.java.simpleName} is ${currentState.name}"
       )
     }
     onDestroy()
@@ -111,17 +109,11 @@ public abstract class LifecycleAwareComponent :
     removeFromLifecycle(lifecycleAware, LifecycleState.Destroyed)
   }
 
-  override fun attachToLifecycle(
-    lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState,
-  ) {
+  override fun attachToLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
     lifecycleRegistry.attachToLifecycle(lifecycleAware, detachedState)
   }
 
-  override fun removeFromLifecycle(
-    lifecycleAware: LifecycleAware,
-    detachedState: LifecycleState,
-  ) {
+  override fun removeFromLifecycle(lifecycleAware: LifecycleAware, detachedState: LifecycleState) {
     lifecycleRegistry.removeFromLifecycle(lifecycleAware, detachedState)
   }
 

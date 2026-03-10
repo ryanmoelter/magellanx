@@ -13,9 +13,7 @@ import com.ryanmoelter.magellanx.core.lifecycle.LifecycleState.Started
 @Composable
 @Suppress("ktlint:standard:function-naming")
 public fun Displayable<@Composable () -> Unit>.Content(modifier: Modifier = Modifier) {
-  Box(modifier = modifier) {
-    view!!()
-  }
+  Box(modifier = modifier) { view!!() }
 }
 
 @Composable

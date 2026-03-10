@@ -24,10 +24,12 @@ public class StatePrinterTest {
   public fun singleChild() {
     root.attachToLifecycle(MyStep())
 
-    root.getLifecycleStateSnapshot() shouldBe """
+    root.getLifecycleStateSnapshot() shouldBe
+      """
       DummyLifecycleOwner (Destroyed)
       └ MyStep (Destroyed)
-    """.trimIndent() + '\n'
+      """
+        .trimIndent() + '\n'
   }
 
   @Test
@@ -38,11 +40,13 @@ public class StatePrinterTest {
     root.create()
     root.show()
 
-    root.getLifecycleStateSnapshot() shouldBe """
+    root.getLifecycleStateSnapshot() shouldBe
+      """
       DummyLifecycleOwner (Shown)
       ├ MyStep (Shown)
       └ MyStep (Shown)
-    """.trimIndent() + '\n'
+      """
+        .trimIndent() + '\n'
   }
 
   @Test
@@ -55,7 +59,8 @@ public class StatePrinterTest {
     root.attachToLifecycle(MyJourney().apply { attachToLifecycle(MyLifecycleAwareThing()) })
     root.create()
 
-    root.getLifecycleStateSnapshot() shouldBe """
+    root.getLifecycleStateSnapshot() shouldBe
+      """
       DummyLifecycleOwner (Created)
       ├ MyStep (Created)
       ├ MyJourney (Created)
@@ -63,7 +68,8 @@ public class StatePrinterTest {
       |   └ MySection (Created)
       └ MyJourney (Created)
         └ MyLifecycleAwareThing (Created?)
-    """.trimIndent() + '\n'
+      """
+        .trimIndent() + '\n'
   }
 }
 

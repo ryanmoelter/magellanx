@@ -14,7 +14,7 @@ public object Magellan {
   public fun init(
     // disableAnimations: Boolean = false,
     // logDebugInfo: Boolean = false,
-    mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    mainDispatcher: CoroutineDispatcher = Dispatchers.Main
   ) {
     // this.logDebugInfo = logDebugInfo
     // this.disableAnimations = disableAnimations

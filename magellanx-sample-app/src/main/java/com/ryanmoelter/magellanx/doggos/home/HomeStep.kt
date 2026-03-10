@@ -34,17 +34,14 @@ class HomeStep(
       Text(
         text = "Magellan Doggos",
         style = MaterialTheme.typography.displayMedium,
-        modifier =
-          Modifier
-            .padding(horizontal = 24.dp, vertical = 12.dp),
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
       )
       Box(
         modifier =
-          Modifier
-            .fillMaxWidth()
+          Modifier.fillMaxWidth()
             .padding(vertical = 12.dp)
             .height(1.dp)
-            .background(color = MaterialTheme.colorScheme.outline),
+            .background(color = MaterialTheme.colorScheme.outline)
       )
       ListItem(title = "Show random doggo") { goToRandomDog() }
       ListItem(title = "Filter by breed list") { goToBreedList() }
@@ -55,14 +52,10 @@ class HomeStep(
 }
 
 @Composable
-fun ListItem(
-  title: String,
-  onClick: () -> Unit,
-) {
+fun ListItem(title: String, onClick: () -> Unit) {
   Row(
     modifier =
-      Modifier
-        .clickable { onClick() }
+      Modifier.clickable { onClick() }
         .minimumInteractiveComponentSize()
         .padding(horizontal = 24.dp, vertical = 12.dp)
         .fillMaxWidth(),
@@ -79,7 +72,6 @@ fun ListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun HomePreview() =
-  PreviewNavigable {
-    HomeStep(goToRandomDog = { }, goToBreedList = { }, goToRatingGame = { })
-  }
+fun HomePreview() = PreviewNavigable {
+  HomeStep(goToRandomDog = {}, goToBreedList = {}, goToRatingGame = {})
+}

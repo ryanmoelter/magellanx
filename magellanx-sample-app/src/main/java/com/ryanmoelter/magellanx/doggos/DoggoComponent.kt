@@ -13,9 +13,7 @@ import me.tatarka.inject.annotations.Scope
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
-@Scope
-@Target(CLASS, FUNCTION, PROPERTY_GETTER)
-annotation class Singleton
+@Scope @Target(CLASS, FUNCTION, PROPERTY_GETTER) annotation class Singleton
 
 interface DoggoComponent {
   val rootJourney: RootJourney
@@ -27,10 +25,10 @@ interface DoggoComponent {
 @Singleton
 abstract class RealDoggoComponent : DoggoComponent {
   val retrofit: Retrofit
-    @Provides @Singleton
+    @Provides
+    @Singleton
     get() =
-      Retrofit
-        .Builder()
+      Retrofit.Builder()
         .baseUrl("https://dog.ceo/api/")
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .build()
@@ -42,6 +40,5 @@ abstract class RealDoggoComponent : DoggoComponent {
 @Component
 @Singleton
 abstract class FakeDoggoComponent : DoggoComponent {
-  @Provides
-  fun provideDoggoApi(): DoggoApi = FakeDoggoApi()
+  @Provides fun provideDoggoApi(): DoggoApi = FakeDoggoApi()
 }

@@ -23,7 +23,7 @@ internal class AttachLateinitFieldToLifecycleDelegateTest {
   @Test(expected = IllegalStateException::class)
   fun throwsBeforeSet() {
     val attachedChild by parent.attachLateinitFieldToLifecycle<DummyLifecycleAwareComponent>()
-    attachedChild.let { }
+    attachedChild.let {}
   }
 
   @Test

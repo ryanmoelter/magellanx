@@ -8,28 +8,17 @@ plugins {
 
 android {
   namespace = "com.ryanmoelter.magellanx.doggos"
-  compileSdk =
-    libs.versions.compileSdk
-      .get()
-      .toInt()
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
     applicationId = "com.ryanmoelter.magellanx.doggos"
-    minSdk =
-      libs.versions.minSdk
-        .get()
-        .toInt()
-    targetSdk =
-      libs.versions.compileSdk
-        .get()
-        .toInt()
+    minSdk = libs.versions.minSdk.get().toInt()
+    targetSdk = libs.versions.compileSdk.get().toInt()
     versionCode = 1
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    vectorDrawables {
-      useSupportLibrary = true
-    }
+    vectorDrawables { useSupportLibrary = true }
   }
 
   buildTypes {
@@ -42,17 +31,9 @@ android {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
-  buildFeatures {
-    compose = true
-  }
-  packaging {
-    resources {
-      excludes += "/META-INF/{AL2.0,LGPL2.1}"
-    }
-  }
+  kotlinOptions { jvmTarget = "1.8" }
+  buildFeatures { compose = true }
+  packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
 }
 
 dependencies {
