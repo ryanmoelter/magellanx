@@ -55,6 +55,8 @@ dependencies {
   implementation(libs.ui.graphics)
   implementation(libs.ui.tooling.preview)
   implementation(libs.compose.material3)
+  implementation(libs.compose.material.icons.core)
+  implementation(libs.compose.material.icons.extended)
   androidTestImplementation(platform(libs.compose.bom))
   androidTestImplementation(libs.compose.ui.test)
   debugImplementation(libs.compose.ui.tooling)
