@@ -9,7 +9,9 @@ buildscript {
   dependencies {
     classpath(libs.kotlin.gradle)
     classpath(libs.android.gradle)
-    classpath("com.ncorti.ktfmt.gradle:com.ncorti.ktfmt.gradle.gradle.plugin:${libs.versions.ktfmt.get()}")
+    classpath(
+      "com.ncorti.ktfmt.gradle:com.ncorti.ktfmt.gradle.gradle.plugin:${libs.versions.ktfmt.get()}"
+    )
   }
 }
 
@@ -36,13 +38,7 @@ allprojects {
     tasks.findByName("lint")?.dependsOn("ktfmtCheck")
   }
 
-  tasks.withType<Test> {
-    reports {
-      html.required.set(true)
-    }
-  }
+  tasks.withType<Test> { reports { html.required.set(true) } }
 }
 
-tasks.register("clean", Delete::class) {
-  delete(rootProject.layout.buildDirectory)
-}
+tasks.register("clean", Delete::class) { delete(rootProject.layout.buildDirectory) }

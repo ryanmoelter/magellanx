@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
   id("com.android.library")
   kotlin("android")
@@ -19,8 +21,6 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
 
-  kotlinOptions { jvmTarget = "1.8" }
-
   buildTypes { release { isMinifyEnabled = false } }
 }
 
@@ -28,6 +28,7 @@ kotlin {
   compilerOptions {
     freeCompilerArgs.addAll(listOf("-Xexplicit-api=strict", "-opt-in=kotlin.RequiresOptIn"))
     allWarningsAsErrors = true
+    jvmTarget = JvmTarget.JVM_1_8
   }
 }
 
