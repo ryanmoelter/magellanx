@@ -9,7 +9,6 @@ compileSdk = "36"
 minSdk = "23"
 
 activity = "1.12.4"
-accompanist = "0.36.0"
 material3 = "1.4.0"
 appcompat = "1.7.1"
 constraintlayout = "2.2.1"
@@ -41,7 +40,7 @@ vanniktech-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanni
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
 # Kotlin
@@ -79,9 +78,6 @@ compose-material-icons-extended = { module = "androidx.compose.material:material
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist" }
-
 # Android
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
@@ -98,8 +94,8 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 #Sample app
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-kotlinx-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version = "1.0.0"}
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json",  version.ref = "serialization"}
+retrofit-kotlinx-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-inject-ksp = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
 kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }
 
