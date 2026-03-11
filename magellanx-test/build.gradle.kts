@@ -35,6 +35,10 @@ kotlin {
 dependencies {
   implementation(project(":magellanx-compose"))
 
+  val composeBom = platform(libs.compose.bom)
+  implementation(composeBom)
+  androidTestImplementation(composeBom)
+
   // Compose
   implementation(libs.compose.ui)
   implementation(libs.compose.ui.tooling)
