@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0 (BREAKING-ISH)
+- Move to maven central from jitpack
+- Bump target and compile SDK from 35 to 36
+- Update dependencies, including to Kotlin `2.3.10` and Compose BOM to `2026.02.01`
+
 ## 0.6.0 (BREAKING)
 - **Breaking: Automatically attach `onBackPressedDispatcher` in `setContentNavigable()`.** Now, the only code required to attach Magellan to your `MainActivity` is `setContentNavigable()`.
 - Make compose previews work without using interactive mode for `Journey`s and nested `Step`s
