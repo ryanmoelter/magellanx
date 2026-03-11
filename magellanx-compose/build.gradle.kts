@@ -71,8 +71,6 @@ dependencies {
   implementation(libs.compose.material.icons.extended)
   implementation(libs.activity.compose)
   androidTestImplementation(libs.compose.ui.test)
-  implementation(libs.accompanist.systemuicontroller)
-  implementation(libs.accompanist.drawablepainter)
 
   // Testing
   testImplementation(libs.kotest.runner.junit5)
