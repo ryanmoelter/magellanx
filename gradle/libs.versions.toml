@@ -13,7 +13,7 @@ material3 = "1.4.0"
 appcompat = "1.7.1"
 constraintlayout = "2.2.1"
 
-kotest = "5.9.1"
+kotest = "6.1.7"
 testCore = "1.7.0"
 lint = "31.13.2"
 
