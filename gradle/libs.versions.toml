@@ -17,7 +17,7 @@ kotest = "5.9.1"
 testCore = "1.7.0"
 lint = "31.13.2"
 
-ktfmt = "0.25.0"
+ktfmt = "0.26.0"
 vanniktech-publish = "0.36.0"
 
 # Sample app
