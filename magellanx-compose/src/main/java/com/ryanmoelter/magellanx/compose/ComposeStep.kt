@@ -54,7 +54,7 @@ public abstract class ComposeSection :
   @Suppress("StateFlowValueCalledInComposition")
   @Composable
   public fun <T> StateFlow<T>.collectAsStateWhileResumed(
-    context: CoroutineContext = EmptyCoroutineContext
+    context: CoroutineContext = EmptyCoroutineContext,
   ): State<T> = collectAsStateWhileResumed(value, context)
 
   /**

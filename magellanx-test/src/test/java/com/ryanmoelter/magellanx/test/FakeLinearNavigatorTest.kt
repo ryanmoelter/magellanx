@@ -65,7 +65,7 @@ public class FakeLinearNavigatorTest {
       listOf(
         ComposeNavigationEvent(originalBottomNavigable, defaultTransition),
         ComposeNavigationEvent(TestNavigable(), defaultTransition),
-      )
+      ),
     )
 
     navigator.navigate(Direction.FORWARD) {
@@ -95,7 +95,7 @@ public class FakeLinearNavigatorTest {
       listOf(
         ComposeNavigationEvent(bottomNavigable, defaultTransition),
         ComposeNavigationEvent(TestNavigable(), defaultTransition),
-      )
+      ),
     )
     navigator.goBack().shouldBeTrue()
     navigator.backStack shouldHaveSize 1

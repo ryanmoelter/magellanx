@@ -26,8 +26,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   buildFeatures { compose = true }
@@ -38,7 +38,7 @@ android {
 kotlin {
   compilerOptions {
     freeCompilerArgs.addAll("-Xexplicit-api=strict", "-opt-in=kotlin.RequiresOptIn")
-    jvmTarget = JvmTarget.JVM_1_8
+    jvmTarget = JvmTarget.JVM_11
   }
 }
 
@@ -85,9 +85,11 @@ dependencies {
 
 // Host unit tests run on the JVM, not on an Android device. Select Kotest's
 // JVM engine so its Android manifest does not raise the library's minimum SDK.
-configurations.matching { it.name.contains("UnitTest") }.configureEach {
-  resolutionStrategy.dependencySubstitution {
-    substitute(module("io.kotest:kotest-framework-engine"))
-      .using(module("io.kotest:kotest-framework-engine-jvm:${libs.versions.kotest.get()}"))
+configurations
+  .matching { it.name.contains("UnitTest") }
+  .configureEach {
+    resolutionStrategy.dependencySubstitution {
+      substitute(module("io.kotest:kotest-framework-engine"))
+        .using(module("io.kotest:kotest-framework-engine-jvm:${libs.versions.kotest.get()}"))
+    }
   }
-}
