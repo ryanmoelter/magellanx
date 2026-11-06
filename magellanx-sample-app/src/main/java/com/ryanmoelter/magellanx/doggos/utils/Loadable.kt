@@ -45,7 +45,7 @@ fun <ReturnType> wrapInLoadableFlow(action: suspend () -> ReturnType): Flow<Load
   }
 
 fun <StartingType, TargetType> Loadable<StartingType>.map(
-  action: (StartingType) -> TargetType
+  action: (StartingType) -> TargetType,
 ): Loadable<TargetType> =
   when (this) {
     is Success -> Success(action(value))
@@ -90,7 +90,7 @@ fun <T : Any> ShowLoadingAround(loadable: Loadable<T>, content: @Composable (T) 
         is Failure -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
-              loadable.throwable.toString()
+              loadable.throwable.toString(),
             ) // TODO: Show an error state, log to sentry, offer retry?
           }
         }

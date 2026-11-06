@@ -1,11 +1,12 @@
 [versions]
-android-gradle = "8.13.2"
+android-gradle = "9.5.1"
 kotlin = "2.4.21"
 coroutines = "1.11.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2026.06.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-compileSdk = "36"
+compileSdk = "37"
+targetSdk = "36"
 minSdk = "23"
 
 activity = "1.13.0"

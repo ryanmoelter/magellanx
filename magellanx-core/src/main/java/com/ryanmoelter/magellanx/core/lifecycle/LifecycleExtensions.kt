@@ -13,7 +13,7 @@ public fun <ChildType : LifecycleAware, PropertyType> LifecycleOwner.attachField
   )
 
 public fun <ChildType : LifecycleAware> LifecycleOwner.attachFieldToLifecycle(
-  lifecycleAware: ChildType
+  lifecycleAware: ChildType,
 ): AttachFieldToLifecycleDelegate<ChildType, ChildType> =
   AttachFieldToLifecycleDelegate(
     parent = this,
@@ -62,14 +62,14 @@ public fun <ChildType : LifecycleAware> LifecycleOwner.attachLateinitFieldToLife
   AttachLateinitFieldToLifecycleDelegate<ChildType> = AttachLateinitFieldToLifecycleDelegate(this)
 
 public class AttachLateinitFieldToLifecycleDelegate<ChildType : LifecycleAware>(
-  private val parent: LifecycleOwner
+  private val parent: LifecycleOwner,
 ) {
   private var lifecycleAware: ChildType? = null
 
   public operator fun getValue(thisRef: Any?, property: KProperty<*>): ChildType =
     lifecycleAware
       ?: error(
-        "This lateinit LifecycleAware has not been set yet. (Has your dependency injection run yet?)"
+        "This lateinit LifecycleAware has not been set yet. (Has your dependency injection run yet?)",
       )
 
   public operator fun setValue(thisRef: Any?, property: KProperty<*>, value: ChildType) {

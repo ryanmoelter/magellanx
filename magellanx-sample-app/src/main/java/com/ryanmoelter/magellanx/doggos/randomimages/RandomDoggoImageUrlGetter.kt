@@ -12,11 +12,11 @@ import me.tatarka.inject.annotations.Inject
 class RandomDoggoImageUrlGetter(private val doggoApi: DoggoApi) {
   suspend fun fetchDoggoImageUrl(breed: String? = null): Flow<Loadable<String>> =
     wrapInLoadableFlow {
-        if (breed == null) {
-          doggoApi.getRandomDoggoImage()
-        } else {
-          doggoApi.getRandomDoggoImageByBreed(breed)
-        }
+      if (breed == null) {
+        doggoApi.getRandomDoggoImage()
+      } else {
+        doggoApi.getRandomDoggoImageByBreed(breed)
       }
-      .map { loadable -> loadable.map { doggoImageResponse -> doggoImageResponse.imageUrl } }
+    }
+    .map { loadable -> loadable.map { doggoImageResponse -> doggoImageResponse.imageUrl } }
 }

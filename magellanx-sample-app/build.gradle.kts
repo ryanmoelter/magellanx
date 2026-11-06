@@ -15,7 +15,7 @@ android {
   defaultConfig {
     applicationId = "com.ryanmoelter.magellanx.doggos"
     minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = libs.versions.compileSdk.get().toInt()
+    targetSdk = libs.versions.targetSdk.get().toInt()
     versionCode = 1
     versionName = "1.0"
 

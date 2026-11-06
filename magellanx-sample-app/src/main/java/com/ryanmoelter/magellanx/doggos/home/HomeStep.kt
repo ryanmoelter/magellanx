@@ -41,7 +41,7 @@ class HomeStep(
           Modifier.fillMaxWidth()
             .padding(vertical = 12.dp)
             .height(1.dp)
-            .background(color = MaterialTheme.colorScheme.outline)
+            .background(color = MaterialTheme.colorScheme.outline),
       )
       ListItem(title = "Show random doggo") { goToRandomDog() }
       ListItem(title = "Filter by breed list") { goToBreedList() }
