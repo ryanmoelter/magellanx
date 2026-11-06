@@ -17,8 +17,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   buildTypes { release { isMinifyEnabled = false } }
@@ -28,7 +28,7 @@ kotlin {
   compilerOptions {
     freeCompilerArgs.addAll(listOf("-Xexplicit-api=strict", "-opt-in=kotlin.RequiresOptIn"))
     allWarningsAsErrors = true
-    jvmTarget = JvmTarget.JVM_1_8
+    jvmTarget = JvmTarget.JVM_11
   }
 }
 

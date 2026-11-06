@@ -30,14 +30,14 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
   buildFeatures { compose = true }
   packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
 }
 
-kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
+kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_11 } }
 
 dependencies {
   implementation(project(":magellanx-compose"))
