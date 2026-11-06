@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
   id("com.android.library")
   kotlin("android")
-  alias(libs.plugins.kotest)
   alias(libs.plugins.composeCompiler)
   alias(libs.plugins.vanniktech.publish)
 }
@@ -83,3 +82,14 @@ dependencies {
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.espresso.core)
 }
+
+// Host unit tests run on the JVM, not on an Android device. Select Kotest's
+// JVM engine so its Android manifest does not raise the library's minimum SDK.
+configurations
+  .matching { it.name.contains("UnitTest") }
+  .configureEach {
+    resolutionStrategy.dependencySubstitution {
+      substitute(module("io.kotest:kotest-framework-engine"))
+        .using(module("io.kotest:kotest-framework-engine-jvm:${libs.versions.kotest.get()}"))
+    }
+  }

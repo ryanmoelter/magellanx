@@ -44,7 +44,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     if (listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalStateException(
         "Cannot attach a lifecycleAware that is already a child: " +
-          lifecycleAware::class.java.simpleName
+          lifecycleAware::class.java.simpleName,
       )
     }
     lifecycleAware.transition(detachedState, currentState.limitBy(maxState))
@@ -55,7 +55,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalStateException(
         "Cannot remove a lifecycleAware that is not a child: " +
-          lifecycleAware::class.java.simpleName
+          lifecycleAware::class.java.simpleName,
       )
     }
     val maxState = listenersToMaxStates[lifecycleAware]!!
@@ -67,7 +67,7 @@ public class LifecycleRegistry : LifecycleAware, LifecycleOwner {
     if (!listenersToMaxStates.containsKey(lifecycleAware)) {
       throw IllegalArgumentException(
         "Cannot update the state of a lifecycleAware that is not a child: " +
-          lifecycleAware::class.java.simpleName
+          lifecycleAware::class.java.simpleName,
       )
     }
     val oldMaxState = listenersToMaxStates[lifecycleAware]!!

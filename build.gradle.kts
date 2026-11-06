@@ -10,7 +10,7 @@ buildscript {
     classpath(libs.kotlin.gradle)
     classpath(libs.android.gradle)
     classpath(
-      "com.ncorti.ktfmt.gradle:com.ncorti.ktfmt.gradle.gradle.plugin:${libs.versions.ktfmt.get()}"
+      "com.ncorti.ktfmt.gradle:com.ncorti.ktfmt.gradle.gradle.plugin:${libs.versions.ktfmt.get()}",
     )
   }
 }
