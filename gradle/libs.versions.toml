@@ -23,7 +23,7 @@ vanniktech-publish = "0.37.0"
 
 # Sample app
 kotlin-inject = "0.9.0"
-ksp = "2.3.13"
+ksp = "2.3.14"
 coil = "2.7.0"
 retrofit = "3.0.0"
 junit-old = "1.3.0"
